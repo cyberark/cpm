@@ -1,0 +1,19 @@
+---
+# tasks file for cpm_validateparameters
+- name: check if cpm was already installed
+  win_service: 
+    name: "{{ cpm_service_name }}"
+  register: cpm_service_info
+  
+- name: check if cpm was already installed
+  win_service: 
+    name: "{{ cpm_scanner_service_name }}"
+  register: cpm_scanner_service_info
+
+- set_fact:
+    cpm_exists: "{{ cpm_service_info.exists }}"
+    cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
+
+# TODO: Check with CPM if hardening can be executed more than once
+
+# TODO: Validate if CPM is registered

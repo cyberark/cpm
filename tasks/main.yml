@@ -1,0 +1,33 @@
+---
+# tasks file for .
+# Parameters
+- name: validate input parameters
+  include_tasks: cpm_validateparameters.yml
+
+- name: running cpm prerequisities
+  include_tasks: cpm_prerequisites.yml
+  when: cpm_prerequisites == true
+  
+- name: running cpm uninstall
+  include_tasks: cpm_uninstall.yml
+  when: cpm_uninstall == true
+  
+- name: running cpm install
+  include_tasks: cpm_install.yml
+  when: cpm_install == true and cpm_exists == false
+  
+- name: running cpm postinstall
+  include_tasks: cpm_postinstall.yml
+  when: cpm_postinstall == true
+  
+- name: running cpm hardening
+  include_tasks: cpm_hardening.yml
+  when: cpm_hardening == true
+  
+- name: running cpm registration
+  include_tasks: cpm_registration.yml
+  when: cpm_registration == true and cpm_registered == false
+  
+- name: running cpm upgrade
+  include_tasks: cpm_upgrade.yml
+  when: cpm_upgrade == true

@@ -1,0 +1,9 @@
+---
+# tasks file for cpm_extract
+
+# TODO Extract and get exact paths
+- name: Extract CPM package
+  win_unzip:
+    src: "{{ cpm_zip_file_path }}"
+    dest: C:\Users\Phil\OldLogs
+    creates: C:\Users\Phil\OldLogs

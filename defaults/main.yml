@@ -1,0 +1,29 @@
+---
+# defaults file for cpm
+cpm_uninstall: false
+cpm_prerequisites: false
+cpm_install: false
+cpm_postinstall: false
+cpm_hardening: false
+cpm_registration: false
+cpm_upgrade: false
+
+
+cpm_exists: false
+cpm_scanner_exists: false
+cpm_hardened: false
+cpm_registered: false
+
+
+cpm_service_name: "CyberArk Password Manager" #TODO
+cpm_scanner_service_name: "CPM Scanner" #TODO
+powershell_execution_command: "PowerShell -NoProfile -ExecutionPolicy Bypass"
+
+
+cpm_base_bin_path: "c:"
+cpm_zip_file_path: "{{ cpm_base_bin_path }}\\cyberark\\zipfile\\CPM.zip"
+cpm_installation_file: "{{ cpm_base_bin_path }}\\CPM\\InstallationAutomation\\CPMInstallation.ps1"
+
+
+cpm_base_path: "c:"
+cpm_installation_path: "{{ cpm_base_path }}\\Program Files(x86)\\CyberArk\\CPM" #TODO

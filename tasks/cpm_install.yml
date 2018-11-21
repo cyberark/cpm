@@ -1,0 +1,26 @@
+---
+# tasks file for run_ps1
+
+- name: run CPM installation
+  win_shell: |
+    $ErrorActionPreference = "SilentlyContinue"
+    $Action = .\CPMInstallation.ps1 
+    $Action | Out-File -FilePath "C:\CyberArk\Ansible\cpm_installation_result.txt"
+    $Result = Get-Content "C:\CyberArk\Ansible\cpm_installation_result.txt" | ConvertFrom-Json
+    if ($Result.isSucceeded -eq 2) {
+      exit 1
+    } else {
+      exit 0
+    }
+  args:
+    chdir: "C:\\CyberArk\\Ansible\\CPM\\Central Policy Manager\\InstallationAutomation\\Installation" #TODO
+
+- name: Validate CPM installation
+  win_lineinfile:
+    path: 'C:\CyberArk\Ansible\CPM\Central Policy Manager\InstallationAutomation\Installation\Script.log' #TODO
+    regexp: 'Operation Succeeded'
+    state: present
+    
+- name: Set cpm_exists as true
+  set_fact:
+    cpm_exists: true

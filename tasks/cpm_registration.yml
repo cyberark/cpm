@@ -1,0 +1,23 @@
+---
+# tasks file for CPM registration
+
+- name: run CPM registration #TODO check if there is a typo in 10.6
+  win_shell: |
+    $ErrorActionPreference = "SilentlyContinue"
+    $Action = .\CPMRegisterCommponent.ps1
+    $Action | Out-File -FilePath "C:\CyberArk\Ansible\cpm_registration_result.txt"
+    $Result = Get-Content "C:\CyberArk\Ansible\cpm_registration_result.txt" | ConvertFrom-Json
+    if ($Result.isSucceeded -eq 2) {
+      exit 1
+    } else {
+      exit 0
+    }
+  args:
+    chdir: "C:\\CyberArk\\Ansible\\CPM\\Central Policy Manager\\InstallationAutomation\\Registration" #TODO
+
+# TODO: Validate CPM registration 
+
+- name: Set cpm_registered as true
+  set_fact:
+    cpm_registered: true
+    
