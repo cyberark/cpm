@@ -1,7 +1,8 @@
 ---
-# tasks file for CPM registration
+# tasks file for cpm registration
 
 - name: run CPM registration #TODO check if there is a typo in 10.6
+  #TODO replace hard coded paths with variables
   win_shell: |
     $ErrorActionPreference = "SilentlyContinue"
     $Action = .\CPMRegisterCommponent.ps1
@@ -15,9 +16,8 @@
   args:
     chdir: "C:\\CyberArk\\Ansible\\CPM\\Central Policy Manager\\InstallationAutomation\\Registration" #TODO
 
-# TODO: Validate CPM registration 
+# TODO: Validate CPM registration
 
 - name: Set cpm_registered as true
   set_fact:
     cpm_registered: true
-    

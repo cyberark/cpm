@@ -1,5 +1,5 @@
 # Script Name: CPMHardening.ps1
-# Description: Initiating hardening proccess of CPM. If success, returns OK
+# Description: Initiating hardening process of CPM. If successful, returns OK
 
 $ErrorActionPreference = "SilentlyContinue"
 

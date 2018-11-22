@@ -3,7 +3,7 @@
 
 - name: Create user.ini file
   win_file:
-    path: "C:\\Program Files (x86)\\CyberArk\\Password Manager\\Vault\\user.ini"
+    path: "C:\\Program Files (x86)\\CyberArk\\Password Manager\\Vault\\user.ini" #TODO replace path with external variables
     state: touch
 
 - name: run CPM hardening
