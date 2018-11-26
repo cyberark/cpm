@@ -17,7 +17,7 @@
 
 - name: Validate CPM installation #TODO: check how to validate that the line exists
   win_lineinfile:
-    path: '{{ cpm_installationautomation_folder }}\Script.log'
+    path: '{{ cpm_installationautomation_folder }}\Installation\Script.log'
     regexp: 'Operation Succeeded'
     state: present
     line: 'Operation Succeeded'
