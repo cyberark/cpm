@@ -1,0 +1,36 @@
+---
+# tasks file for cpm_extract
+- name: Set CyberArk Password Manager Service Startup Mode to Manual
+  win_service:
+    name: CyberArk Password Manager
+    start_mode: manual
+    state: stopped
+    
+- name: Set CyberArk Central Policy Manager Scanner Service Startup Mode to Manual
+  win_service:
+    name: CyberArk Central Policy Manager Scanner
+    start_mode: manual
+    state: stopped
+    
+- name: Find all inf files
+  win_find: 
+    paths: "{{ cpm_installation_path }}\\Logs"
+    patterns: ['*.*']
+  register: files_to_delete
+
+- win_file:
+    path: "{{item.path}}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
+  
+- name: Clean Windows\\Temp Folder
+  win_find: 
+    paths: "{{ cpm_installation_drive }}\\Windows\\Temp"
+    patterns: ['CPM*.*', 'InstallationAutomation*.*']
+  register: files_to_delete
+  
+- win_file:
+    path: "{{item.path}}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
+

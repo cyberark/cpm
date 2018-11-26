@@ -3,19 +3,19 @@
 
 - name: Create user.ini file
   win_file:
-    path: "C:\\Program Files (x86)\\CyberArk\\Password Manager\\Vault\\user.ini" #TODO replace path with external variables
+    path: "{{ cpm_installation_path }}\\Vault\\user.ini"
     state: touch
 
 - name: run CPM hardening
   win_shell: |
     $ErrorActionPreference = "SilentlyContinue"
     $Action = .\CPM_Hardening.ps1
-    $Action | Out-File -FilePath "C:\CyberArk\Ansible\cpm_hardening_result.txt"
-    $Result = Get-Content "C:\CyberArk\Ansible\cpm_hardening_result.txt" | ConvertFrom-Json
+    $Action | Out-File -FilePath "{{ cpm_installationautomation_folder }}\cpm_hardening_result.txt"
+    $Result = Get-Content "{{ cpm_installationautomation_folder }}\cpm_hardening_result.txt" | ConvertFrom-Json
     if ($Result.isSucceeded -eq 2) {
         exit 1
     } else {
         exit 0
     }
   args:
-    chdir: "C:\\CyberArk\\Ansible\\CPM\\Central Policy Manager\\InstallationAutomation" #TODO
+    chdir: "{{ cpm_installationautomation_folder }}"

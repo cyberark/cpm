@@ -5,21 +5,22 @@
   win_shell: |
     $ErrorActionPreference = "SilentlyContinue"
     $Action = .\CPMInstallation.ps1
-    $Action | Out-File -FilePath "C:\CyberArk\Ansible\cpm_installation_result.txt"
-    $Result = Get-Content "C:\CyberArk\Ansible\cpm_installation_result.txt" | ConvertFrom-Json
+    $Action | Out-File -FilePath "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt"
+    $Result = Get-Content "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt" | ConvertFrom-Json
     if ($Result.isSucceeded -eq 2) {
       exit 1
     } else {
       exit 0
     }
   args:
-    chdir: "C:\\CyberArk\\Ansible\\CPM\\Central Policy Manager\\InstallationAutomation\\Installation" #TODO
+    chdir: "{{ cpm_installationautomation_folder }}\\Installation"
 
-- name: Validate CPM installation
+- name: Validate CPM installation #TODO: check how to validate that the line exists
   win_lineinfile:
-    path: 'C:\CyberArk\Ansible\CPM\Central Policy Manager\InstallationAutomation\Installation\Script.log' #TODO
+    path: '{{ cpm_installationautomation_folder }}\Script.log'
     regexp: 'Operation Succeeded'
     state: present
+    line: 'Operation Succeeded'
 
 - name: Set cpm_exists as true
   set_fact:

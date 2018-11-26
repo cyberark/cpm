@@ -5,6 +5,9 @@
 - name: validate input parameters
   include_tasks: cpm_validateparameters.yml
 
+- name: extract cpm package
+  include_tasks: cpm_extract.yml
+  
 - name: running cpm prerequisities
   include_tasks: cpm_prerequisites.yml
   when: cpm_prerequisites == true
@@ -32,3 +35,7 @@
 - name: running cpm upgrade
   include_tasks: cpm_upgrade.yml
   when: cpm_upgrade == true
+  
+- name: running cpm clean
+  include_tasks: cpm_clean.yml
+  when: cpm_clean == true
