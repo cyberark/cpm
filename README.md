@@ -8,11 +8,25 @@ Requirements
 
 - Windows 2016 must be installed on the server
 - Administrator credentials (either Local or Domain)
+- Location of CPM CD image
+- 
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+A list of vaiables the playbook is using
+
+| Variable                  | Required | Default | Choices                   | Comments                                 |
+|---------------------------|----------|---------|---------------------------|------------------------------------------|
+| cpm_uninstall             | no       | false   | true, false               | N/A                                      |
+| cpm_prerequisites         | no       | false   | true, false               | Install CPM pre requisites               |
+| cpm_install               | no       | false   | true, false               | Install CPM                              |
+| cpm_postinstall           | no       | false   | true, false               | CPM port install role                    |
+| cpm_hardening             | no       | false   | true, false               | CPM hardening role                       |
+| cpm_registration          | no       | false   | true, false               | CPM Register with Vault                  |
+| cpm_upgrade               | no       | false   | true, false               | N/A                                      |
+| cpm_clean                 | no       | false   | true, false               | Clean host from installation             |
+
 
 Dependencies
 ------------
@@ -24,9 +38,15 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+    - hosts: localhost
+      connection: local
+      tasks:
+        - include_task:
+            name: main
+          vars:
+            cpm_install: true
+            cpm_hardening: true
+            cpm_clean: true
 
 License
 -------
