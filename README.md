@@ -10,6 +10,7 @@ This Playbook will install the CyberArk CPM software on a Windows 2016 server / 
 - Location of CPM CD image
 - 
 
+
 ## Role Variables
 
 A list of vaiables the playbook is using 
@@ -30,7 +31,8 @@ A list of vaiables the playbook is using
 
 A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
-##Example Playbook
+
+### Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
@@ -43,6 +45,7 @@ Including an example of how to use your role (for instance, with variables passe
             cpm_install: true
             cpm_hardening: true
             cpm_clean: true
+
 
 ## License
 
