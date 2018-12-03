@@ -14,7 +14,7 @@ Requirements
 Role Variables
 --------------
 
-A list of vaiables the playbook is using
+A list of vaiables the playbook is using 
 
 | Variable                  | Required | Default | Choices                   | Comments                                 |
 |---------------------------|----------|---------|---------------------------|------------------------------------------|
