@@ -29,6 +29,7 @@ A list of vaiables the playbook is using
 | cpm_hardening                    | no           | false                                                                          | CPM hardening role                       |
 | cpm_registration                 | no           | false                                                                          | CPM Register with Vault                  |
 | cpm_upgrade                      | no           | false                                                                          | N/A                                      |
+| cpm_clean                        | no           | false                                                                          | Clean server after deployment            |
 | cpm_uninstall                    | no           | false                                                                          | N/A                                      |
 
 **Installation Variables**
@@ -41,7 +42,6 @@ A list of vaiables the playbook is using
 | cpm_artifact_name                | no           | "cpm.zip"                                                                      | zip file name of cpm package             |
 | cpm_component_folder             | no           | "Central Policy Manager"                                                       | The name of CPM unzip folder             |
 | cpm_installation_drive           | no           | "C:"                                                                           | Base drive to install CPM                |
-| cpm_registrationtool_folder      | no           | "{{cpm_base_bin_drive}}\\Cyberark\\Components Registration"                    |             |
 | vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
 | dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
 | vault_port                       | no           | 1858                                                                           | vault port                               |
