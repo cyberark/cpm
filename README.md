@@ -1,7 +1,7 @@
 # cpm
 
 
-This Playbook will install the CyberArk CPM software on a Windows 2016 server / VM / instance via Ansible.
+This Ansible role install the CyberArk CPM software on a Windows 2016 server / VM / instance.
 Each task in the role is independent and can be run several times, if the step already occurred then the task will be skipped.
 
 
@@ -52,7 +52,7 @@ A list of vaiables the playbook is using
 
 ## Dependencies
 
-This is a sub role which should be called from parent role
+This role should be called from parent role
 
 
 ## Example Playbook
