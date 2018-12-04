@@ -50,9 +50,27 @@ A list of vaiables the playbook is using
 | pvwa_url                         | yes          | None                                                                           |  URL of registered PVWA                   |
 
 
-## Dependencies
+## Usage 
 
-This role should be called from parent role
+**cpm_install**
+
+This task will deploy the CPM to required folder and validate deployment succeed
+
+**cpm_hardening**
+
+This task will run the CPM hardening process
+
+**cpm_registration**
+
+This task perform registration with active Vault
+
+**cpm_validateparameters**
+
+This task validate which CPM steps already occurred on the server so the other tasks won't run again
+
+**cpm_clean**
+
+This task will clean inf files from installation, delete cpm installation logs from Temp folder & Delete cred files
 
 
 ## Example Playbook
