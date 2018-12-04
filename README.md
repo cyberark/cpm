@@ -54,7 +54,7 @@ A list of vaiables the playbook is using
 
 **cpm_install**
 
-This task will deploy the CPM to required folder and validate deployment succeed
+This task will deploy the CPM to required folder and validate deployment succeed.
 
 **cpm_hardening**
 
