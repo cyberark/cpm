@@ -18,7 +18,7 @@ Each task in the role is independent and can be run several times, in the step a
 
 A list of vaiables the playbook is using 
 
-### Ci-CD Flow Variables
+### CI/CD Flow Variables
                     
 | Variable                         | Required     | Default                                                                        | Comments                                 |
 |----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
@@ -32,6 +32,8 @@ A list of vaiables the playbook is using
 
 ### Installation Variables
 
+| Variable                         | Required     | Default                                                                        | Comments                                 |
+|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
 | cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
 | cpm_zip_file_path                | yes          | None                                                                           | Zip File path of CyberArk packages       |
 | cpm_extract_folder               | no           | "{{ cpm_base_bin_drive }}\\Cyberark\\packages"                                 | Zip File path of CyberArk packages       |
