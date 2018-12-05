@@ -1,19 +1,10 @@
 ---
-<<<<<<< HEAD
 
 - hosts: windows
   connection: local
   
   tasks:
   
-    - 
-
     - debug: msg="TEST"
     - include_role: 
         name: ../cpm
-=======
-- hosts: localhost
- 
-  roles:
-    - .
->>>>>>> develop

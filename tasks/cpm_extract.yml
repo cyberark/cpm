@@ -9,15 +9,14 @@
 
 - name: Copy CPM package from local source
   win_copy:
-    src: "{{ cpm_zip_file_path }}"
+    src: "{{ cpm_zip_file_path }}/{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
-    remote_src: yes
     
 - name: Unzip the cpm package
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
-    dest: "{{ cpm_extract_folder }}"
-    creates: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
+    dest: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
+    #creates: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
     
 - name: Copy registration tool
   win_copy:
