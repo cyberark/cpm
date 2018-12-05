@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 
 - hosts: windows
   connection: local
@@ -10,3 +11,9 @@
     - debug: msg="TEST"
     - include_role: 
         name: ../cpm
+=======
+- hosts: localhost
+ 
+  roles:
+    - .
+>>>>>>> develop
