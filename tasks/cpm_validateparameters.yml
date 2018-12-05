@@ -5,7 +5,7 @@
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
   
-- name: check if cpm was already installed
+- name: check if cpm scanner was already installed
   win_service: 
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
