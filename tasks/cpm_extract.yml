@@ -11,6 +11,7 @@
   win_copy:
     src: "{{ cpm_zip_file_path }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+    remote_src: yes
     
 - name: Unzip the cpm package
   win_unzip:
