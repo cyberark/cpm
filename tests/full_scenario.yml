@@ -1,0 +1,26 @@
+---
+
+- hosts: windows
+  connection: local
+  
+  vars_prompt:
+    - name: vault_password
+      prompt: "Please enter the Vault password"
+      private: yes
+  
+  tasks:
+    
+    - name: vault var
+      command: ansible-vault encrypt_string "{{ vault_password }}" 
+      register: aaa
+      delegate_to: localhost
+    
+    - set_fact: 
+        vault_pass: "{{ aaa.stdout }}"
+      
+    - include_role: 
+        name: ../cpm
+      vars:
+        - cpm_extract: false
+        - cpm_install: false
+        - cpm_registration: true

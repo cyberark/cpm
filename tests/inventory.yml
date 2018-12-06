@@ -12,7 +12,7 @@ localhost:
 
 windows:
   hosts:
-    63.32.47.110
+    34.244.229.190
   vars:
     any_errors_fatal: true
     ansible_python_interpreter: python

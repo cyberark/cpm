@@ -3,8 +3,14 @@
 - hosts: windows
   connection: local
   
-  tasks:
+  vars_prompt:
+    - name: vault_password
+      prompt: "Please enter the Vault password"
+      private: yes
+      encrypt: "sha512_crypt"
   
-    - debug: msg="TEST"
+  
+  tasks:
+    
     - include_role: 
         name: ../cpm
