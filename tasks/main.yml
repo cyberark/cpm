@@ -4,11 +4,11 @@
 # Validate Parameters
 - name: validate input parameters
   include_tasks: cpm_validateparameters.yml
-  when: cpm_extract == true
 
 - name: extract cpm package
   include_tasks: cpm_extract.yml
-  
+  when: cpm_extract
+
 - name: running cpm prerequisities
   include_tasks: cpm_prerequisites.yml
   when: cpm_prerequisites == true
