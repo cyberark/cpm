@@ -33,7 +33,7 @@ A list of vaiables the playbook is using
 | Variable                         | Required     | Default                                                                        | Comments                                 |
 |----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
 | cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
-| cpm_zip_file_path                | no           | "C:\\Cyberark\\packages"                                                       | Zip File path of CyberArk packages       |
+| cpm_zip_file_path                | yes          | None                                                                           | Zip File path of CyberArk packages       |
 | cpm_extract_folder               | no           | "{{cpm_base_bin_drive}}\\Cyberark\\packages"                                   | Path to extract the CyberArk packages    |
 | cpm_artifact_name                | no           | "cpm.zip"                                                                      | zip file name of cpm package             |
 | cpm_component_folder             | no           | "Central Policy Manager"                                                       | The name of CPM unzip folder             |
