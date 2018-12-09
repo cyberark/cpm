@@ -11,11 +11,6 @@ localhost:
 
 
 windows:
-<<<<<<< HEAD
-  hosts:
-    34.244.229.190
-=======
->>>>>>> cli-624
   vars:
     any_errors_fatal: true
     ansible_python_interpreter: python

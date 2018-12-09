@@ -1,6 +1,8 @@
 ---
 # tasks file for cpm installation
 
+# TODO: Need to change the installation xml to the required installation folder
+
 - name: run CPM installation
   win_shell: |
     Set-Location "{{ cpm_installationautomation_folder }}\Installation"

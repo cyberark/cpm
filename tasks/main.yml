@@ -40,6 +40,8 @@
   include_tasks: cpm_registration.yml
   when: 
     - cpm_registration
+    - cpm_exists
+    - cpm_scanner_exists
     - not cpm_registered
 
 - name: running cpm upgrade

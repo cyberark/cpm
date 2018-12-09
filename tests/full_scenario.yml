@@ -10,17 +10,10 @@
   
   tasks:
     
-    - name: vault var
-      command: ansible-vault encrypt_string "{{ vault_password }}" 
-      register: aaa
-      delegate_to: localhost
-    
-    - set_fact: 
-        vault_pass: "{{ aaa.stdout }}"
-      
     - include_role: 
         name: ../cpm
       vars:
-        - cpm_extract: false
-        - cpm_install: false
+        - cpm_extract: true
+        - cpm_install: true
         - cpm_registration: true
+        - cpm_zip_file_path: "/tmp/pas_packages/cpm.zip"
