@@ -27,7 +27,7 @@ cpm_component_folder: "Central Policy Manager"
 cpm_installationautomation_folder: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}\\InstallationAutomation"
 
 cpm_installation_drive: "C:"
-cpm_installation_path: "{{ cpm_installation_drive }}\\Program Files (x86)\\CyberArk\\Password Manager"
+cpm_installation_path: "{{ cpm_installation_drive }}\\Program Files (x86)\\CyberArk"
 cpm_registrationtool_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\Components Registration"
 
 vault_username: "Administrator"

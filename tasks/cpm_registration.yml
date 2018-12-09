@@ -2,7 +2,7 @@
 # tasks file for cpm registration
 
 - name: Execute cpm registration
-  win_command: "RegisterComponent.exe CPM /accepteula Yes /vaultip {{ vault_ip }} /vaultport {{ vault_port }} /vaultuser {{ vault_username }} /vaultpassword {{ vault_password }} /installdir {{ cpm_installation_path }}"
+  win_command: 'RegisterComponent.exe CPM /accepteula Yes /vaultip {{ vault_ip }} /vaultport {{ vault_port }} /vaultuser {{ vault_username }} /vaultpassword {{ vault_password }} /installdir "{{ cpm_installation_path }}"'
   args:
     chdir: "{{ cpm_registrationtool_folder }}"
 
