@@ -1,7 +1,22 @@
 ---
 # tasks file for cpm installation
 
-# TODO: Need to change the installation xml to the required installation folder
+- name: set installation folder on xml config file
+  win_shell: |
+    try
+    {
+        $filePath = "{{ cpm_installationautomation_folder }}\\Installation\\InstallationConfig.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step = $xml.SelectSingleNode("//Parameter[@Name = 'CPMInstallDirectory']")
+        $step.Value = "{{ cpm_installation_path }}"
+        $xml.Save($filePath)
+        exit 0
+    }
+    catch
+    {
+        Write-Output "Error occured during SetAtrributeInXML"
+        exit 1
+    }
 
 - name: run CPM installation
   win_shell: |
