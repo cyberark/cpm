@@ -19,7 +19,6 @@ windows:
     ansible_winrm_transport: basic
     ansible_port: 5986
     ansible_user: administrator
-    ansible_password: F3ralde9E123$
     ansible_winrm_read_timeout_sec: 800
     ansible_winrm_operation_timeout_sec: 600
 

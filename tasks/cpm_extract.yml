@@ -16,7 +16,6 @@
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
-    #creates: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
     
 - name: Copy registration tool
   win_copy:
