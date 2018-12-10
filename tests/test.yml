@@ -17,5 +17,8 @@
         - accept_eula: "YeS"
         - cpm_extract: true
         - cpm_install: true
+        - cpm_hardening: true
         - cpm_registration: true
         - cpm_zip_file_path: "/tmp/pas_packages/cpm.zip"
+        - vault_port: 1858
+        - vault_username: administrator

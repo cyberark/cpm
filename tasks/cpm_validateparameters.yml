@@ -5,11 +5,6 @@
     msg: "You must accept EULA to start the playbook"
   when: accept_eula|lower != "yes"
   
-- name: Validate CPM installation
-  win_shell: |
-    If ((Select-String -path "{{ cpm_installationautomation_folder }}\Installation\Script.log" -Pattern "Operation Succeeded") -eq $null) 
-    {exit 1} else {exit 0}
-  
 - name: check if cpm_zip_file_path undefined
   fail: 
     msg: "cpm_zip_file_path is undefined, failing..."
@@ -39,9 +34,13 @@
     cpm_exists: "{{ cpm_service_info.exists }}"
     cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
 
-# TODO: Check with CPM if hardening can be executed more than once
+- name: check if cpm is hardened
+  set_fact: 
+    cpm_hardened: true
+  when:
+    - cpm_exists and cpm_scanner_exists
+    - cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"
 
-# TODO: Validate if CPM is registered
 
 - name: check if cpm is registered
   set_fact:

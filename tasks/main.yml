@@ -34,6 +34,9 @@
 - name: running cpm hardening
   include_tasks: cpm_hardening.yml
   when: 
+    - not cpm_hardened
+    - cpm_exists
+    - cpm_scanner_exists
     - cpm_hardening 
     
 - name: running cpm registration
