@@ -3,7 +3,7 @@
 
 - name: Create user.ini file
   win_file:
-    path: "{{ cpm_installation_path }}\\Vault\\user.ini"
+    path: "{{ cpm_installation_path }}\\Password Manager\\Vault\\user.ini"
     state: touch
 
 - name: run CPM hardening

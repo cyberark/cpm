@@ -4,7 +4,7 @@
   fail:
     msg: "You must accept EULA to start the playbook"
   when: accept_eula|lower != "yes"
-  
+
 - name: check if cpm_zip_file_path undefined
   fail: 
     msg: "cpm_zip_file_path is undefined, failing..."
