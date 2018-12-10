@@ -8,6 +8,7 @@ cpm_hardening: false
 cpm_registration: false
 cpm_upgrade: false
 cpm_clean: false
+cpm_extract: false
 
 cpm_exists: false
 cpm_scanner_exists: false
@@ -19,7 +20,7 @@ cpm_scanner_service_name: "CyberArk Central Policy Manager Scanner"
 powershell_execution_command: "PowerShell -NoProfile -ExecutionPolicy Bypass"
 
 cpm_base_bin_drive: "C:"
-cpm_zip_file_path: "C:\\Cyberark\\packages"
+cpm_zip_file_path: ""
 cpm_extract_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\packages"
 cpm_artifact_name: "cpm.zip"
 cpm_component_folder: "Central Policy Manager"

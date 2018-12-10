@@ -1,5 +1,10 @@
 ---
-- hosts: localhost
- 
-  roles:
-    - .
+
+- hosts: windows
+  connection: local
+  
+  tasks:
+  
+    - debug: msg="TEST"
+    - include_role: 
+        name: ../cpm

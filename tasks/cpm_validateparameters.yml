@@ -1,11 +1,27 @@
 ---
 # tasks file for cpm_validateparameters
+
+- name: check if cpm_zip_file_path undefined
+  fail: 
+    msg: "cpm_zip_file_path is undefined, failing..."
+  when: cpm_zip_file_path is not defined
+
+- name: check if cpm_zip_file_path exists
+  stat:
+    path="{{ cpm_zip_file_path }}"
+  register: st
+  delegate_to: localhost
+  
+- fail: 
+    msg: "{{ cpm_zip_file_path }} not exists, failing..."
+  when: not st.stat.exists
+
 - name: check if cpm was already installed
   win_service: 
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
   
-- name: check if cpm was already installed
+- name: check if cpm scanner was already installed
   win_service: 
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info

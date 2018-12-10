@@ -16,11 +16,9 @@
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
-    creates: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
     
 - name: Copy registration tool
   win_copy:
     src: "{{ cpm_installationautomation_folder }}\\Registration\\RegistrationTool\\"
     dest: "{{ cpm_registrationtool_folder }}"
-    creates: "{{ cpm_registrationtool_folder }}"
     remote_src: yes
