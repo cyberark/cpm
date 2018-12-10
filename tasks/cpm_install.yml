@@ -5,6 +5,7 @@
   win_shell: |
     try
     {
+        ### This script set the install directory received from var in the install config file
         $filePath = "{{ cpm_installationautomation_folder }}\\Installation\\InstallationConfig.xml"
         $xml = [xml](Get-Content $filePath)
         $step = $xml.SelectSingleNode("//Parameter[@Name = 'CPMInstallDirectory']")
@@ -20,6 +21,7 @@
 
 - name: run CPM installation
   win_shell: |
+    ### This script install CPM, set the json result to local variable and read it 
     Set-Location "{{ cpm_installationautomation_folder }}\Installation"
     #$ErrorActionPreference = "SilentlyContinue"
     $Action = .\CPMInstallation.ps1
@@ -36,10 +38,15 @@
 - name: Validate CPM installation #TODO: check how to validate that the line exists
   win_lineinfile:
     path: '{{ cpm_installationautomation_folder }}\Installation\Script.log'
-    regexp: 'Operation Succeeded'
+    regexp: '^Operation Succeeded'
     state: present
     line: 'Operation Succeeded'
-    
+  check_mode: yes
+  register: line_search
+  
+- debug: msg="{{ line_search }}"
+- meta: end_play
+
 - name: check if cpm service created successfully
   win_service: 
     name: "{{ cpm_service_name }}"

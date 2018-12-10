@@ -2,15 +2,20 @@
 
 - hosts: windows
   connection: local
+  gather_facts: false
   
   vars_prompt:
     - name: vault_password
       prompt: "Please enter the Vault password"
       private: yes
-      encrypt: "sha512_crypt"
-  
-  
+      
   tasks:
-    
+  
     - include_role: 
         name: ../cpm
+      vars:
+        - accept_eula: "YeS"
+        - cpm_extract: true
+        - cpm_install: true
+        - cpm_registration: true
+        - cpm_zip_file_path: "/tmp/pas_packages/cpm.zip"

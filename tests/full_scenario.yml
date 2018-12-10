@@ -26,7 +26,7 @@
           <powershell>
             # Change Password
             $admin = [adsi]("WinNT://./administrator, user")
-            $admin.PSBase.Invoke("SetPassword", "F3ralde9E123$")
+            $admin.PSBase.Invoke("SetPassword", "F3ralde9E123")
             
             # Configure machine for ansible remoting
             $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
@@ -60,6 +60,7 @@
     - include_role: 
         name: ../cpm
       vars:
+        - accept_eula: "YeS"
         - cpm_extract: true
         - cpm_install: true
         - cpm_registration: true
