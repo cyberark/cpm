@@ -1,10 +1,10 @@
 ---
 # tasks file for cpm_validateparameters
 
-- name: check if cpm_zip_file_path not empty
+- name: check if cpm_zip_file_path undefined
   fail: 
-    msg: "cpm_zip_file_path is empty, failing..."
-  when: cpm_zip_file_path == ""
+    msg: "cpm_zip_file_path is undefined, failing..."
+  when: cpm_zip_file_path is not defined
 
 - name: check if cpm_zip_file_path exists
   stat:
