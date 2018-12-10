@@ -1,9 +1,27 @@
 ---
 # tasks file for cpm installation
 
+- name: set installation folder on xml config file
+  win_shell: |
+    try
+    {
+        $filePath = "{{ cpm_installationautomation_folder }}\\Installation\\InstallationConfig.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step = $xml.SelectSingleNode("//Parameter[@Name = 'CPMInstallDirectory']")
+        $step.Value = "{{ cpm_installation_path }}"
+        $xml.Save($filePath)
+        exit 0
+    }
+    catch
+    {
+        Write-Output "Error occured during SetAtrributeInXML"
+        exit 1
+    }
+
 - name: run CPM installation
   win_shell: |
-    $ErrorActionPreference = "SilentlyContinue"
+    Set-Location "{{ cpm_installationautomation_folder }}\Installation"
+    #$ErrorActionPreference = "SilentlyContinue"
     $Action = .\CPMInstallation.ps1
     $Action | Out-File -FilePath "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt"
     $Result = Get-Content "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt" | ConvertFrom-Json
@@ -21,7 +39,17 @@
     regexp: 'Operation Succeeded'
     state: present
     line: 'Operation Succeeded'
+    
+- name: check if cpm service created successfully
+  win_service: 
+    name: "{{ cpm_service_name }}"
+  register: cpm_service_info
+  
+- name: check if cpm scanner created successfully
+  win_service: 
+    name: "{{ cpm_scanner_service_name }}"
+  register: cpm_scanner_service_info
 
-- name: Set cpm_exists as true
-  set_fact:
-    cpm_exists: true
+- set_fact:
+    cpm_exists: "{{ cpm_service_info.exists }}"
+    cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"

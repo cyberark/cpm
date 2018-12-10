@@ -1,0 +1,66 @@
+---
+
+- hosts: localhost
+  connection: local
+  
+  tasks:
+  
+  
+    - name: spin up EC2 instance
+      ec2:
+        aws_access_key: "{{aws_access_key | default(omit) }}"
+        aws_secret_key: "{{aws_secret_key | default(omit)}}"
+        security_token: "{{aws_security_token | default(omit)}}"
+        key_name: "AutoAMI-KeyPair"
+        instance_type: "t2.micro"
+        image: "ami-01776b82784323238"
+        wait: yes
+        group_id: "sg-e0344f98"
+        count: 1
+        vpc_subnet_id: "subnet-dffe2084"
+        assign_public_ip: yes
+        region: eu-west-1
+        instance_tags: 
+          "{'Name':'[Orch]-CPM-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}', 'create_time': '{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}'}"
+        user_data: |
+          <powershell>
+            # Change Password
+            $admin = [adsi]("WinNT://./administrator, user")
+            $admin.PSBase.Invoke("SetPassword", "F3ralde9E123$")
+            
+            # Configure machine for ansible remoting
+            $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
+            $file = "$env:temp\ConfigureRemotingForAnsible.ps1"
+            (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
+            powershell.exe -ExecutionPolicy ByPass -File $file -EnableCredSSP
+            </powershell>
+      delegate_to: localhost
+      register: ec2_details
+      
+    - add_host:
+        hostname: "{{ec2_details.instances[0].public_ip}}"
+        groups: windows
+
+- hosts: windows
+  connection: local
+  gather_facts: false
+  
+  vars_prompt:
+    - name: vault_password
+      prompt: "Please enter the Vault password"
+      private: yes
+      
+  tasks:
+  
+    - name: wait for port 5986 on destination instance
+      wait_for_connection:
+        delay: 20
+        timeout: 600
+  
+    - include_role: 
+        name: ../cpm
+      vars:
+        - cpm_extract: true
+        - cpm_install: true
+        - cpm_registration: true
+        - cpm_zip_file_path: "/tmp/pas_packages/cpm.zip"

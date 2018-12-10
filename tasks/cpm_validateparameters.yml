@@ -33,3 +33,14 @@
 # TODO: Check with CPM if hardening can be executed more than once
 
 # TODO: Validate if CPM is registered
+
+- debug: msg="{{ cpm_service_info }}"
+- debug: msg="{{ cpm_scanner_service_info }}"
+
+- name: check if cpm is registered
+  set_fact:
+    cpm_registered: true
+  when: 
+    - cpm_exists and cpm_scanner_exists
+    - cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"  
+    
