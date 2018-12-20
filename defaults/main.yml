@@ -30,5 +30,6 @@ cpm_registrationtool_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\Components Reg
 
 cpm_install_log: "{{ cpm_installationautomation_folder }}\\cpm_installation_result.txt"
 cpm_hardening_log: "{{ cpm_installationautomation_folder }}\\cpm_hardening_result.txt"
+cpm_registration_log: "{{ cpm_registrationtool_folder }}\\Log\\RegisterComponent.log"
 
 accept_eula: "No"
