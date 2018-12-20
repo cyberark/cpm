@@ -9,6 +9,7 @@ Requirements
 - Administrator credentials (either Local or Domain)
 - Network connection to the vault and the repository server
 - Location of CPM CD image
+- PAS packages version 10.5 and above
 
 
 ## Role Variables
@@ -43,7 +44,8 @@ A list of vaiables the playbook is using
 | vault_port                       | no           | 1858                                                                           | vault port                               |
 | vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
 | vault_password                   | yes          | None                                                                           | vault password to perform registration   |
-| pvwa_url                         | yes          | None                                                                           |  URL of registered PVWA                   |
+| pvwa_url                         | yes          | None                                                                           | URL of registered PVWA                   |
+| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
 
 
 ## Usage 

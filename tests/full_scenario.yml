@@ -12,7 +12,7 @@
         aws_secret_key: "{{aws_secret_key | default(omit)}}"
         security_token: "{{aws_security_token | default(omit)}}"
         key_name: "AutoAMI-KeyPair"
-        instance_type: "t2.micro"
+        instance_type: "m4.large"
         image: "ami-01776b82784323238"
         wait: yes
         group_id: "sg-e0344f98"
@@ -26,7 +26,7 @@
           <powershell>
             # Change Password
             $admin = [adsi]("WinNT://./administrator, user")
-            $admin.PSBase.Invoke("SetPassword", "F3ralde9E123$")
+            $admin.PSBase.Invoke("SetPassword", "F3ralde9E123")
             
             # Configure machine for ansible remoting
             $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
@@ -60,7 +60,11 @@
     - include_role: 
         name: ../cpm
       vars:
+        - accept_eula: "YeS"
         - cpm_extract: true
         - cpm_install: true
+        - cpm_hardening: true
         - cpm_registration: true
         - cpm_zip_file_path: "/tmp/pas_packages/cpm.zip"
+        - vault_port: 1858
+        - vault_username: administrator

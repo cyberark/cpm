@@ -3,12 +3,11 @@
 
 - name: Create user.ini file
   win_file:
-    path: "{{ cpm_installation_path }}\\Vault\\user.ini"
+    path: "{{ cpm_installation_path }}\\Password Manager\\Vault\\user.ini"
     state: touch
 
 - name: run CPM hardening
   win_shell: |
-    $ErrorActionPreference = "SilentlyContinue"
     $Action = .\CPM_Hardening.ps1
     $Action | Out-File -FilePath "{{ cpm_installationautomation_folder }}\cpm_hardening_result.txt"
     $Result = Get-Content "{{ cpm_installationautomation_folder }}\cpm_hardening_result.txt" | ConvertFrom-Json
@@ -19,3 +18,18 @@
     }
   args:
     chdir: "{{ cpm_installationautomation_folder }}"
+    
+- name: validate hardening
+  win_service: 
+    name: "{{ cpm_service_name }}"
+  register: cpm_service_info
+  
+- name: check if cpm scanner service is running
+  win_service: 
+    name: "{{ cpm_scanner_service_name }}"
+  register: cpm_scanner_service_info
+  
+- set_fact:
+    cpm_hardened: true
+  when: cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"
+    
