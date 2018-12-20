@@ -18,24 +18,49 @@
         exit 1
     }
 
-- name: run CPM installation
-  win_shell: |
-    Set-Location "{{ cpm_installationautomation_folder }}\Installation"
-    #$ErrorActionPreference = "SilentlyContinue"
-    $Action = .\CPMInstallation.ps1
-    $Action | Out-File -FilePath "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt"
-    $Result = Get-Content "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt" | ConvertFrom-Json
-    if ($Result.isSucceeded -eq 2) {
-      exit 1
-    } else {
-      exit 0
-    }
-  args:
-    chdir: "{{ cpm_installationautomation_folder }}\\Installation"
+- name: Installation Block
+  block:
 
-- name: Validate CPM installation #TODO: check how to validate that the line exists
+    - name: run CPM installation
+      win_shell: |
+        Set-Location "{{ cpm_installationautomation_folder }}\Installation"
+        #$ErrorActionPreference = "SilentlyContinue"
+        $Action = .\CPMInstallation.ps1
+        $Action | Out-File -FilePath "{{ cpm_install_log }}"
+        $Result = Get-Content "{{ cpm_install_log }}" | ConvertFrom-Json
+        if ($Result.isSucceeded -eq 2) {
+          exit 1
+        } else {
+          exit 0
+        }
+      args:
+        chdir: "{{ cpm_installationautomation_folder }}\\Installation"
+
+  rescue:
+  
+    - name: Get log path for installation
+      win_shell: |
+        $Result = Get-Content "{{ cpm_install_log }}"
+        Write-Output $Result
+      register: log_result
+
+    - fetch:
+        src: '{{ log_result.stdout | from_json | json_query("logPath") }}'
+        dest: '{{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_install.log'
+        flat: yes
+
+    - fail:
+        msg: 'ERROR: Installation failed. For more info check {{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_install.log'
+
+- name: Get log path for installation
+  win_shell: |
+    $Result = Get-Content "{{ cpm_install_log }}"
+    Write-Output $Result
+  register: log_result
+
+- name: Validate CPM installation
   win_lineinfile:
-    path: '{{ cpm_installationautomation_folder }}\Installation\Script.log'
+    path: '{{ log_result.stdout | from_json | json_query("logPath") }}'
     regexp: 'Operation Succeeded'
     state: present
     line: 'Operation Succeeded'
