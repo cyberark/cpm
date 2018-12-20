@@ -17,10 +17,8 @@ cpm_registered: false
 
 cpm_service_name: "CyberArk Password Manager"
 cpm_scanner_service_name: "CyberArk Central Policy Manager Scanner"
-powershell_execution_command: "PowerShell -NoProfile -ExecutionPolicy Bypass"
 
 cpm_base_bin_drive: "C:"
-cpm_zip_file_path: ""
 cpm_extract_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\packages"
 cpm_artifact_name: "cpm.zip"
 cpm_component_folder: "Central Policy Manager"
@@ -32,3 +30,5 @@ cpm_registrationtool_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\Components Reg
 
 cpm_install_log: "{{ cpm_installationautomation_folder }}\\cpm_installation_result.txt"
 cpm_hardening_log: "{{ cpm_installationautomation_folder }}\\cpm_hardening_result.txt"
+
+accept_eula: "No"

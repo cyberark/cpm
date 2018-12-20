@@ -5,6 +5,7 @@
   win_shell: |
     try
     {
+        ### This script set the install directory received from var in the install config file
         $filePath = "{{ cpm_installationautomation_folder }}\\Installation\\InstallationConfig.xml"
         $xml = [xml](Get-Content $filePath)
         $step = $xml.SelectSingleNode("//Parameter[@Name = 'CPMInstallDirectory']")
@@ -28,7 +29,7 @@
         $Action = .\CPMInstallation.ps1
         $Action | Out-File -FilePath "{{ cpm_install_log }}"
         $Result = Get-Content "{{ cpm_install_log }}" | ConvertFrom-Json
-        if ($Result.isSucceeded -eq 2) {
+        if ($Result.isSucceeded -ne 0) {
           exit 1
         } else {
           exit 0
