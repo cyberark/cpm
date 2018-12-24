@@ -1,27 +1,81 @@
 ---
 # tasks file for cpm installation
 
-- name: run CPM installation
+- name: set installation folder on xml config file
   win_shell: |
-    $ErrorActionPreference = "SilentlyContinue"
-    $Action = .\CPMInstallation.ps1
-    $Action | Out-File -FilePath "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt"
-    $Result = Get-Content "{{ cpm_installationautomation_folder }}\cpm_installation_result.txt" | ConvertFrom-Json
-    if ($Result.isSucceeded -eq 2) {
-      exit 1
-    } else {
-      exit 0
+    try
+    {
+        ### This script set the install directory received from var in the install config file
+        $filePath = "{{ cpm_installationautomation_folder }}\\Installation\\InstallationConfig.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step = $xml.SelectSingleNode("//Parameter[@Name = 'CPMInstallDirectory']")
+        $step.Value = "{{ cpm_installation_path }}"
+        $xml.Save($filePath)
+        exit 0
     }
-  args:
-    chdir: "{{ cpm_installationautomation_folder }}\\Installation"
+    catch
+    {
+        Write-Output "Error occured during SetAtrributeInXML"
+        exit 1
+    }
+
+- name: Installation Block
+  block:
+
+    - name: run CPM installation
+      win_shell: |
+        Set-Location "{{ cpm_installationautomation_folder }}\Installation"
+        #$ErrorActionPreference = "SilentlyContinue"
+        $Action = .\CPMInstallation.ps1
+        $Action | Out-File -FilePath "{{ cpm_install_log }}"
+        $Result = Get-Content "{{ cpm_install_log }}" | ConvertFrom-Json
+        if ($Result.isSucceeded -ne 0) {
+          exit 1
+        } else {
+          exit 0
+        }
+      args:
+        chdir: "{{ cpm_installationautomation_folder }}\\Installation"
+
+  rescue:
+  
+    - name: Get log path for installation
+      win_shell: |
+        $Result = Get-Content "{{ cpm_install_log }}"
+        Write-Output $Result
+      register: log_result
+
+    - fetch:
+        src: '{{ log_result.stdout | from_json | json_query("logPath") }}'
+        dest: '{{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_install.log'
+        flat: yes
+
+    - fail:
+        msg: 'ERROR: Installation failed. For more info check {{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_install.log'
+
+- name: Get log path for installation
+  win_shell: |
+    $Result = Get-Content "{{ cpm_install_log }}"
+    Write-Output $Result
+  register: log_result
 
 - name: Validate CPM installation #TODO: check how to validate that the line exists
   win_lineinfile:
-    path: '{{ cpm_installationautomation_folder }}\Installation\Script.log'
+    path: '{{ log_result.stdout | from_json | json_query("logPath") }}'
     regexp: 'Operation Succeeded'
     state: present
     line: 'Operation Succeeded'
+    
+- name: check if cpm service created successfully
+  win_service: 
+    name: "{{ cpm_service_name }}"
+  register: cpm_service_info
+  
+- name: check if cpm scanner created successfully
+  win_service: 
+    name: "{{ cpm_scanner_service_name }}"
+  register: cpm_scanner_service_info
 
-- name: Set cpm_exists as true
-  set_fact:
-    cpm_exists: true
+- set_fact:
+    cpm_exists: "{{ cpm_service_info.exists }}"
+    cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
