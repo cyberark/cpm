@@ -1,5 +1,4 @@
-CPM
-=========
+# cpm
 
 This Playbook will install the CyberArk CPM software on a Windows 2016 server / VM / instance
 
@@ -8,27 +7,91 @@ Requirements
 
 - Windows 2016 must be installed on the server
 - Administrator credentials (either Local or Domain)
+- Network connection to the vault and the repository server
+- Location of CPM CD image
+- PAS packages version 10.5 and above
 
-Role Variables
---------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Role Variables
 
-Dependencies
-------------
+A list of vaiables the playbook is using 
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+**Flow Variables**
+                    
+| Variable                         | Required     | Default                                                                        | Comments                                 |
+|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
+| cpm_prerequisites                | no           | false                                                                          | Install CPM pre requisites               |
+| cpm_install                      | no           | false                                                                          | Install CPM                              |
+| cpm_postinstall                  | no           | false                                                                          | CPM port install role                    |
+| cpm_hardening                    | no           | false                                                                          | CPM hardening role                       |
+| cpm_registration                 | no           | false                                                                          | CPM Register with Vault                  |
+| cpm_upgrade                      | no           | false                                                                          | N/A                                      |
+| cpm_clean                        | no           | false                                                                          | Clean server after deployment            |
+| cpm_uninstall                    | no           | false                                                                          | N/A                                      |
 
-Example Playbook
-----------------
+**Deployment Variables**
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+| Variable                         | Required     | Default                                                                        | Comments                                 |
+|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
+| cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
+| cpm_zip_file_path                | yes          | None                                                                           | Zip File path of CyberArk packages       |
+| cpm_extract_folder               | no           | "{{cpm_base_bin_drive}}\\Cyberark\\packages"                                   | Path to extract the CyberArk packages    |
+| cpm_artifact_name                | no           | "cpm.zip"                                                                      | zip file name of cpm package             |
+| cpm_component_folder             | no           | "Central Policy Manager"                                                       | The name of CPM unzip folder             |
+| cpm_installation_drive           | no           | "C:"                                                                           | Base drive to install CPM                |
+| vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
+| dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
+| vault_port                       | no           | 1858                                                                           | vault port                               |
+| vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
+| vault_password                   | yes          | None                                                                           | vault password to perform registration   |
+| pvwa_url                         | yes          | None                                                                           | URL of registered PVWA                   |
+| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
-License
--------
+## Usage 
 
-Apache 2
+**cpm_install**
+
+This task will deploy the CPM to required folder and validate deployment succeed.
+
+**cpm_hardening**
+
+This task will run the CPM hardening process
+
+**cpm_registration**
+
+This task perform registration with active Vault
+
+**cpm_validateparameters**
+
+This task validate which CPM steps already occurred on the server so the other tasks won't run again
+
+**cpm_clean**
+
+This task will clean inf files from installation, delete cpm installation logs from Temp folder & Delete cred files
+
+
+## Example Playbook
+
+Example playbook to show how to call the CPM main playbook with several parameters:
+
+    ---
+    - hosts: localhost
+      connection: local
+      tasks:
+        - include_task:
+            name: main
+          vars:
+            cpm_install: true
+            cpm_hardening: true
+            cpm_clean: true
+
+## Running the  playbook:
+
+To run the above playbook:
+
+    ansible-playbook -i ../inventory.yml cpm-orchestrator.yml -e "cpm_install=true cpm_installation_drive='D:'"
+
+## License
+
+ **TBD**

@@ -2,8 +2,23 @@
 # tasks file for cpm_extract
 
 # TODO Extract and get exact paths
-- name: Extract CPM package
-  win_unzip:
+- name: Create folder 
+  win_file:
+    path: "{{ cpm_extract_folder }}"
+    state: directory
+
+- name: Copy CPM package from local source
+  win_copy:
     src: "{{ cpm_zip_file_path }}"
-    dest: C:\Users\Phil\OldLogs
-    creates: C:\Users\Phil\OldLogs
+    dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+    
+- name: Unzip the cpm package
+  win_unzip:
+    src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+    dest: "{{ cpm_extract_folder }}"
+    
+- name: Copy registration tool
+  win_copy:
+    src: "{{ cpm_installationautomation_folder }}\\Registration\\RegistrationTool\\"
+    dest: "{{ cpm_registrationtool_folder }}"
+    remote_src: yes
