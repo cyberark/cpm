@@ -94,4 +94,4 @@ To run the above playbook:
 
 ## License
 
- Apache2
+ Apache 2
