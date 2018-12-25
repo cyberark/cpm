@@ -94,4 +94,4 @@ To run the above playbook:
 
 ## License
 
- **TBD**
+Apache 2
