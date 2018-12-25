@@ -8,8 +8,13 @@
       win_command: 'RegisterComponent.exe CPM /accepteula Yes /vaultip {{ vault_ip }} /vaultport {{ vault_port }} /vaultuser {{ vault_username }} /vaultpassword {{ vault_password }} /installdir "{{ cpm_installation_path }}"'
       args:
         chdir: "{{ cpm_registrationtool_folder }}"
+      when: dr_vault_ip is not defined
     
-    # TODO: Validate CPM registration
+    - name: Execute cpm registration
+      win_command: 'RegisterComponent.exe CPM /accepteula Yes /vaultip {{ vault_ip }},{{ dr_vault_ip }} /vaultport {{ vault_port }} /vaultuser {{ vault_username }} /vaultpassword {{ vault_password }} /installdir "{{ cpm_installation_path }}"'
+      args:
+        chdir: "{{ cpm_registrationtool_folder }}"
+      when: dr_vault_ip is defined        
     
     - name: start cpm service & set to auto
       win_service:
