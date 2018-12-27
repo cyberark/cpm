@@ -50,9 +50,9 @@ None
 
 ## Usage
 The role consists of a number of different tasks which can be enabled or disabled for the particular
-run
+run.
 
-**cpm_install**
+`cpm_install`
 
 This task will deploy the CPM to required folder and validate successful deployment.
 
