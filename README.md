@@ -1,10 +1,10 @@
-# cpm
+# CPM Ansible Role
 
 This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/privileged-account-security-solution/core-privileged-account-security/) software on a Windows 2016 server / VM / instance.
 
 ## Requirements
 ------------
-- The host running the paybook must have network connectivity to the remote hosts in the inventory
+- The host running the playbook must have network connectivity to the remote hosts in the inventory
 - Windows 2016 must be installed on the remote host
 - Administrator credentials for access to the remote host (either Local or Domain)
 - Network connectivity to the CyberArk vault and the repository server
