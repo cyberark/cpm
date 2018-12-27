@@ -56,19 +56,19 @@ run
 
 This task will deploy the CPM to required folder and validate successful deployment.
 
-**cpm_hardening**
+`cpm_hardening`
 
 This task will run the CPM hardening process.
 
-**cpm_registration**
+`cpm_registration`
 
 This task will perform registration with active Vault.
 
-**cpm_validateparameters**
+`cpm_validateparameters`
 
 This task will validate which CPM steps have already occurred on the server to prevent repetition.
 
-**cpm_clean**
+`cpm_clean`
 
 This task will clean the configuration (inf) files from the installation, delete the
 CPM installation logs from the Temp folder and delete the cred files.
