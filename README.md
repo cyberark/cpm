@@ -1,6 +1,6 @@
 # cpm
 
-This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/privileged-account-security-solution/core-privileged-account-security/) software on a Windows 2016 server / VM / instance
+This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/privileged-account-security-solution/core-privileged-account-security/) software on a Windows 2016 server / VM / instance.
 
 ## Requirements
 ------------
@@ -12,38 +12,38 @@ This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/
 
 ## Role Variables
 
-These are the variables used in this playbook
+These are the variables used in this playbook:
 
 ### Flow Variables
 
-| Variable                         | Required     | Default                                                                        | Comments                                 |
-|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
-| cpm_prerequisites                | no           | false                                                                          | Install CPM pre requisites               |
-| cpm_install                      | no           | false                                                                          | Install CPM                              |
-| cpm_postinstall                  | no           | false                                                                          | CPM port install role                    |
-| cpm_hardening                    | no           | false                                                                          | CPM hardening role                       |
-| cpm_registration                 | no           | false                                                                          | CPM Register with Vault                  |
-| cpm_upgrade                      | no           | false                                                                          | N/A                                      |
-| cpm_clean                        | no           | false                                                                          | Clean server after deployment            |
-| cpm_uninstall                    | no           | false                                                                          | N/A                                      |
+| Variable                         | Required     | Default                                   | Comments                                 |
+|----------------------------------|--------------|-------------------------------------------|------------------------------------------|
+| cpm_prerequisites                | no           | false                                     | Install CPM pre requisites               |
+| cpm_install                      | no           | false                                     | Install CPM                              |
+| cpm_postinstall                  | no           | false                                     | CPM port install role                    |
+| cpm_hardening                    | no           | false                                     | CPM hardening role                       |
+| cpm_registration                 | no           | false                                     | CPM Register with Vault                  |
+| cpm_upgrade                      | no           | false                                     | N/A                                      |
+| cpm_clean                        | no           | false                                     | Clean server after deployment            |
+| cpm_uninstall                    | no           | false                                     | N/A                                      |
 
 ### Deployment Variables
 
-| Variable                         | Required     | Default                                                                        | Comments                                 |
-|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
-| vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
-| vault_password                   | yes          | None                                                                           | vault password to perform registration   |
-| pvwa_url                         | yes          | None                                                                           | URL of registered PVWA                   |
-| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
-| cpm_zip_file_path                | yes          | None                                                                           | Zip File path of CyberArk packages       |
-| vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
-| vault_port                       | no           | 1858                                                                           | vault port                               |
-| dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
-| cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
-| cpm_extract_folder               | no           | "{{cpm_base_bin_drive}}\\Cyberark\\packages"                                   | Path to extract the CyberArk packages    |
-| cpm_artifact_name                | no           | "cpm.zip"                                                                      | zip file name of cpm package             |
-| cpm_component_folder             | no           | "Central Policy Manager"                                                       | The name of CPM unzip folder             |
-| cpm_installation_drive           | no           | "C:"                                                                           | Base drive to install CPM                |
+| Variable                         | Required     | Default                                              | Comments                                 |
+|----------------------------------|--------------|------------------------------------------------------|------------------------------------------|
+| vault_ip                         | yes          | None                                                 | Vault IP to perform registration         |
+| vault_password                   | yes          | None                                                 | Vault password to perform registration   |
+| pvwa_url                         | yes          | None                                                 | URL of registered PVWA                   |
+| accept_eula                      | yes          | "No"                                                 | Accepting EULA condition                 |
+| cpm_zip_file_path                | yes          | None                                                 | Zip File path of CyberArk packages       |
+| vault_username                   | no           | "administrator"                                      | Vault username to perform registration   |
+| vault_port                       | no           | 1858                                                 | Vault port                               |
+| dr_vault_ip                      | no           | None                                                 | Vault DR IP address to perform registration      |
+| cpm_base_bin_drive               | no           | "C:"                                                 | Base path to extract CyberArk packages   |
+| cpm_extract_folder               | no           | "{{cpm_base_bin_drive}}\\Cyberark\\packages"         | Path to extract the CyberArk packages    |
+| cpm_artifact_name                | no           | "cpm.zip"                                            | Zip file name of cpm package             |
+| cpm_component_folder             | no           | "Central Policy Manager"                             | The name of CPM unzip folder             |
+| cpm_installation_drive           | no           | "C:"                                                 | Base drive to install CPM                |
 
 ## Dependencies
 None
