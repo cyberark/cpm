@@ -31,20 +31,19 @@ These are the variables used in this playbook
 
 | Variable                         | Required     | Default                                                                        | Comments                                 |
 |----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
-| cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
+| vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
+| vault_password                   | yes          | None                                                                           | vault password to perform registration   |
+| pvwa_url                         | yes          | None                                                                           | URL of registered PVWA                   |
+| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
 | cpm_zip_file_path                | yes          | None                                                                           | Zip File path of CyberArk packages       |
+| vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
+| vault_port                       | no           | 1858                                                                           | vault port                               |
+| dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
+| cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
 | cpm_extract_folder               | no           | "{{cpm_base_bin_drive}}\\Cyberark\\packages"                                   | Path to extract the CyberArk packages    |
 | cpm_artifact_name                | no           | "cpm.zip"                                                                      | zip file name of cpm package             |
 | cpm_component_folder             | no           | "Central Policy Manager"                                                       | The name of CPM unzip folder             |
 | cpm_installation_drive           | no           | "C:"                                                                           | Base drive to install CPM                |
-| vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
-| dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
-| vault_port                       | no           | 1858                                                                           | vault port                               |
-| vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
-| vault_password                   | yes          | None                                                                           | vault password to perform registration   |
-| pvwa_url                         | yes          | None                                                                           | URL of registered PVWA                   |
-| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
-
 
 ## Dependencies
 None
@@ -84,7 +83,6 @@ to call the CPM main playbook with several parameters:
 - include_role:
     name: cpm
   vars:
-    - cpm_extract: true
     - cpm_prerequisites: true
     - cpm_install: true
     - cpm_postinstall: true
