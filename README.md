@@ -76,7 +76,7 @@ CPM installation logs from the Temp folder and delete the cred files.
 
 ## Example Playbook
 
-Below is an example of how you can incorporate this role into a an Ansible playbook
+Below is an example of how you can incorporate this role into an Ansible playbook
 to call the CPM main playbook with several parameters:
 
 ```
@@ -95,11 +95,8 @@ to call the CPM main playbook with several parameters:
 
 ## Running the  playbook:
 
-To run the above playbook:
-
-    ```
-    ansible-playbook -i ../inventory.yml cpm-orchestrator.yml -e "cpm_install=true cpm_installation_drive='D:'"
-    ```
+For an example of how to incorporate this into a complete playbook please see the
+example playbook available [here](https://github.com/cyberark/pas-orchestrator).
 
 ## License
 
