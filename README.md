@@ -93,7 +93,7 @@ to call the CPM main playbook with several parameters:
 
 ## Running the  playbook:
 
-For an example of how to incorporate this into a complete playbook, please see the
+For an example of how to incorporate this role into a complete playbook, please see the
 example playbook available [here](https://github.com/cyberark/pas-orchestrator).
 
 ## License
