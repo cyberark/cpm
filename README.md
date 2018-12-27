@@ -76,7 +76,7 @@ CPM installation logs from the Temp folder and delete the cred files.
 ## Example Playbook
 
 Below is an example of how you can incorporate this role into an Ansible playbook
-to call the CPM main playbook with several parameters:
+to call the CPM role with several parameters:
 
 ```
 ---
