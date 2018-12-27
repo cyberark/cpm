@@ -32,5 +32,6 @@ cpm_install_log: "{{ cpm_installationautomation_folder }}\\cpm_installation_resu
 cpm_hardening_log: "{{ cpm_installationautomation_folder }}\\cpm_hardening_result.txt"
 cpm_registration_log: "{{ cpm_registrationtool_folder }}\\Log\\RegisterComponent.log"
 
+vault_username: "administrator"
 accept_eula: "No"
 vault_port: 1858
