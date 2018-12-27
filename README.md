@@ -98,4 +98,4 @@ example playbook available [here](https://github.com/cyberark/pas-orchestrator).
 
 ## License
 
-Apache 2
+[Apache 2](./LICENSE)
