@@ -15,7 +15,7 @@
         $Action = .\CPM_Hardening.ps1
         $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
         $Result = Get-Content "{{ cpm_hardening_log }}" | ConvertFrom-Json
-        if ($Result.isSucceeded -ne 0) {
+        if ($Result.isSucceeded -eq 2) {
             exit 1
         } else {
             exit 0
@@ -39,14 +39,16 @@
     - fail:
         msg: 'ERROR: Hardening failed. For more info check {{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_hardening.log'
 
-- name: validate hardening
+- name: validate cpm hardening and stop service
   win_service: 
     name: "{{ cpm_service_name }}"
+    state: stopped
   register: cpm_service_info
   
-- name: check if cpm scanner service is running
+- name: validate cpm scanner hardening and stop service
   win_service: 
     name: "{{ cpm_scanner_service_name }}"
+    state: stopped
   register: cpm_scanner_service_info
   
 - set_fact:

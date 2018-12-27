@@ -33,3 +33,4 @@ cpm_hardening_log: "{{ cpm_installationautomation_folder }}\\cpm_hardening_resul
 cpm_registration_log: "{{ cpm_registrationtool_folder }}\\Log\\RegisterComponent.log"
 
 accept_eula: "No"
+vault_port: 1858
