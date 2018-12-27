@@ -17,7 +17,7 @@ These are the variables used in this playbook:
 ### Flow Variables
 
 Variable                         | Required     | Default                                   | Comments
----------------------------------|--------------|-------------------------------------------|---------
+:--------------------------------|:-------------|:------------------------------------------|:---------
 cpm_prerequisites                | no           | false                                     | Install CPM pre requisites
 cpm_install                      | no           | false                                     | Install CPM
 cpm_postinstall                  | no           | false                                     | CPM port install role
@@ -30,7 +30,7 @@ cpm_uninstall                    | no           | false                         
 ### Deployment Variables
 
 Variable                         | Required     | Default                                              | Comments         
----------------------------------|--------------|------------------------------------------------------|----------
+:--------------------------------|:-------------|:-----------------------------------------------------|:---------
 vault_ip                         | yes          | None                                                 | Vault IP to perform registration   
 vault_password                   | yes          | None                                                 | Vault password to perform registration
 pvwa_url                         | yes          | None                                                 | URL of registered PVWA                 
