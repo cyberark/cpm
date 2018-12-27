@@ -94,7 +94,7 @@ to call the CPM role with several parameters:
 ## Running the  playbook:
 
 For an example of how to incorporate this role into a complete playbook, please see the
-[pas-orchestrator](https://github.com/cyberark/pas-orchestrator) example.
+**[pas-orchestrator](https://github.com/cyberark/pas-orchestrator)** example.
 
 ## License
 
