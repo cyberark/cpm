@@ -6,7 +6,7 @@
   when: accept_eula|lower != "yes"
 
 - name: check if cpm_zip_file_path undefined
-  fail: 
+  fail:
     msg: "cpm_zip_file_path is undefined, failing..."
   when: cpm_zip_file_path is not defined
 
@@ -15,18 +15,23 @@
     path="{{ cpm_zip_file_path }}"
   register: st
   delegate_to: localhost
-  
-- fail: 
+
+- name: check if package is valid using checksum
+  fail:
+    msg: "Checksum does not match, please validate your package."
+  when: st.stat.checksum != "{{ cpm_sha1_checksum }}"
+
+- fail:
     msg: "{{ cpm_zip_file_path }} not exists, failing..."
   when: not st.stat.exists
 
 - name: check if cpm was already installed
-  win_service: 
+  win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
-  
+
 - name: check if cpm scanner was already installed
-  win_service: 
+  win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
 
@@ -35,7 +40,7 @@
     cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
 
 - name: check if cpm is hardened
-  set_fact: 
+  set_fact:
     cpm_hardened: true
   when:
     - cpm_exists and cpm_scanner_exists
@@ -45,7 +50,6 @@
 - name: check if cpm is registered
   set_fact:
     cpm_registered: true
-  when: 
+  when:
     - cpm_exists and cpm_scanner_exists
-    - cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"  
-    
+    - cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"
