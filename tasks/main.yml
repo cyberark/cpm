@@ -7,41 +7,41 @@
 
 - name: extract cpm package
   include_tasks: cpm_extract.yml
-  when: 
-    - cpm_extract 
-  
+  when:
+    - cpm_extract
+
 - name: running cpm prerequisities
   include_tasks: cpm_prerequisites.yml
-  when: 
+  when:
     -cpm_prerequisites
 
 - name: running cpm uninstall
   include_tasks: cpm_uninstall.yml
-  when: 
+  when:
     - cpm_uninstall
 
 - name: running cpm install
   include_tasks: cpm_install.yml
-  when: 
+  when:
     - cpm_install
     - not cpm_exists
 
 - name: running cpm postinstall
   include_tasks: cpm_postinstall.yml
-  when: 
+  when:
     - cpm_postinstall
-    
+
 - name: running cpm hardening
   include_tasks: cpm_hardening.yml
-  when: 
+  when:
     - not cpm_hardened
     - cpm_exists
     - cpm_scanner_exists
-    - cpm_hardening 
-    
+    - cpm_hardening
+
 - name: running cpm registration
   include_tasks: cpm_registration.yml
-  when: 
+  when:
     - cpm_registration
     - cpm_exists
     - cpm_scanner_exists
@@ -49,10 +49,10 @@
 
 - name: running cpm upgrade
   include_tasks: cpm_upgrade.yml
-  when: 
+  when:
     - cpm_upgrade
-  
+
 - name: running cpm clean
   include_tasks: cpm_clean.yml
-  when: 
+  when:
     - cpm_clean

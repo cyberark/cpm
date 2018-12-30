@@ -38,7 +38,6 @@
         chdir: "{{ cpm_installationautomation_folder }}\\Installation"
 
   rescue:
-  
     - name: Get log path for installation
       win_shell: |
         $Result = Get-Content "{{ cpm_install_log }}"
@@ -59,20 +58,20 @@
     Write-Output $Result
   register: log_result
 
-- name: Validate CPM installation #TODO: check how to validate that the line exists
+- name: Validate CPM installation
   win_lineinfile:
     path: '{{ log_result.stdout | from_json | json_query("logPath") }}'
     regexp: 'Operation Succeeded'
     state: present
     line: 'Operation Succeeded'
-    
+
 - name: check if cpm service created successfully
-  win_service: 
+  win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
-  
+
 - name: check if cpm scanner created successfully
-  win_service: 
+  win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
 

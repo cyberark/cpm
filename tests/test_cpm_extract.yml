@@ -1,11 +1,11 @@
 ---
 
 - hosts: windows
-  #connection: local
-  
+  # connection: local
+
   tasks:
-  
-    - include_role: 
+
+    - include_role:
         name: ../cpm
-      vars: 
+      vars:
         cpm_zip_file_path: "/tmp/pas_packages/cpm.zip"
