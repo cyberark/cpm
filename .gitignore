@@ -1,3 +1,2 @@
 # ignore *.retry files
 *.retry
-/tests
