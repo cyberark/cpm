@@ -22,18 +22,18 @@ cpm_install                      | no           | false                         
 cpm_postinstall                  | no           | false                                     | CPM port install role
 cpm_hardening                    | no           | false                                     | CPM hardening role
 cpm_registration                 | no           | false                                     | CPM Register with Vault
-cpm_upgrade                      | no           | false                                     | N/A            
+cpm_upgrade                      | no           | false                                     | N/A
 cpm_clean                        | no           | false                                     | Clean server after deployment
-cpm_uninstall                    | no           | false                                     | N/A     
+cpm_uninstall                    | no           | false                                     | N/A
 
 ### Deployment Variables
-Variable                         | Required     | Default                                              | Comments         
+Variable                         | Required     | Default                                              | Comments
 :--------------------------------|:-------------|:-----------------------------------------------------|:---------
-vault_ip                         | yes          | None                                                 | Vault IP to perform registration   
+vault_ip                         | yes          | None                                                 | Vault IP to perform registration
 vault_password                   | yes          | None                                                 | Vault password to perform registration
-pvwa_url                         | yes          | None                                                 | URL of registered PVWA                 
-accept_eula                      | yes          | **No**                                               | Accepting EULA condition       
-cpm_zip_file_path                | yes          | None                                                 | Zip File path of CyberArk packages   
+pvwa_url                         | yes          | None                                                 | URL of registered PVWA
+eula                             | yes          | **Decline**                                          | Accepting EULA condition (Accept/Decline)
+cpm_zip_file_path                | yes          | None                                                 | Zip File path of CyberArk packages
 vault_username                   | no           | **administrator**                                    | Vault username to perform registration
 vault_port                       | no           | **1858**                                             | Vault port
 dr_vault_ip                      | no           | None                                                 | Vault DR IP address to perform registration
