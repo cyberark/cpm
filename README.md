@@ -10,6 +10,7 @@ This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/
 - CPM package version 10.6 and above, including the location of the CD images
 - pywinrm is installed on the workstation running the playbook
 
+
 ## Role Variables
 These are the variables used in this playbook:
 
