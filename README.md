@@ -1,21 +1,19 @@
-# cpm
-
+# CPM Ansible Role
 This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/privileged-account-security-solution/core-privileged-account-security/) software on a Windows 2016 server / VM / instance.
 
 ## Requirements
 ------------
-- The host running the paybook must have network connectivity to the remote hosts in the inventory
+- The host running the playbook must have network connectivity to the remote hosts in the inventory
 - Windows 2016 must be installed on the remote host
 - Administrator credentials for access to the remote host (either Local or Domain)
 - Network connectivity to the CyberArk vault and the repository server
 - CPM package version 10.6 and above, including the location of the CD images
+- pywinrm is installed on the workstation running the playbook
 
 ## Role Variables
-
 These are the variables used in this playbook:
 
 ### Flow Variables
-
 Variable                         | Required     | Default                                   | Comments
 :--------------------------------|:-------------|:------------------------------------------|:---------
 cpm_prerequisites                | no           | false                                     | Install CPM pre requisites
@@ -28,7 +26,6 @@ cpm_clean                        | no           | false                         
 cpm_uninstall                    | no           | false                                     | N/A     
 
 ### Deployment Variables
-
 Variable                         | Required     | Default                                              | Comments         
 :--------------------------------|:-------------|:-----------------------------------------------------|:---------
 vault_ip                         | yes          | None                                                 | Vault IP to perform registration   
@@ -74,7 +71,6 @@ This task will clean the configuration (inf) files from the installation, delete
 CPM installation logs from the Temp folder and delete the cred files.
 
 ## Example Playbook
-
 Below is an example of how you can incorporate this role into an Ansible playbook
 to call the CPM role with several parameters:
 
@@ -88,14 +84,11 @@ to call the CPM role with several parameters:
     - cpm_postinstall: true
     - cpm_hardening: true
     - cpm_registration: true
-    - ansible_password: "{{ ansible_password }}"
 ```
 
 ## Running the  playbook:
-
 For an example of how to incorporate this role into a complete playbook, please see the
 **[pas-orchestrator](https://github.com/cyberark/pas-orchestrator)** example.
 
 ## License
-
 [Apache 2](LICENSE)
