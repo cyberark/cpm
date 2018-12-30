@@ -18,7 +18,7 @@ pipeline {
     stage('ansible-lint validation') {
       steps {
         script {
-          sh(script: ".testenv/bin/ansible-lint tasks/main.yml", returnStdout: true)
+          sh(script: ".testenv/bin/ansible-lint tasks/* defaults/* meta/*", returnStdout: true)
         }
       }
     }
