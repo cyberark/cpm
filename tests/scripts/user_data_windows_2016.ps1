@@ -1,7 +1,4 @@
 <powershell>
-# Change Password
-$admin = [adsi]("WinNT://./administrator, user")
-$admin.PSBase.Invoke("SetPassword", "Kitchen123$")
 
 # Configure machine for ansible remoting
 $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"

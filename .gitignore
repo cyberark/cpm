@@ -1,3 +1,4 @@
 # ignore *.retry files
 *.retry
+.kitchen.local.yml
 .kitchen/
