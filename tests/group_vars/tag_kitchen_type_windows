@@ -1,0 +1,9 @@
+ansible_winrm_server_cert_validation: ignore
+ansible_connection: winrm
+ansible_winrm_transport: basic
+ansible_port: 5986
+ansible_become_password: "Kitchen123$"
+ansible_user: "Administrator"
+ansible_password: "Kitchen123$"
+ansible_winrm_read_timeout_sec: 800
+ansible_winrm_operation_timeout_sec: 600

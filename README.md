@@ -32,7 +32,7 @@ Variable                         | Required     | Default                       
 vault_ip                         | yes          | None                                                 | Vault IP to perform registration
 vault_password                   | yes          | None                                                 | Vault password to perform registration
 pvwa_url                         | yes          | None                                                 | URL of registered PVWA
-eula                             | yes          | **Decline**                                          | Accepting EULA condition (Accept/Decline)
+accept_eula                      | yes          | **"No"**                                             | Accepting EULA condition 
 cpm_zip_file_path                | yes          | None                                                 | Zip File path of CyberArk packages
 vault_username                   | no           | **administrator**                                    | Vault username to perform registration
 vault_port                       | no           | **1858**                                             | Vault port

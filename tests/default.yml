@@ -1,0 +1,23 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: download package from s3
+      aws_s3:
+        bucket: cloud-initiatives-pipeline-bucket
+        object: "Packages/v10.6/Central Policy Manager-Rls-v10.6.zip"
+        dest: "/tmp/cpm.zip"
+        mode: get
+
+- hosts: tag_kitchen_type_windows
+  gather_facts: no
+  tasks:      
+    - include_role:
+        name: cpm
+      vars:
+        - cpm_extract: true
+        - cpm_install: true
+        - cpm_hardening: true
+        - cpm_registration: false
+        - cpm_zip_file_path: "/tmp/cpm.zip"
+        - accept_eula: yes
+        

@@ -1,0 +1,501 @@
+all:
+  children:
+    ami_01dbaf1c50a36891d:
+      hosts:
+        34.245.105.204:
+          ansible_host: 34.245.105.204
+          ec2__in_monitoring_element: false
+          ec2_account_id: '138339392836'
+          ec2_ami_launch_index: '0'
+          ec2_architecture: x86_64
+          ec2_block_devices:
+            sda1: vol-0c6aba1c1ec17b893
+          ec2_client_token: ''
+          ec2_dns_name: ''
+          ec2_ebs_optimized: false
+          ec2_eventsSet: ''
+          ec2_group_name: ''
+          ec2_hypervisor: xen
+          ec2_id: i-0694881e6fbf145c6
+          ec2_image_id: ami-01dbaf1c50a36891d
+          ec2_instance_profile: ''
+          ec2_instance_type: t2.xlarge
+          ec2_ip_address: 34.245.105.204
+          ec2_item: ''
+          ec2_kernel: ''
+          ec2_key_name: Hackathon-KP
+          ec2_launch_time: '2018-11-15T19:12:35.000Z'
+          ec2_monitored: false
+          ec2_monitoring: ''
+          ec2_monitoring_state: disabled
+          ec2_persistent: false
+          ec2_placement: eu-west-1b
+          ec2_platform: windows
+          ec2_previous_state: ''
+          ec2_previous_state_code: 0
+          ec2_private_dns_name: ip-40-10-0-14.eu-west-1.compute.internal
+          ec2_private_ip_address: 40.10.0.14
+          ec2_public_dns_name: ''
+          ec2_ramdisk: ''
+          ec2_reason: ''
+          ec2_region: eu-west-1
+          ec2_requester_id: ''
+          ec2_root_device_name: /dev/sda1
+          ec2_root_device_type: ebs
+          ec2_security_group_ids: sg-0a471381b7cc8519d
+          ec2_security_group_names: Web-SG
+          ec2_sourceDestCheck: 'true'
+          ec2_spot_instance_request_id: ''
+          ec2_state: running
+          ec2_state_code: 16
+          ec2_subnet_id: subnet-0bebfe8532e5e7eef
+          ec2_tag_Name: '[Avishay] Windows Webserver'
+          ec2_tag_Role: retain
+          ec2_virtualization_type: hvm
+          ec2_vpc_id: vpc-00d3319a06d4a1dc6
+    ami_027a1145f8fb3078f:
+      hosts:
+        34.248.22.210:
+          ansible_host: 34.248.22.210
+          ec2__in_monitoring_element: false
+          ec2_account_id: '138339392836'
+          ec2_ami_launch_index: '0'
+          ec2_architecture: x86_64
+          ec2_block_devices:
+            sda1: vol-0ff97fd51075d5d04
+          ec2_client_token: ''
+          ec2_dns_name: ec2-34-248-22-210.eu-west-1.compute.amazonaws.com
+          ec2_ebs_optimized: false
+          ec2_eventsSet: ''
+          ec2_group_name: ''
+          ec2_hypervisor: xen
+          ec2_id: i-0c02adfc06aee5540
+          ec2_image_id: ami-027a1145f8fb3078f
+          ec2_instance_profile: ''
+          ec2_instance_type: t2.micro
+          ec2_ip_address: 34.248.22.210
+          ec2_item: ''
+          ec2_kernel: ''
+          ec2_key_name: Jenkins-KP
+          ec2_launch_time: '2018-11-19T07:49:22.000Z'
+          ec2_monitored: false
+          ec2_monitoring: ''
+          ec2_monitoring_state: disabled
+          ec2_persistent: false
+          ec2_placement: eu-west-1a
+          ec2_platform: windows
+          ec2_previous_state: ''
+          ec2_previous_state_code: 0
+          ec2_private_dns_name: ip-10-2-0-204.eu-west-1.compute.internal
+          ec2_private_ip_address: 10.2.0.204
+          ec2_public_dns_name: ec2-34-248-22-210.eu-west-1.compute.amazonaws.com
+          ec2_ramdisk: ''
+          ec2_reason: ''
+          ec2_region: eu-west-1
+          ec2_requester_id: ''
+          ec2_root_device_name: /dev/sda1
+          ec2_root_device_type: ebs
+          ec2_security_group_ids: sg-e0344f98
+          ec2_security_group_names: default
+          ec2_sourceDestCheck: 'true'
+          ec2_spot_instance_request_id: ''
+          ec2_state: running
+          ec2_state_code: 16
+          ec2_state_reason: ''
+          ec2_subnet_id: subnet-dffe2084
+          ec2_tag_Name: EPV-HAIM-CASE
+          ec2_tag_Requester: Haim Cohen EPV
+          ec2_tag_Role: retain
+          ec2_virtualization_type: hvm
+          ec2_vpc_id: vpc-104dd777
+    ami_048331c706267a4b3:
+      hosts:
+        34.249.251.117:
+          ansible_host: 34.249.251.117
+          ec2__in_monitoring_element: false
+          ec2_account_id: '138339392836'
+          ec2_ami_launch_index: '0'
+          ec2_architecture: x86_64
+          ec2_block_devices:
+            xvda: vol-0945a1d12abf30b21
+          ec2_client_token: aws-c-Insta-CUCDO43BP7WS
+          ec2_dns_name: ec2-34-249-251-117.eu-west-1.compute.amazonaws.com
+          ec2_ebs_optimized: false
+          ec2_eventsSet: ''
+          ec2_group_name: ''
+          ec2_hypervisor: xen
+          ec2_id: i-00a6ba9cc0c27ce2f
+          ec2_image_id: ami-048331c706267a4b3
+          ec2_instance_type: m4.large
+          ec2_ip_address: 34.249.251.117
+          ec2_item: ''
+          ec2_kernel: ''
+          ec2_key_name: ''
+          ec2_launch_time: '2019-01-01T06:43:50.000Z'
+          ec2_monitored: false
+          ec2_monitoring: ''
+          ec2_monitoring_state: disabled
+          ec2_persistent: false
+          ec2_placement: eu-west-1a
+          ec2_platform: ''
+          ec2_previous_state: ''
+          ec2_previous_state_code: 0
+          ec2_private_dns_name: ip-10-2-0-57.eu-west-1.compute.internal
+          ec2_private_ip_address: 10.2.0.57
+          ec2_public_dns_name: ec2-34-249-251-117.eu-west-1.compute.amazonaws.com
+          ec2_ramdisk: ''
+          ec2_reason: ''
+          ec2_region: eu-west-1
+          ec2_requester_id: ''
+          ec2_root_device_name: /dev/xvda
+          ec2_root_device_type: ebs
+          ec2_security_group_ids: sg-0407ab78
+          ec2_security_group_names: aws-cloud9-Nimrod-Cloud9-25e5350a1eb341fdb88c2933e3c9f23e-InstanceSecurityGroup-1F11YIK8M6FNS
+          ec2_sourceDestCheck: 'true'
+          ec2_spot_instance_request_id: ''
+          ec2_state: running
+          ec2_state_code: 16
+          ec2_state_reason: ''
+          ec2_subnet_id: subnet-dffe2084
+          ec2_tag_Name: aws-cloud9-Nimrod-Cloud9-25e5350a1eb341fdb88c2933e3c9f23e
+          ec2_tag_Role: auto
+          ec2_tag_aws_cloud9_environment: 25e5350a1eb341fdb88c2933e3c9f23e
+          ec2_tag_aws_cloud9_owner: AIDAJQPWXN7JKSHNH6OKE
+          ec2_tag_aws_cloudformation_logical_id: Instance
+          ec2_tag_aws_cloudformation_stack_id: arn:aws:cloudformation:eu-west-1:138339392836:stack/aws-cloud9-Nimrod-Cloud9-25e5350a1eb341fdb88c2933e3c9f23e/c5cee130-8b34-11e8-b15c-500c41f5908d
+          ec2_tag_aws_cloudformation_stack_name: aws-cloud9-Nimrod-Cloud9-25e5350a1eb341fdb88c2933e3c9f23e
+          ec2_virtualization_type: hvm
+          ec2_vpc_id: vpc-104dd777
+    ami_0dad95819a9372f76:
+      hosts:
+        34.243.118.40:
+          ansible_host: 34.243.118.40
+          ec2__in_monitoring_element: false
+          ec2_account_id: '138339392836'
+          ec2_ami_launch_index: '0'
+          ec2_architecture: x86_64
+          ec2_block_devices:
+            sda1: vol-09da90a44b9273542
+          ec2_client_token: ''
+          ec2_dns_name: ec2-34-243-118-40.eu-west-1.compute.amazonaws.com
+          ec2_ebs_optimized: false
+          ec2_eventsSet: ''
+          ec2_group_name: ''
+          ec2_hypervisor: xen
+          ec2_id: i-05d7cd69670190502
+          ec2_image_id: ami-0dad95819a9372f76
+          ec2_instance_profile: ''
+          ec2_instance_type: t2.medium
+          ec2_ip_address: 34.243.118.40
+          ec2_item: ''
+          ec2_kernel: ''
+          ec2_key_name: kitchen-defaultwindows2016-ec2user-ip1020226-2019-01-01T06:43:10Z-r3w0whv9
+          ec2_launch_time: '2019-01-01T06:43:11.000Z'
+          ec2_monitored: false
+          ec2_monitoring: ''
+          ec2_monitoring_state: disabled
+          ec2_persistent: false
+          ec2_placement: eu-west-1c
+          ec2_platform: windows
+          ec2_previous_state: ''
+          ec2_previous_state_code: 0
+          ec2_private_dns_name: ip-172-31-28-170.eu-west-1.compute.internal
+          ec2_private_ip_address: 172.31.28.170
+          ec2_public_dns_name: ec2-34-243-118-40.eu-west-1.compute.amazonaws.com
+          ec2_ramdisk: ''
+          ec2_reason: ''
+          ec2_region: eu-west-1
+          ec2_requester_id: ''
+          ec2_root_device_name: /dev/sda1
+          ec2_root_device_type: ebs
+          ec2_security_group_ids: sg-0a93493f371c7f0b0
+          ec2_security_group_names: kitchen-yoa05wul
+          ec2_sourceDestCheck: 'true'
+          ec2_spot_instance_request_id: ''
+          ec2_state: running
+          ec2_state_code: 16
+          ec2_state_reason: ''
+          ec2_subnet_id: subnet-07f2871a350eff612
+          ec2_tag_created_by: test-kitchen
+          ec2_tag_kitchen_type: windows
+          ec2_virtualization_type: hvm
+          ec2_vpc_id: vpc-0eb82b93deecd55c4
+    ami_0dede0cb7632bd1e2:
+      hosts:
+        34.247.183.79:
+          ansible_host: 34.247.183.79
+          ec2__in_monitoring_element: false
+          ec2_account_id: '138339392836'
+          ec2_ami_launch_index: '0'
+          ec2_architecture: x86_64
+          ec2_block_devices:
+            xvda: vol-005e85075b6c7db64
+          ec2_client_token: aws-c-Insta-PZD2TZ1OVKOR
+          ec2_dns_name: ec2-34-247-183-79.eu-west-1.compute.amazonaws.com
+          ec2_ebs_optimized: false
+          ec2_eventsSet: ''
+          ec2_group_name: ''
+          ec2_hypervisor: xen
+          ec2_id: i-06635ec34e06e7014
+          ec2_image_id: ami-0dede0cb7632bd1e2
+          ec2_instance_type: c4.2xlarge
+          ec2_ip_address: 34.247.183.79
+          ec2_item: ''
+          ec2_kernel: ''
+          ec2_key_name: ''
+          ec2_launch_time: '2019-01-01T06:30:29.000Z'
+          ec2_monitored: false
+          ec2_monitoring: ''
+          ec2_monitoring_state: disabled
+          ec2_persistent: false
+          ec2_placement: eu-west-1a
+          ec2_platform: ''
+          ec2_previous_state: ''
+          ec2_previous_state_code: 0
+          ec2_private_dns_name: ip-10-2-0-226.eu-west-1.compute.internal
+          ec2_private_ip_address: 10.2.0.226
+          ec2_public_dns_name: ec2-34-247-183-79.eu-west-1.compute.amazonaws.com
+          ec2_ramdisk: ''
+          ec2_reason: ''
+          ec2_region: eu-west-1
+          ec2_requester_id: ''
+          ec2_root_device_name: /dev/xvda
+          ec2_root_device_type: ebs
+          ec2_security_group_ids: sg-0b97a2586ce5f150c
+          ec2_security_group_names: aws-cloud9-Nimrod-cloud9-85cc96c5b77b40d9a8a8ecfb450717af-InstanceSecurityGroup-1IEJG78CFL0EK
+          ec2_sourceDestCheck: 'true'
+          ec2_spot_instance_request_id: ''
+          ec2_state: running
+          ec2_state_code: 16
+          ec2_state_reason: ''
+          ec2_subnet_id: subnet-dffe2084
+          ec2_tag_Name: aws-cloud9-Nimrod-cloud9-85cc96c5b77b40d9a8a8ecfb450717af
+          ec2_tag_aws_cloud9_environment: 85cc96c5b77b40d9a8a8ecfb450717af
+          ec2_tag_aws_cloud9_owner: AIDAJQPWXN7JKSHNH6OKE
+          ec2_tag_aws_cloudformation_logical_id: Instance
+          ec2_tag_aws_cloudformation_stack_id: arn:aws:cloudformation:eu-west-1:138339392836:stack/aws-cloud9-Nimrod-cloud9-85cc96c5b77b40d9a8a8ecfb450717af/cc50e2b0-0cf3-11e9-9540-50a686343cd2
+          ec2_tag_aws_cloudformation_stack_name: aws-cloud9-Nimrod-cloud9-85cc96c5b77b40d9a8a8ecfb450717af
+          ec2_virtualization_type: hvm
+          ec2_vpc_id: vpc-104dd777
+    ami_0e8d4ee06b9de39d2:
+      hosts:
+        54.194.68.124:
+          ansible_host: 54.194.68.124
+          ec2__in_monitoring_element: false
+          ec2_account_id: '138339392836'
+          ec2_ami_launch_index: '0'
+          ec2_architecture: x86_64
+          ec2_block_devices:
+            sda1: vol-0931e7b51eeac3bb3
+          ec2_client_token: ''
+          ec2_dns_name: ec2-54-194-68-124.eu-west-1.compute.amazonaws.com
+          ec2_ebs_optimized: false
+          ec2_eventsSet: ''
+          ec2_group_name: ''
+          ec2_hypervisor: xen
+          ec2_id: i-0a2c1856616fb0940
+          ec2_image_id: ami-0e8d4ee06b9de39d2
+          ec2_instance_type: t2.micro
+          ec2_ip_address: 54.194.68.124
+          ec2_item: ''
+          ec2_kernel: ''
+          ec2_key_name: kitchen-defaultrhel-ec2user-ip1020226-2019-01-01T06:44:56Z-a6cew48p
+          ec2_launch_time: '2019-01-01T06:44:57.000Z'
+          ec2_monitored: false
+          ec2_monitoring: ''
+          ec2_monitoring_state: disabled
+          ec2_persistent: false
+          ec2_placement: eu-west-1c
+          ec2_platform: ''
+          ec2_previous_state: ''
+          ec2_previous_state_code: 0
+          ec2_private_dns_name: ip-172-31-24-251.eu-west-1.compute.internal
+          ec2_private_ip_address: 172.31.24.251
+          ec2_public_dns_name: ec2-54-194-68-124.eu-west-1.compute.amazonaws.com
+          ec2_ramdisk: ''
+          ec2_reason: ''
+          ec2_region: eu-west-1
+          ec2_requester_id: ''
+          ec2_root_device_name: /dev/sda1
+          ec2_root_device_type: ebs
+          ec2_security_group_ids: sg-03f870de9a454f35f
+          ec2_security_group_names: kitchen-971mzzj4
+          ec2_sourceDestCheck: 'true'
+          ec2_spot_instance_request_id: ''
+          ec2_state: running
+          ec2_state_code: 16
+          ec2_state_reason: ''
+          ec2_subnet_id: subnet-07f2871a350eff612
+          ec2_tag_created_by: test-kitchen
+          ec2_virtualization_type: hvm
+          ec2_vpc_id: vpc-0eb82b93deecd55c4
+    ec2:
+      hosts:
+        34.243.118.40: {}
+        34.245.105.204: {}
+        34.247.183.79: {}
+        34.248.22.210: {}
+        34.249.251.117: {}
+        54.194.68.124: {}
+    eu-west-1:
+      hosts:
+        34.243.118.40: {}
+        34.245.105.204: {}
+        34.247.183.79: {}
+        34.248.22.210: {}
+        34.249.251.117: {}
+        54.194.68.124: {}
+    eu-west-1a:
+      hosts:
+        34.247.183.79: {}
+        34.248.22.210: {}
+        34.249.251.117: {}
+    eu-west-1b:
+      hosts:
+        34.245.105.204: {}
+    eu-west-1c:
+      hosts:
+        34.243.118.40: {}
+        54.194.68.124: {}
+    i-00a6ba9cc0c27ce2f:
+      hosts:
+        34.249.251.117: {}
+    i-05d7cd69670190502:
+      hosts:
+        34.243.118.40: {}
+    i-06635ec34e06e7014:
+      hosts:
+        34.247.183.79: {}
+    i-0694881e6fbf145c6:
+      hosts:
+        34.245.105.204: {}
+    i-0a2c1856616fb0940:
+      hosts:
+        54.194.68.124: {}
+    i-0c02adfc06aee5540:
+      hosts:
+        34.248.22.210: {}
+    key_Hackathon_KP:
+      hosts:
+        34.245.105.204: {}
+    key_Jenkins_KP:
+      hosts:
+        34.248.22.210: {}
+    key_kitchen_defaultrhel_ec2user_ip1020226_2019_01_01T06_44_56Z_a6cew48p:
+      hosts:
+        54.194.68.124: {}
+    key_kitchen_defaultwindows2016_ec2user_ip1020226_2019_01_01T06_43_10Z_r3w0whv9:
+      hosts:
+        34.243.118.40: {}
+    platform_undefined:
+      hosts:
+        34.247.183.79: {}
+        34.249.251.117: {}
+        54.194.68.124: {}
+    platform_windows:
+      hosts:
+        34.243.118.40: {}
+        34.245.105.204: {}
+        34.248.22.210: {}
+    security_group_Web_SG:
+      hosts:
+        34.245.105.204: {}
+    security_group_aws_cloud9_Nimrod_Cloud9_25e5350a1eb341fdb88c2933e3c9f23e_InstanceSecurityGroup_1F11YIK8M6FNS:
+      hosts:
+        34.249.251.117: {}
+    security_group_aws_cloud9_Nimrod_cloud9_85cc96c5b77b40d9a8a8ecfb450717af_InstanceSecurityGroup_1IEJG78CFL0EK:
+      hosts:
+        34.247.183.79: {}
+    security_group_default:
+      hosts:
+        34.248.22.210: {}
+    security_group_kitchen_971mzzj4:
+      hosts:
+        54.194.68.124: {}
+    security_group_kitchen_yoa05wul:
+      hosts:
+        34.243.118.40: {}
+    tag_Name_EPV_HAIM_CASE:
+      hosts:
+        34.248.22.210: {}
+    tag_Name__Avishay__Windows_Webserver:
+      hosts:
+        34.245.105.204: {}
+    tag_Name_aws_cloud9_Nimrod_Cloud9_25e5350a1eb341fdb88c2933e3c9f23e:
+      hosts:
+        34.249.251.117: {}
+    tag_Name_aws_cloud9_Nimrod_cloud9_85cc96c5b77b40d9a8a8ecfb450717af:
+      hosts:
+        34.247.183.79: {}
+    tag_Requester_Haim_Cohen_EPV:
+      hosts:
+        34.248.22.210: {}
+    tag_Role_auto:
+      hosts:
+        34.249.251.117: {}
+    tag_Role_retain:
+      hosts:
+        34.245.105.204: {}
+        34.248.22.210: {}
+    tag_aws_cloud9_environment_25e5350a1eb341fdb88c2933e3c9f23e:
+      hosts:
+        34.249.251.117: {}
+    tag_aws_cloud9_environment_85cc96c5b77b40d9a8a8ecfb450717af:
+      hosts:
+        34.247.183.79: {}
+    tag_aws_cloud9_owner_AIDAJQPWXN7JKSHNH6OKE:
+      hosts:
+        34.247.183.79: {}
+        34.249.251.117: {}
+    tag_aws_cloudformation_logical_id_Instance:
+      hosts:
+        34.247.183.79: {}
+        34.249.251.117: {}
+    ? tag_aws_cloudformation_stack_id_arn_aws_cloudformation_eu_west_1_138339392836_stack_aws_cloud9_Nimrod_Cloud9_25e5350a1eb341fdb88c2933e3c9f23e_c5cee130_8b34_11e8_b15c_500c41f5908d
+    : hosts:
+        34.249.251.117: {}
+    ? tag_aws_cloudformation_stack_id_arn_aws_cloudformation_eu_west_1_138339392836_stack_aws_cloud9_Nimrod_cloud9_85cc96c5b77b40d9a8a8ecfb450717af_cc50e2b0_0cf3_11e9_9540_50a686343cd2
+    : hosts:
+        34.247.183.79: {}
+    tag_aws_cloudformation_stack_name_aws_cloud9_Nimrod_Cloud9_25e5350a1eb341fdb88c2933e3c9f23e:
+      hosts:
+        34.249.251.117: {}
+    tag_aws_cloudformation_stack_name_aws_cloud9_Nimrod_cloud9_85cc96c5b77b40d9a8a8ecfb450717af:
+      hosts:
+        34.247.183.79: {}
+    tag_created_by_test_kitchen:
+      hosts:
+        34.243.118.40: {}
+        54.194.68.124: {}
+    tag_kitchen_type_windows:
+      hosts:
+        34.243.118.40: {}
+    type_c4_2xlarge:
+      hosts:
+        34.247.183.79: {}
+    type_m4_large:
+      hosts:
+        34.249.251.117: {}
+    type_t2_medium:
+      hosts:
+        34.243.118.40: {}
+    type_t2_micro:
+      hosts:
+        34.248.22.210: {}
+        54.194.68.124: {}
+    type_t2_xlarge:
+      hosts:
+        34.245.105.204: {}
+    ungrouped: {}
+    vpc_id_vpc_00d3319a06d4a1dc6:
+      hosts:
+        34.245.105.204: {}
+    vpc_id_vpc_0eb82b93deecd55c4:
+      hosts:
+        34.243.118.40: {}
+        54.194.68.124: {}
+    vpc_id_vpc_104dd777:
+      hosts:
+        34.247.183.79: {}
+        34.248.22.210: {}
+        34.249.251.117: {}
