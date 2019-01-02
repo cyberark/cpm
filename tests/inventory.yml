@@ -1,0 +1,30 @@
+---
+all:
+  vars:
+    aws_region: "eu-west-1"
+
+localhost:
+  hosts:
+    127.0.0.1:
+      any_errors_fatal: true
+      ansible_python_interpreter: python
+
+
+windows:
+  vars:
+    any_errors_fatal: true
+    ansible_python_interpreter: python
+    ansible_winrm_server_cert_validation: ignore
+    ansible_connection: winrm
+    ansible_winrm_transport: basic
+    ansible_port: 5986
+    ansible_user: administrator
+    ansible_winrm_read_timeout_sec: 800
+    ansible_winrm_operation_timeout_sec: 600
+
+linux:
+  vars:
+    ansible_python_interpreter: python
+    ansible_connection: ssh
+    ansible_port: 22
+    ansible_become: True

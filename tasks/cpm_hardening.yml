@@ -24,6 +24,7 @@
         chdir: "{{ cpm_installationautomation_folder }}"
 
   rescue:
+
     - name: Get log path for hardening
       win_shell: |
         $Result = Get-Content "{{ cpm_hardening_log }}"
@@ -53,3 +54,4 @@
 - set_fact:
     cpm_hardened: true
   when: cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"
+

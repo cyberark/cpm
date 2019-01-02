@@ -1,6 +1,7 @@
 # CPM Ansible Role
 This Ansible Role will deploy and install CyberArk Central Policy Manager including the pre-requisites, application, hardening and connect to an existing Vault environment.
 
+
 ## Requirements
 ------------
 - Windows 2016 installed on the remote host
@@ -12,7 +13,6 @@ This Ansible Role will deploy and install CyberArk Central Policy Manager includ
   - 1858 port outbound 
 - Administrator access to the remote host 
 - CPM CD image
-
 
 
 ## Role Variables

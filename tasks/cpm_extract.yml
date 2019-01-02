@@ -1,7 +1,5 @@
 ---
 # tasks file for cpm_extract
-
-# TODO Extract and get exact paths
 - name: Create folder
   win_file:
     path: "{{ cpm_extract_folder }}"
@@ -21,5 +19,4 @@
   win_copy:
     src: "{{ cpm_installationautomation_folder }}\\Registration\\RegistrationTool\\"
     dest: "{{ cpm_registrationtool_folder }}"
-
     remote_src: yes
