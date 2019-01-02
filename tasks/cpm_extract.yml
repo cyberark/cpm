@@ -1,8 +1,6 @@
 ---
 # tasks file for cpm_extract
-
-# TODO Extract and get exact paths
-- name: Create folder 
+- name: Create folder
   win_file:
     path: "{{ cpm_extract_folder }}"
     state: directory
@@ -11,12 +9,12 @@
   win_copy:
     src: "{{ cpm_zip_file_path }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
-    
+
 - name: Unzip the cpm package
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
-    
+
 - name: Copy registration tool
   win_copy:
     src: "{{ cpm_installationautomation_folder }}\\Registration\\RegistrationTool\\"

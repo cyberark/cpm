@@ -1,3 +1,5 @@
+---
+
 galaxy_info:
   author:
     - Nimrod Yakobovitz
@@ -12,9 +14,9 @@ galaxy_info:
   min_ansible_version: 2.5
 
   platforms:
-  - name: Windows
-    versions:
-    - 2016
+    - name: Windows
+      versions:
+        - 2016
 
   galaxy_tags:
     - cpm

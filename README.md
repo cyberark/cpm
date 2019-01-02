@@ -1,97 +1,95 @@
-# cpm
+# CPM Ansible Role
+This Ansible Role will deploy and install CyberArk Central Policy Manager including the pre-requisites, application, hardening and connect to an existing Vault environment.
 
-This Playbook will install the CyberArk CPM software on a Windows 2016 server / VM / instance
 
-Requirements
+## Requirements
 ------------
-
-- Windows 2016 must be installed on the server
-- Administrator credentials (either Local or Domain)
-- Network connection to the vault and the repository server
-- Location of CPM CD image
-- PAS packages version 10.5 and above
+- Windows 2016 installed on the remote host
+- WinRM open on port 5986 (**not 5985**) on the remote host 
+- Pywinrm is installed on the workstation running the playbook
+- The workstation running the playbook must have network connectivity to the remote host
+- The remote host must have Network connectivity to the CyberArk vault and the repository server
+  - 443 port outbound
+  - 1858 port outbound 
+- Administrator access to the remote host 
+- CPM CD image
 
 
 ## Role Variables
+These are the variables used in this playbook:
 
-A list of vaiables the playbook is using 
+### Flow Variables
+Variable                         | Required     | Default                                   | Comments
+:--------------------------------|:-------------|:------------------------------------------|:---------
+cpm_prerequisites                | no           | false                                     | Install CPM pre requisites
+cpm_install                      | no           | false                                     | Install CPM
+cpm_postinstall                  | no           | false                                     | CPM post install role
+cpm_hardening                    | no           | false                                     | Apply CPM hardening 
+cpm_registration                 | no           | false                                     | Connect CPM to the Vault
+cpm_upgrade                      | no           | false                                     | N/A
+cpm_clean                        | no           | false                                     | N/A
+cpm_uninstall                    | no           | false                                     | N/A
 
-**Flow Variables**
-                    
-| Variable                         | Required     | Default                                                                        | Comments                                 |
-|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
-| cpm_prerequisites                | no           | false                                                                          | Install CPM pre requisites               |
-| cpm_install                      | no           | false                                                                          | Install CPM                              |
-| cpm_postinstall                  | no           | false                                                                          | CPM port install role                    |
-| cpm_hardening                    | no           | false                                                                          | CPM hardening role                       |
-| cpm_registration                 | no           | false                                                                          | CPM Register with Vault                  |
-| cpm_upgrade                      | no           | false                                                                          | N/A                                      |
-| cpm_clean                        | no           | false                                                                          | Clean server after deployment            |
-| cpm_uninstall                    | no           | false                                                                          | N/A                                      |
+### Deployment Variables
+Variable                         | Required     | Default                                              | Comments
+:--------------------------------|:-------------|:-----------------------------------------------------|:---------
+vault_ip                         | yes          | None                                                 | Vault IP to perform registration
+vault_password                   | yes          | None                                                 | Vault password to perform registration
+pvwa_url                         | yes          | None                                                 | URL of registered PVWA
+accept_eula                      | yes          | **"No"**                                             | Accepting EULA condition 
+cpm_zip_file_path                | yes          | None                                                 | Zip File path of CyberArk packages
+vault_username                   | no           | **administrator**                                    | Vault username to perform registration
+vault_port                       | no           | **1858**                                             | Vault port
+dr_vault_ip                      | no           | None                                                 | Vault DR IP address to perform registration
+cpm_installation_drive           | no           | **C:**                                               | Base drive to install CPM
 
-**Deployment Variables**
+## Dependencies
+None
 
-| Variable                         | Required     | Default                                                                        | Comments                                 |
-|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
-| cpm_base_bin_drive               | no           | "C:"                                                                           | Base path to extract CyberArk packages   |
-| cpm_zip_file_path                | yes          | None                                                                           | Zip File path of CyberArk packages       |
-| cpm_extract_folder               | no           | "{{cpm_base_bin_drive}}\\Cyberark\\packages"                                   | Path to extract the CyberArk packages    |
-| cpm_artifact_name                | no           | "cpm.zip"                                                                      | zip file name of cpm package             |
-| cpm_component_folder             | no           | "Central Policy Manager"                                                       | The name of CPM unzip folder             |
-| cpm_installation_drive           | no           | "C:"                                                                           | Base drive to install CPM                |
-| vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
-| dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
-| vault_port                       | no           | 1858                                                                           | vault port                               |
-| vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
-| vault_password                   | yes          | None                                                                           | vault password to perform registration   |
-| pvwa_url                         | yes          | None                                                                           | URL of registered PVWA                   |
-| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
+## Usage
+The role consists of a number of different tasks which can be enabled or disabled for the particular
+run.
 
+`cpm_install`
 
-## Usage 
+This task will deploy the CPM to required folder and validate successful deployment.
 
-**cpm_install**
+`cpm_hardening`
 
-This task will deploy the CPM to required folder and validate deployment succeed.
+This task will run the CPM hardening process.
 
-**cpm_hardening**
+`cpm_registration`
 
-This task will run the CPM hardening process
+This task will perform registration with active Vault.
 
-**cpm_registration**
+`cpm_validateparameters`
 
-This task perform registration with active Vault
+This task will validate which CPM steps have already occurred on the server to prevent repetition.
 
-**cpm_validateparameters**
+`cpm_clean`
 
-This task validate which CPM steps already occurred on the server so the other tasks won't run again
-
-**cpm_clean**
-
-This task will clean inf files from installation, delete cpm installation logs from Temp folder & Delete cred files
-
+This task will clean the configuration (inf) files from the installation, delete the
+CPM installation logs from the Temp folder and delete the cred files.
 
 ## Example Playbook
+Below is an example of how you can incorporate this role into an Ansible playbook
+to call the CPM role with several parameters:
 
-Example playbook to show how to call the CPM main playbook with several parameters:
-
-    ---
-    - hosts: localhost
-      connection: local
-      tasks:
-        - include_task:
-            name: main
-          vars:
-            cpm_install: true
-            cpm_hardening: true
-            cpm_clean: true
+```
+---
+- include_role:
+    name: cpm
+  vars:
+    - cpm_prerequisites: true
+    - cpm_install: true
+    - cpm_postinstall: true
+    - cpm_hardening: true
+    - cpm_registration: true
+```
 
 ## Running the  playbook:
-
-To run the above playbook:
-
-    ansible-playbook -i ../inventory.yml cpm-orchestrator.yml -e "cpm_install=true cpm_installation_drive='D:'"
+For an example of how to incorporate this role into a complete playbook, please see the
+**[pas-orchestrator](https://github.com/cyberark/pas-orchestrator)** example.
 
 ## License
-
- **TBD**
+[Apache 2](LICENSE)

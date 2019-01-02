@@ -8,15 +8,20 @@
       win_command: 'RegisterComponent.exe CPM /accepteula Yes /vaultip {{ vault_ip }} /vaultport {{ vault_port }} /vaultuser {{ vault_username }} /vaultpassword {{ vault_password }} /installdir "{{ cpm_installation_path }}"'
       args:
         chdir: "{{ cpm_registrationtool_folder }}"
-    
-    # TODO: Validate CPM registration
-    
+      when: dr_vault_ip is not defined
+
+    - name: Execute cpm registration
+      win_command: 'RegisterComponent.exe CPM /accepteula Yes /vaultip {{ vault_ip }},{{ dr_vault_ip }} /vaultport {{ vault_port }} /vaultuser {{ vault_username }} /vaultpassword {{ vault_password }} /installdir "{{ cpm_installation_path }}"'
+      args:
+        chdir: "{{ cpm_registrationtool_folder }}"
+      when: dr_vault_ip is defined
+
     - name: start cpm service & set to auto
       win_service:
         name: "{{ cpm_service_name }}"
         start_mode: auto
         state: started
-        
+
     - name: start cpm scanner service & set to auto
       win_service:
         name: "{{ cpm_scanner_service_name }}"
@@ -24,19 +29,19 @@
         state: started
 
     - name: check if cpm service is running
-      win_service: 
+      win_service:
         name: "{{ cpm_service_name }}"
       register: cpm_service_info
-      
+
     - name: check if cpm scanner service is running
-      win_service: 
+      win_service:
         name: "{{ cpm_scanner_service_name }}"
       register: cpm_scanner_service_info
-    
+
     - set_fact:
         cpm_registered: true
       when: cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"
-      
+
   rescue:
 
     - name: Get log path for registration
