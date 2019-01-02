@@ -1,14 +1,18 @@
 # CPM Ansible Role
-This Playbook will install the [CyberArk CPM](https://www.cyberark.com/products/privileged-account-security-solution/core-privileged-account-security/) software on a Windows 2016 server / VM / instance.
+This Ansible Role will deploy and install CyberArk Central Policy Manager including the pre-requisites, application, hardening and connect to an existing Vault environment.
 
 ## Requirements
 ------------
-- The host running the playbook must have network connectivity to the remote hosts in the inventory
-- Windows 2016 must be installed on the remote host
-- Administrator credentials for access to the remote host (either Local or Domain)
-- Network connectivity to the CyberArk vault and the repository server
-- CPM package version 10.6 and above, including the location of the CD images
-- pywinrm is installed on the workstation running the playbook
+- Windows 2016 installed on the remote host
+- WinRM open on port 5986 (**not 5985**) on the remote host 
+- Pywinrm is installed on the workstation running the playbook
+- The workstation running the playbook must have network connectivity to the remote host
+- The remote host must have Network connectivity to the CyberArk vault and the repository server
+  - 443 port outbound
+  - 1858 port outbound 
+- Administrator access to the remote host 
+- CPM CD image
+
 
 
 ## Role Variables
@@ -19,11 +23,11 @@ Variable                         | Required     | Default                       
 :--------------------------------|:-------------|:------------------------------------------|:---------
 cpm_prerequisites                | no           | false                                     | Install CPM pre requisites
 cpm_install                      | no           | false                                     | Install CPM
-cpm_postinstall                  | no           | false                                     | CPM port install role
-cpm_hardening                    | no           | false                                     | CPM hardening role
-cpm_registration                 | no           | false                                     | CPM Register with Vault
+cpm_postinstall                  | no           | false                                     | CPM post install role
+cpm_hardening                    | no           | false                                     | Apply CPM hardening 
+cpm_registration                 | no           | false                                     | Connect CPM to the Vault
 cpm_upgrade                      | no           | false                                     | N/A
-cpm_clean                        | no           | false                                     | Clean server after deployment
+cpm_clean                        | no           | false                                     | N/A
 cpm_uninstall                    | no           | false                                     | N/A
 
 ### Deployment Variables
@@ -37,10 +41,6 @@ cpm_zip_file_path                | yes          | None                          
 vault_username                   | no           | **administrator**                                    | Vault username to perform registration
 vault_port                       | no           | **1858**                                             | Vault port
 dr_vault_ip                      | no           | None                                                 | Vault DR IP address to perform registration
-cpm_base_bin_drive               | no           | **C:**                                               | Base path to extract CyberArk packages
-cpm_extract_folder               | no           | **{{cpm_base_bin_drive}}\\Cyberark\\packages**       | Path to extract the CyberArk packages
-cpm_artifact_name                | no           | **cpm.zip**                                          | Zip file name of cpm package
-cpm_component_folder             | no           | **Central Policy Manager**                           | The name of CPM unzip folder
 cpm_installation_drive           | no           | **C:**                                               | Base drive to install CPM
 
 ## Dependencies
