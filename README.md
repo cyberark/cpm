@@ -34,14 +34,13 @@ cpm_uninstall                    | no           | false                         
 Variable                         | Required     | Default                                              | Comments
 :--------------------------------|:-------------|:-----------------------------------------------------|:---------
 vault_ip                         | yes          | None                                                 | Vault IP to perform registration
-vault_password                   | yes          | None                                                 | Vault password to perform registration
-pvwa_url                         | yes          | None                                                 | URL of registered PVWA
-accept_eula                      | yes          | **"No"**                                             | Accepting EULA condition 
-cpm_zip_file_path                | yes          | None                                                 | Zip File path of CyberArk packages
-vault_username                   | no           | **administrator**                                    | Vault username to perform registration
 vault_port                       | no           | **1858**                                             | Vault port
+vault_username                   | no           | **administrator**                                    | Vault username to perform registration
+vault_password                   | yes          | None                                                 | Vault password to perform registration
 dr_vault_ip                      | no           | None                                                 | Vault DR IP address to perform registration
-cpm_installation_drive           | no           | **C:**                                               | Base drive to install CPM
+accept_eula                      | yes          | **"No"**                                             | Accepting EULA condition 
+cpm_zip_file_path                | yes          | None                                                 | CyberArk CPM installation Zip file package path
+cpm_installation_drive           | no           | **C:**                                               | Destination installation drive
 
 ## Dependencies
 None
@@ -92,4 +91,4 @@ For an example of how to incorporate this role into a complete playbook, please 
 **[pas-orchestrator](https://github.com/cyberark/pas-orchestrator)** example.
 
 ## License
-[Apache 2](LICENSE)
+Apache License, Version 2.0
