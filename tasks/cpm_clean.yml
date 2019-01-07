@@ -1,16 +1,5 @@
 ---
 # tasks file for cpm_extract
-- name: Set CyberArk Password Manager Service Startup Mode to Manual
-  win_service:
-    name: CyberArk Password Manager
-    start_mode: manual
-    state: stopped
-
-- name: Set CyberArk Central Policy Manager Scanner Service Startup Mode to Manual
-  win_service:
-    name: CyberArk Central Policy Manager Scanner
-    start_mode: manual
-    state: stopped
 
 - name: Find all inf files
   win_find:
