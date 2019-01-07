@@ -7,8 +7,9 @@
     patterns: ['*.*']
   register: files_to_delete
 
-- win_file:
-    path: "{{item.path}}"
+- name: Delete all inf files
+  win_file:
+    path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
@@ -18,11 +19,38 @@
     patterns: ['CPM*.*', 'InstallationAutomation*.*']
   register: files_to_delete
 
-- win_file:
-    path: "{{item.path}}"
+- name: Delete temp folder
+  win_file:
+    path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
-- win_file:
+- name: Delete extract folder
+  win_file:
     path: "{{ cpm_extract_folder }}"
     state: absent
+    
+- name: clean run history
+  win_regedit:
+    path: 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU'
+    state: absent
+    delete_key: yes
+    
+- name: clean event logs
+  win_shell: |
+    try {
+      wevtutil el | ForEach-Object { wevtutil cl "$_" }
+    } catch {
+      Write-Output "Error occured: $error"
+      exit 1
+    }
+
+- name: clean recycle bin
+  win_shell: |
+    try {
+      $Recycler = (New-Object -ComObject Shell.Application).Namespace(0xa)
+      $Recycler.items() | ForEach-Object { rm $_.path -Force -Recurse }
+    } catch {
+      Write-Output "Error occured: $error"
+      exit 1
+    }
