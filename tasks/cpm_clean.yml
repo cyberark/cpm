@@ -25,7 +25,7 @@
 
 - name: Clean Windows\\Temp Folder
   win_find:
-    paths: "{{ cpm_installation_drive }}\\Windows\\Temp"
+    paths: "C:\\Windows\\Temp"
     patterns: ['CPM*.*', 'InstallationAutomation*.*']
   register: files_to_delete
 
