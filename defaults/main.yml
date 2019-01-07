@@ -9,7 +9,7 @@ cpm_registration: false
 cpm_upgrade: false
 cpm_clean: false
 cpm_extract: false
-
+cpm_ignore_checksum: false
 cpm_exists: false
 cpm_scanner_exists: false
 cpm_hardened: false
