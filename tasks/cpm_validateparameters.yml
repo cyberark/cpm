@@ -19,7 +19,9 @@
 - name: check if package is valid using checksum
   fail:
     msg: "Checksum does not match, please validate your package."
-  when: st.stat.checksum != cpm_sha1_checksum
+  when:
+    - st.stat.checksum !=  cpm_sha1_checksum
+    - not cpm_ignore_checksum
 
 - fail:
     msg: "{{ cpm_zip_file_path }} not exists, failing..."
