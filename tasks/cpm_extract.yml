@@ -10,21 +10,17 @@
   win_copy:
     src: "{{ cpm_zip_file_path }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
-
-- name: check if cpm_zip_file_path exists
-  stat:
-    path: "{{ cpm_zip_file_path }}"
   register: st
 
 - fail:
     msg: "{{ cpm_zip_file_path }} not exists, failing..."
-  when: not st.stat.exists
+  when: not st.checksum
 
 - name: check if package is valid using checksum
   fail:
     msg: "Checksum does not match, please validate your package."
   when:
-    - st.stat.checksum !=  cpm_sha1_checksum
+    - st.checksum != cpm_sha1_checksum
     - not cpm_ignore_checksum
 
 - name: Unzip the cpm package
