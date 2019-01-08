@@ -6,6 +6,8 @@
     path="{{ cpm_zip_file_path }}"
   register: st
   delegate_to: localhost
+  connection: local
+  ansible_become: no
 
 - name: check if package is valid using checksum
   fail:
