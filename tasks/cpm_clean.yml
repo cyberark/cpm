@@ -3,7 +3,7 @@
 
 - name: Find all inf files
   win_find:
-    paths: "{{ cpm_installation_path }}\\Logs"
+    paths: "{{ cpm_installation_path }}\\Password Manager\\Logs"
     patterns: ['*.*']
   register: files_to_delete
 
