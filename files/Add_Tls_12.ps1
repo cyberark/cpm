@@ -65,7 +65,7 @@ function Add-Edit-RegistryEntry{
 		if(Test-CARegistryEntryExist $regPath $regName){
 			Set-CARegistryEntry $regPath $regName $regValue
 		} else {
-			Write-Host $regPath $regName $regValue $type
+			Add-CARegistryEntry $regPath $regName $regValue $type
 		}
 	}
 	End{
@@ -131,7 +131,6 @@ function Add-CARegistryEntry{
 	Process {
 		Try{
 			If(-not(Test-Path -Path $regPath)){
-				Add-CALogAll "Attempting to create new registry path: $regPath"
 				New-Item -Path $regPath -Force
 			}
 
