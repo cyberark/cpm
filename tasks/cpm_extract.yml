@@ -1,5 +1,6 @@
 ---
 # tasks file for cpm_extract
+
 - name: Create folder
   win_file:
     path: "{{ cpm_extract_folder }}"
@@ -9,6 +10,18 @@
   win_copy:
     src: "{{ cpm_zip_file_path }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+  register: st
+
+- fail:
+    msg: "{{ cpm_zip_file_path }} not exists, failing..."
+  when: not st.checksum
+
+- name: check if package is valid using checksum
+  fail:
+    msg: "Checksum does not match, please validate your package."
+  when:
+    - st.checksum != cpm_sha1_checksum
+    - not cpm_ignore_checksum
 
 - name: Unzip the cpm package
   win_unzip:

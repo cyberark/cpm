@@ -5,26 +5,6 @@
     msg: "You must accept EULA to start the playbook"
   when: (accept_eula|type_debug != 'bool' and accept_eula|lower != "yes") or (accept_eula|type_debug == 'bool' and not accept_eula)
 
-- name: check if cpm_zip_file_path undefined
-  fail:
-    msg: "cpm_zip_file_path is undefined, failing..."
-  when: cpm_zip_file_path is not defined
-
-- name: check if cpm_zip_file_path exists
-  stat:
-    path="{{ cpm_zip_file_path }}"
-  register: st
-  delegate_to: localhost
-
-- name: check if package is valid using checksum
-  fail:
-    msg: "Checksum does not match, please validate your package."
-  when: st.stat.checksum != cpm_sha1_checksum
-
-- fail:
-    msg: "{{ cpm_zip_file_path }} not exists, failing..."
-  when: not st.stat.exists
-
 - name: check if cpm was already installed
   win_service:
     name: "{{ cpm_service_name }}"
