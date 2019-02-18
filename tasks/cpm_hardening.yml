@@ -56,13 +56,3 @@
 - set_fact:
     cpm_hardened: true
   when: cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"
-
-- name: Copy Add_TLS_1.2 to machine
-  win_copy:
-    src: files/Add_Tls_12.ps1
-    dest: "%TEMP%\\"
-
-- name: Reset RDS Grace Period
-  win_command: powershell.exe -File Add_Tls_12.ps1
-  args:
-    chdir: "%TEMP%\\"
