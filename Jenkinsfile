@@ -76,9 +76,9 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      sh 'kitchen destroy'
-    }
+  // post {
+  //   always {
+  //     sh 'kitchen destroy'
+  //   }
   }
 }
