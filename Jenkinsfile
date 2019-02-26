@@ -80,5 +80,5 @@ pipeline {
   //   always {
   //     sh 'kitchen destroy'
   //   }
-  }
+  // }
 }
