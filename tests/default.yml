@@ -11,7 +11,7 @@
     - name: download package from s3
       aws_s3:
         bucket: cloud-initiatives-pipeline-bucket
-        object: "Packages/v10.7/Central Policy Manager-Rls-v10.7.zip"
+        object: "Packages/v10.8/Central Policy Manager-Rls-v10.8.zip"
         dest: "/tmp/cpm.zip"
         mode: get
 
@@ -51,6 +51,7 @@
         name: cpm
       vars:
         - cpm_extract: true
+        - cpm_prerequisites: true
         - cpm_install: true
         - cpm_hardening: true
         - cpm_registration: false
