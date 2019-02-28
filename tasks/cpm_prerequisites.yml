@@ -1,5 +1,5 @@
 ---
-# tasks file for cpm prerequisities - not used for cpm
+# tasks file for cpm prerequisities
 
 - name: Pre Install Block
   block:
