@@ -58,19 +58,11 @@
 
   rescue:
 
-    - name: Get log path for registration
-      win_shell: |
-        $Result = Get-Content "{{ cpm_registration_log }}"
-        Write-Output $Result
-      register: log_result
-
-    - name: Fetch registration log from path
+    - name: Fetch registration log
       fetch:
-        src: '{{ item.logPath }}'
+        src: '{{ cpm_registration_log }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
         flat: yes
-      with_items:
-        - "{{ log_result.stdout | from_json }}"
 
     - fail:
         msg: 'ERROR: Registration failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
