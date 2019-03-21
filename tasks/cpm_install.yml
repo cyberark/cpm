@@ -37,22 +37,38 @@
       args:
         chdir: "{{ cpm_installationautomation_folder }}\\Installation"
 
-  rescue:
     - name: Get log path for installation
       win_shell: |
         $Result = Get-Content "{{ cpm_install_log }}"
         Write-Output $Result
       register: log_result
 
-    - fetch:
+    - name: Fetch installation log from path
+      fetch:
         src: '{{ item.logPath }}'
-        dest: '{{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_install.log'
+        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") }}/cpm/{{ inventory_hostname }}_install.log'
+        flat: yes
+      with_items:
+        - "{{ log_result.stdout | from_json }}"
+
+  rescue:
+
+    - name: Get log path for installation
+      win_shell: |
+        $Result = Get-Content "{{ cpm_install_log }}"
+        Write-Output $Result
+      register: log_result
+
+    - name: Fetch installation log from path
+      fetch:
+        src: '{{ item.logPath }}'
+        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") }}/cpm/{{ inventory_hostname }}_install.log'
         flat: yes
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
     - fail:
-        msg: 'ERROR: Installation failed. For more info check {{ playbook_dir }}/logs/cpm/{{ inventory_hostname }}_install.log'
+        msg: 'ERROR: Installation failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") }}/cpm/{{ inventory_hostname }}_install.log'
 
 - name: Get log path for installation
   win_shell: |
