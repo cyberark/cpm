@@ -46,7 +46,7 @@
     - name: Fetch installation log from path
       fetch:
         src: '{{ item.logPath }}'
-        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") }}/cpm/{{ inventory_hostname }}_install.log'
+        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
         flat: yes
       with_items:
         - "{{ log_result.stdout | from_json }}"
@@ -62,13 +62,13 @@
     - name: Fetch installation log from path
       fetch:
         src: '{{ item.logPath }}'
-        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") }}/cpm/{{ inventory_hostname }}_install.log'
+        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
         flat: yes
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
     - fail:
-        msg: 'ERROR: Installation failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") }}/cpm/{{ inventory_hostname }}_install.log'
+        msg: 'ERROR: Installation failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
 
 - name: Get log path for installation
   win_shell: |
