@@ -28,7 +28,7 @@
         #$ErrorActionPreference = "SilentlyContinue"
         $Action = .\CPMInstallation.ps1
         $Action | Out-File -FilePath "{{ cpm_install_log }}"
-        $Result = Get-Content "{{ cpm_install_log }}" | ConvertFrom-Json
+        $Result = Get-Content "{{ cpm_install_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -ne 0) {
           exit 1
         } else {
