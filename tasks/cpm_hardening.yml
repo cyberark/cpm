@@ -14,7 +14,7 @@
         $ErrorActionPreference = "SilentlyContinue"
         $Action = .\CPM_Hardening.ps1
         $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
-        $Result = Get-Content "{{ cpm_hardening_log }}" | ConvertFrom-Json
+        $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -eq 2) {
             exit 1
         } else {

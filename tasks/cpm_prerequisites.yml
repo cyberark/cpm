@@ -9,7 +9,7 @@
         $ErrorActionPreference = "SilentlyContinue"
         $Action = .\CPM_PreInstallation.ps1
         $Action | Out-File -FilePath "{{ cpm_prerequisites_log }}"
-        $Result = Get-Content "{{ cpm_prerequisites_log }}" | ConvertFrom-Json
+        $Result = Get-Content "{{ cpm_prerequisites_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -ne 0) {
             exit 1
         } else {
