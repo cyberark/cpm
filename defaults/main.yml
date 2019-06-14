@@ -14,6 +14,7 @@ cpm_exists: false
 cpm_scanner_exists: false
 cpm_hardened: false
 cpm_registered: false
+cpm_official: true
 
 cpm_service_name: "CyberArk Password Manager"
 cpm_scanner_service_name: "CyberArk Central Policy Manager Scanner"

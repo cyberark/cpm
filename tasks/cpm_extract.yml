@@ -27,6 +27,19 @@
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
+  when: cpm_official
+
+- name: Create component folder
+  win_file:
+    path: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
+    state: directory
+  when: not cpm_official
+
+- name: Unzip the cpm package
+  win_unzip:
+    src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+    dest: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
+  when: not cpm_official
 
 - name: Copy registration tool
   win_copy:
