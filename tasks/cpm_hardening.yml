@@ -6,6 +6,25 @@
     path: "{{ cpm_installation_path }}\\Password Manager\\Vault\\user.ini"
     state: touch
 
+- name: update IsPSMInstalled value
+  win_shell: |
+    try
+    {
+        $isPsmInstalledValue = if('{{ cpm_ispsminstalled }}' -eq 'true') {"True"} else {"False"}
+        $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step1 = $xml.SelectSingleNode("//Parameter[@Name = 'IsPSMInstalled']")
+        $step1.Value = $isPsmInstalledValue
+        $xml.Save($filePath)
+        exit 0
+    }
+    catch
+    {
+        Write-Output "Error occured setting out-of-domain parameter"
+        exit 1
+    }
+  when: cpm_ispsminstalled
+
 - name: Hardening Block
   block:
 
