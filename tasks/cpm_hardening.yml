@@ -20,10 +20,29 @@
     }
     catch
     {
-        Write-Output "Error occured setting out-of-domain parameter"
+        Write-Output "Error occured setting ispsminstalled parameter"
         exit 1
     }
   when: cpm_ispsminstalled
+
+- name: update cpm_harden_rds value
+  win_shell: |
+    try
+    {
+        $hardenRDS = if('{{ cpm_harden_rds }}' -eq 'false') {"False"} else {"True"}
+        $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step1 = $xml.SelectSingleNode("//Step[@Name = 'RemoteDesktopServices']")
+        $step1.Enable = $hardenRDS
+        $xml.Save($filePath)
+        exit 0
+    }
+    catch
+    {
+        Write-Output "Error occured setting hardenRDS parameter"
+        exit 1
+    }
+  when: not cpm_harden_rds
 
 - name: Hardening Block
   block:
