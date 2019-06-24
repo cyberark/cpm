@@ -33,7 +33,7 @@
         $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
         $xml = [xml](Get-Content $filePath)
         $step1 = $xml.SelectSingleNode("//Step[@Name = 'RemoteDesktopServices']")
-        $step1.Enable = $hardenRDS
+        $step1.Parameters.Parameter.Value = $hardenRDS
         $xml.Save($filePath)
         exit 0
     }
@@ -43,6 +43,25 @@
         exit 1
     }
   when: not cpm_harden_rds
+
+- name: update cpm_disable_import_inf value
+  win_shell: |
+    try
+    {
+        $hardenRDS = if('{{ cpm_disable_import_inf }}' -eq 'true') {"True"} else {"False"}
+        $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step1 = $xml.SelectSingleNode("//Step[@Name = 'RemoteDesktopServices']")
+        $step1.Parameters.Parameter.Value = $hardenRDS
+        $xml.Save($filePath)
+        exit 0
+    }
+    catch
+    {
+        Write-Output "Error occured setting hardenRDS parameter"
+        exit 1
+    }
+  when: cpm_disable_import_inf
 
 - name: Hardening Block
   block:
