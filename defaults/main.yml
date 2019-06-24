@@ -17,6 +17,7 @@ cpm_registered: false
 cpm_official: true
 cpm_ispsminstalled: false
 cpm_harden_rds: true
+cpm_disable_import_inf: false
 
 cpm_service_name: "CyberArk Password Manager"
 cpm_scanner_service_name: "CyberArk Central Policy Manager Scanner"
