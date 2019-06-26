@@ -13,8 +13,8 @@
         $isPsmInstalledValue = if('{{ cpm_ispsminstalled }}' -eq 'true') {"True"} else {"False"}
         $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
         $xml = [xml](Get-Content $filePath)
-        $step1 = $xml.SelectSingleNode("//Parameter[@Name = 'IsPSMInstalled']")
-        $step1.Value = $isPsmInstalledValue
+        $step1 = $xml.SelectSingleNode("//Step[@Name = 'ValidateServerRoles']")
+        $step1.Parameters.Parameter.Value = $isPsmInstalledValue
         $xml.Save($filePath)
         exit 0
     }
@@ -29,11 +29,11 @@
   win_shell: |
     try
     {
-        $hardenRDS = if('{{ cpm_harden_rds }}' -eq 'false') {"False"} else {"True"}
+        $hardenRDS = if('{{ cpm_harden_rds }}' -eq 'false') {"No"} else {"Yes"}
         $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
         $xml = [xml](Get-Content $filePath)
         $step1 = $xml.SelectSingleNode("//Step[@Name = 'RemoteDesktopServices']")
-        $step1.Parameters.Parameter.Value = $hardenRDS
+        $step1.Enable = $hardenRDS
         $xml.Save($filePath)
         exit 0
     }
