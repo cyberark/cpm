@@ -48,11 +48,11 @@
   win_shell: |
     try
     {
-        $hardenRDS = if('{{ cpm_disable_import_inf }}' -eq 'true') {"True"} else {"False"}
+        $disbaleImportInf = if('{{ cpm_disable_import_inf }}' -eq 'true') {"True"} else {"False"}
         $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
         $xml = [xml](Get-Content $filePath)
-        $step1 = $xml.SelectSingleNode("//Step[@Name = 'RemoteDesktopServices']")
-        $step1.Parameters.Parameter.Value = $hardenRDS
+        $step1 = $xml.SelectSingleNode("//Step[@Name = 'ImportingINFConfiguration']")
+        $step1.Parameters.Parameter.Value = $disbaleImportInf
         $xml.Save($filePath)
         exit 0
     }
