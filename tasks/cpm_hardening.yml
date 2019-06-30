@@ -67,7 +67,7 @@
   win_shell: |
     try
     {
-        $disableLocalUser = if('{{ cpm_disable_local_user }}' -eq 'true') {"Yes"} else {"No"}
+        $disableLocalUser = if('{{ cpm_disable_local_user }}' -eq 'true') {"No"} else {"Yes"}
         $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
         $xml = [xml](Get-Content $filePath)
         $step1 = $xml.SelectSingleNode("//Step[@Name = 'PasswordManagerServicesLocalUser']")
