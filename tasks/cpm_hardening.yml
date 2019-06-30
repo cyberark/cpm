@@ -15,6 +15,8 @@
         $xml = [xml](Get-Content $filePath)
         $step1 = $xml.SelectSingleNode("//Step[@Name = 'ValidateServerRoles']")
         $step1.Parameters.Parameter.Value = $isPsmInstalledValue
+        $step2 = $xml.SelectSingleNode("//Step[@Name = 'ImportingINFConfiguration']")
+        $step2.Parameters.Parameter.Value = $isPsmInstalledValue
         $xml.Save($filePath)
         exit 0
     }
@@ -48,17 +50,17 @@
   win_shell: |
     try
     {
-        $disbaleImportInf = if('{{ cpm_disable_import_inf }}' -eq 'true') {"True"} else {"False"}
+        $disbaleImportInf = if('{{ cpm_disable_import_inf }}' -eq 'true') {"No"} else {"Yes"}
         $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
         $xml = [xml](Get-Content $filePath)
         $step1 = $xml.SelectSingleNode("//Step[@Name = 'ImportingINFConfiguration']")
-        $step1.Parameters.Parameter.Value = $disbaleImportInf
+        $step1.Enable = $disbaleImportInf
         $xml.Save($filePath)
         exit 0
     }
     catch
     {
-        Write-Output "Error occured setting hardenRDS parameter"
+        Write-Output "Error occured setting cpm_disable_import_inf parameter"
         exit 1
     }
   when: cpm_disable_import_inf
