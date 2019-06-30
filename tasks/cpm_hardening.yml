@@ -58,10 +58,29 @@
     }
     catch
     {
-        Write-Output "Error occured setting hardenRDS parameter"
+        Write-Output "Error occured setting cpm_disable_import_inf parameter"
         exit 1
     }
   when: cpm_disable_import_inf
+
+- name: update cpm_disable_local_user value
+  win_shell: |
+    try
+    {
+        $disableLocalUser = if('{{ cpm_disable_local_user }}' -eq 'true') {"Yes"} else {"No"}
+        $filePath = "{{ cpm_installationautomation_folder }}\\CPM_Hardening_Config.xml"
+        $xml = [xml](Get-Content $filePath)
+        $step1 = $xml.SelectSingleNode("//Step[@Name = 'PasswordManagerServicesLocalUser']")
+        $step1.Enable = $disableLocalUser
+        $xml.Save($filePath)
+        exit 0
+    }
+    catch
+    {
+        Write-Output "Error occured setting cpm_disable_local_user parameter"
+        exit 1
+    }
+  when: cpm_disable_local_user
 
 - name: Hardening Block
   block:
