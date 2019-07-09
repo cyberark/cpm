@@ -32,4 +32,4 @@
     cpm_registered: true
   when:
     - cpm_exists and cpm_scanner_exists
-    - cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"
+    - cpm_service_info.state == "running"

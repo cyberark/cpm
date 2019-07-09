@@ -27,7 +27,7 @@ cpm_installationautomation_folder: "{{ cpm_extract_folder }}\\{{ cpm_component_f
 
 cpm_installation_drive: "C:"
 cpm_installation_path: "{{ cpm_installation_drive }}\\Program Files (x86)\\CyberArk"
-cpm_registrationtool_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\Components Registration\\CPM"
+cpm_registrationtool_folder: "{{ cpm_installationautomation_folder }}\\Registration"
 
 cpm_prerequisites_log: "{{ cpm_installationautomation_folder }}\\cpm_prerequisites_result.txt"
 cpm_install_log: "{{ cpm_installationautomation_folder }}\\cpm_installation_result.txt"
