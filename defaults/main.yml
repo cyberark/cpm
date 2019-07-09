@@ -32,7 +32,7 @@ cpm_registrationtool_folder: "{{ cpm_installationautomation_folder }}\\Registrat
 cpm_prerequisites_log: "{{ cpm_installationautomation_folder }}\\cpm_prerequisites_result.txt"
 cpm_install_log: "{{ cpm_installationautomation_folder }}\\cpm_installation_result.txt"
 cpm_hardening_log: "{{ cpm_installationautomation_folder }}\\cpm_hardening_result.txt"
-cpm_registration_log: "{{ cpm_registrationtool_folder }}\\Log\\RegisterComponent.log"
+cpm_registration_log: "{{ cpm_installationautomation_folder }}\\cpm_registration_result.txt"
 
 vault_username: "administrator"
 accept_eula: "No"

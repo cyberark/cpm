@@ -8,7 +8,7 @@
       win_shell: |
         try
         {
-            $filePath = "{{ cpm_installationautomation_folder }}\\CPMRegisterComponentConfig.xml"
+            $filePath = "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
             $xml = [xml](Get-Content $filePath)
             $step1 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultip']")
             $step1.Value = "{{ vault_ip }}"
@@ -32,7 +32,7 @@
       win_shell: |
         try
         {
-            $filePath = "{{ cpm_installationautomation_folder }}\\CPMRegisterComponentConfig.xml"
+            $filePath = "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
             $xml = [xml](Get-Content $filePath)
             $step1 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultip']")
             $step1.Value = "{{ vault_ip }},{{ dr_vault_ip }}"
@@ -56,7 +56,7 @@
       win_shell: |
         Set-Location "{{ cpm_registrationtool_folder }}"
         #$ErrorActionPreference = "SilentlyContinue"
-        $Action = .\CPMRegisterCommponent.ps1
+        $Action = .\CPMRegisterCommponent.ps1 -pwd {{ vault_password }}
         $Action | Out-File -FilePath "{{ cpm_registration_log }}"
         $Result = Get-Content "{{ cpm_registration_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -ne 0) {
