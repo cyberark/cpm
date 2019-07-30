@@ -23,7 +23,7 @@
     - st.checksum != cpm_sha1_checksum
     - not cpm_ignore_checksum
 
-- name: Unzip the cpm package
+- name: Unzip the CPM package
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
@@ -35,7 +35,7 @@
     state: directory
   when: not cpm_official
 
-- name: Unzip the cpm package
+- name: Unzip the CPM package
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"

@@ -2,36 +2,36 @@
 # tasks file for cpm
 
 # Validate Parameters
-- name: validate input parameters
+- name: Validate input parameters
   include_tasks: cpm_validateparameters.yml
 
-- name: extract cpm package
+- name: Extract CPM package
   include_tasks: cpm_extract.yml
   when:
     - cpm_extract
 
-- name: running cpm prerequisities
+- name: Running CPM prerequisities
   include_tasks: cpm_prerequisites.yml
   when:
     -cpm_prerequisites
 
-- name: running cpm uninstall
+- name: Running CPM uninstall
   include_tasks: cpm_uninstall.yml
   when:
     - cpm_uninstall
 
-- name: running cpm install
+- name: Running CPM install
   include_tasks: cpm_install.yml
   when:
     - cpm_install
     - not cpm_exists
 
-- name: running cpm postinstall
+- name: Running CPM postinstall
   include_tasks: cpm_postinstall.yml
   when:
     - cpm_postinstall
 
-- name: running cpm hardening
+- name: Running CPM hardening
   include_tasks: cpm_hardening.yml
   when:
     - not cpm_hardened
@@ -39,7 +39,7 @@
     - cpm_scanner_exists
     - cpm_hardening
 
-- name: running cpm registration
+- name: Running CPM registration
   include_tasks: cpm_registration.yml
   when:
     - cpm_registration
@@ -47,12 +47,12 @@
     - cpm_scanner_exists
     - not cpm_registered
 
-- name: running cpm upgrade
+- name: Running CPM upgrade
   include_tasks: cpm_upgrade.yml
   when:
     - cpm_upgrade
 
-- name: running cpm clean
+- name: Running CPM clean
   include_tasks: cpm_clean.yml
   when:
     - cpm_clean

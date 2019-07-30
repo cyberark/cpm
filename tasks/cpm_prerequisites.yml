@@ -4,7 +4,7 @@
 - name: Pre Install Block
   block:
 
-    - name: run CPM pre requisites
+    - name: Run CPM prerequisites
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
         $Action = .\CPM_PreInstallation.ps1

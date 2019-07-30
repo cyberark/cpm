@@ -22,7 +22,7 @@
 - name: Installation Block
   block:
 
-    - name: run CPM installation
+    - name: Run CPM installation
       win_shell: |
         Set-Location "{{ cpm_installationautomation_folder }}\Installation"
         #$ErrorActionPreference = "SilentlyContinue"
@@ -85,12 +85,12 @@
   with_items:
     - "{{ log_result.stdout | from_json }}"
 
-- name: check if cpm service created successfully
+- name: check if CPM service created successfully
   win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
 
-- name: check if cpm scanner created successfully
+- name: check if CPM scanner created successfully
   win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info

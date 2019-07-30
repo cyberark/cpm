@@ -4,7 +4,7 @@
 - name: Registration Block
   block:
 
-    - name: Set up cpm registration configuration file
+    - name: Set up CPM registration configuration file
       win_shell: |
         try
         {
@@ -28,7 +28,7 @@
         }
       when: dr_vault_ip is not defined
 
-    - name: Set up cpm registration configuration file
+    - name: Set up CPM registration configuration file
       win_shell: |
         try
         {
@@ -52,7 +52,7 @@
         }
       when: dr_vault_ip is defined
 
-    - name: Execute cpm registration
+    - name: Run CPM registration
       win_shell: |
         Set-Location "{{ cpm_registrationtool_folder }}"
         #$ErrorActionPreference = "SilentlyContinue"
@@ -65,30 +65,30 @@
           exit 0
         }
 
-    - name: Fetch registration log from path
+    - name: Fetch registration log from original folder
       fetch:
         src: '{{ cpm_registration_log }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
         flat: yes
 
-    - name: start cpm service & set to auto
+    - name: start CPM service & set to auto
       win_service:
         name: "{{ cpm_service_name }}"
         start_mode: auto
         state: started
 
-    - name: start cpm scanner service & set to auto
+    - name: start CPM scanner service & set to auto
       win_service:
         name: "{{ cpm_scanner_service_name }}"
         start_mode: auto
         state: started
 
-    - name: check if cpm service is running
+    - name: check if CPM service is running
       win_service:
         name: "{{ cpm_service_name }}"
       register: cpm_service_info
 
-    - name: check if cpm scanner service is running
+    - name: check if CPM scanner service is running
       win_service:
         name: "{{ cpm_scanner_service_name }}"
       register: cpm_scanner_service_info
@@ -99,7 +99,7 @@
 
   rescue:
 
-    - name: Fetch registration log from path
+    - name: Fetch registration log from original folder
       fetch:
         src: '{{ cpm_registration_log }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'

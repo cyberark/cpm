@@ -13,7 +13,7 @@
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
-- name: Clean Windows\\Temp Folder
+- name: Clean Windows\\Temp folder
   win_find:
     paths: "C:\\Windows\\Temp"
     patterns: ['CPM*.*', 'InstallationAutomation*.*']
@@ -30,7 +30,7 @@
     path: "{{ cpm_extract_folder }}"
     state: absent
 
-- name: Clean Run History
+- name: Clean run History
   win_shell: |
     try {
       $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
