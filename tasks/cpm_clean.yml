@@ -25,6 +25,12 @@
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
+- name: Keep installation automation folder
+  win_copy:
+    src: "{{cpm_installationautomation_folder}}"
+    dest: C:\Cyberark
+    remote_src: True
+
 - name: Delete extract folder
   win_file:
     path: "{{ cpm_extract_folder }}"
