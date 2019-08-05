@@ -14,7 +14,7 @@
 - name: Running CPM prerequisities
   include_tasks: cpm_prerequisites.yml
   when:
-    -cpm_prerequisites
+    - cpm_prerequisites
   tags: [print_action]
 
 - name: Running CPM uninstall
