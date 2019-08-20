@@ -23,13 +23,20 @@
     - st.checksum != cpm_sha1_checksum
     - not cpm_ignore_checksum
 
-- name: Unzip the cpm package
+- name: Unzip the CPM package
   win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
+  when: cpm_official
 
-- name: Copy registration tool
-  win_copy:
-    src: "{{ cpm_installationautomation_folder }}\\Registration\\RegistrationTool\\"
-    dest: "{{ cpm_registrationtool_folder }}"
-    remote_src: yes
+- name: Create component folder
+  win_file:
+    path: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
+    state: directory
+  when: not cpm_official
+
+- name: Unzip the CPM package
+  win_unzip:
+    src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+    dest: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
+  when: not cpm_official

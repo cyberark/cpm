@@ -14,6 +14,7 @@ cpm_exists: false
 cpm_scanner_exists: false
 cpm_hardened: false
 cpm_registered: false
+cpm_official: true
 
 cpm_service_name: "CyberArk Password Manager"
 cpm_scanner_service_name: "CyberArk Central Policy Manager Scanner"
@@ -26,12 +27,12 @@ cpm_installationautomation_folder: "{{ cpm_extract_folder }}\\{{ cpm_component_f
 
 cpm_installation_drive: "C:"
 cpm_installation_path: "{{ cpm_installation_drive }}\\Program Files (x86)\\CyberArk"
-cpm_registrationtool_folder: "{{ cpm_base_bin_drive }}\\Cyberark\\Components Registration"
+cpm_registrationtool_folder: "{{ cpm_installationautomation_folder }}\\Registration"
 
 cpm_prerequisites_log: "{{ cpm_installationautomation_folder }}\\cpm_prerequisites_result.txt"
 cpm_install_log: "{{ cpm_installationautomation_folder }}\\cpm_installation_result.txt"
 cpm_hardening_log: "{{ cpm_installationautomation_folder }}\\cpm_hardening_result.txt"
-cpm_registration_log: "{{ cpm_registrationtool_folder }}\\Log\\RegisterComponent.log"
+cpm_registration_log: "{{ cpm_installationautomation_folder }}\\cpm_registration_result.txt"
 
 vault_username: "administrator"
 accept_eula: "No"

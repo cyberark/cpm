@@ -5,12 +5,12 @@
     msg: "You must accept EULA to start the playbook"
   when: (accept_eula|type_debug != 'bool' and accept_eula|lower != "yes") or (accept_eula|type_debug == 'bool' and not accept_eula)
 
-- name: check if cpm was already installed
+- name: check if CPM was already installed
   win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
 
-- name: check if cpm scanner was already installed
+- name: check if CPM scanner was already installed
   win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
@@ -19,7 +19,7 @@
     cpm_exists: "{{ cpm_service_info.exists }}"
     cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
 
-- name: check if cpm is hardened
+- name: check if CPM is hardened
   set_fact:
     cpm_hardened: true
   when:
@@ -27,9 +27,9 @@
     - cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"
 
 
-- name: check if cpm is registered
+- name: check if CPM is registered
   set_fact:
     cpm_registered: true
   when:
     - cpm_exists and cpm_scanner_exists
-    - cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"
+    - cpm_service_info.state == "running"
