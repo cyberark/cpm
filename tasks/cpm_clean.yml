@@ -28,7 +28,7 @@
 - name: Keep installation automation folder
   win_copy:
     src: "{{ cpm_installationautomation_folder }}"
-    dest: "{{ cpm_base_bin_drive }}\\Cyberark"
+    dest: "{{ cpm_base_bin_drive }}\\Cyberark\\CPM"
     remote_src: True
 
 - name: Delete extract folder
