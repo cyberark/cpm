@@ -66,14 +66,14 @@
         }
       no_log: true
 
-    - name: Get log path for installation
+    - name: Get log path for registration
       win_shell: |
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result
       no_log: true
 
-    - name: Fetch installation log from path
+    - name: Fetch registration log from path
       fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
@@ -109,14 +109,14 @@
 
   rescue:
 
-    - name: Get log path for installation
+    - name: Get log path for registration
       win_shell: |
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result
       no_log: true
 
-    - name: Fetch installation log from path
+    - name: Fetch registration log from path
       fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
