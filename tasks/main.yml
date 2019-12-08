@@ -13,7 +13,7 @@
 - name: Running CPM prerequisities
   include_tasks: cpm_prerequisites.yml
   when:
-    -cpm_prerequisites
+    - cpm_prerequisites
 
 - name: Running CPM uninstall
   include_tasks: cpm_uninstall.yml
