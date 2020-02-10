@@ -56,7 +56,8 @@
       win_shell: |
         Set-Location "{{ cpm_registrationtool_folder }}"
         #$ErrorActionPreference = "SilentlyContinue"
-        $Action = .\CPMRegisterCommponent.ps1 -pwd "{{ vault_password }}"
+        # $Action = .\CPMRegisterCommponent.ps1 -pwd "{{ vault_password }}"
+        $Action = .\CPMRegisterCommponent.ps1 -spwdObj "{{ secure_vault_password }}"
         $Action | Out-File -FilePath "{{ cpm_registration_log }}"
         $Result = Get-Content "{{ cpm_registration_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -ne 0) {
