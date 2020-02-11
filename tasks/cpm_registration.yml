@@ -56,9 +56,8 @@
       win_shell: |
         Set-Location "{{ cpm_registrationtool_folder }}"
         #$ErrorActionPreference = "SilentlyContinue"
-        # $Action = .\CPMRegisterCommponent.ps1 -pwd "{{ vault_password }}"
-        $SecureObject = ConvertTo-SecureString -String "{{ secure_vault_password }}"
-        $Action = .\CPMRegisterCommponent.ps1 -spwdObj $SecureObject
+        $secStrObj = ConvertTo-SecureString -String "{{ secure_vault_password }}" -Force
+        $Action = .\CPMRegisterCommponent.ps1 -spwdObj $secStrObj
         $Action | Out-File -FilePath "{{ cpm_registration_log }}"
         $Result = Get-Content "{{ cpm_registration_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -ne 0) {
@@ -66,12 +65,14 @@
         } else {
           exit 0
         }
+      no_log: true
 
     - name: Get log path for registration
       win_shell: |
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result
+      no_log: true
 
 
     - name: Fetch registration log from path
