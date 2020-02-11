@@ -20,10 +20,10 @@
 - name: check if the user use 2 passwords
   fail:
     msg: "You must provide either vault_password or secure_vault_password parameter"
-  when: 
+  when:
     - (vault_password != '')
     - (secure_vault_password != '')
-  no_log: true  
+  no_log: true
 
 - name: convert to securestring
   win_shell: |
