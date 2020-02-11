@@ -42,7 +42,6 @@
         vault_password: ''
       when: secure_vault_password == ''
       no_log: true
-
   when:
     - cpm_registration
 
