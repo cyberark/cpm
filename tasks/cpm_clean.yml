@@ -32,6 +32,7 @@
     remote_src: True
   ignore_errors: yes
 
+
 - name: Delete extract folder
   win_file:
     path: "{{ cpm_extract_folder }}"
