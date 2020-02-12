@@ -39,7 +39,7 @@
       when: secure_vault_password == ''
       no_log: true
   when:
-   - cpm_registration
+    - cpm_registration
 
 - name: check if CPM was already installed
   win_service:
