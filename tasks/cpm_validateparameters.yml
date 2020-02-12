@@ -4,7 +4,7 @@
   fail:
     msg: "You must accept EULA to start the playbook"
   when: (accept_eula|type_debug != 'bool' and accept_eula|lower != "yes") or (accept_eula|type_debug == 'bool' and not accept_eula)
-
+  
 - name: set secure vault password
     block:
       - name: set default value for vault_password
@@ -44,7 +44,7 @@
         no_log: true
     when:
      - cpm_registration
-
+     
 - name: check if CPM was already installed
   win_service:
     name: "{{ cpm_service_name }}"
