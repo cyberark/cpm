@@ -3,6 +3,8 @@
 
 - name: Registration Block
   block:
+    - set_fact:
+        vault_ip_str: "{{ vault_ip }}"
 
     - name: Concat DR vault ip to vault_ip_str
       set_fact:
@@ -71,24 +73,24 @@
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
-    - name: start CPM service & set to auto
+    - name: Start CPM service & set to auto
       win_service:
         name: "{{ cpm_service_name }}"
         start_mode: auto
         state: started
 
-    - name: start CPM scanner service & set to auto
+    - name: Start CPM scanner service & set to auto
       win_service:
         name: "{{ cpm_scanner_service_name }}"
         start_mode: auto
         state: started
 
-    - name: check if CPM service is running
+    - name: Check if CPM service is running
       win_service:
         name: "{{ cpm_service_name }}"
       register: cpm_service_info
 
-    - name: check if CPM scanner service is running
+    - name: Check if CPM scanner service is running
       win_service:
         name: "{{ cpm_scanner_service_name }}"
       register: cpm_scanner_service_info

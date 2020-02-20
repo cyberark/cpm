@@ -1,30 +1,33 @@
 ---
 # tasks file for cpm_validateparameters
-- name: check EULA is accepted
+- name: Check EULA is accepted
   fail:
     msg: "You must accept EULA to start the playbook"
   when: (accept_eula|type_debug != 'bool' and accept_eula|lower != "yes") or (accept_eula|type_debug == 'bool' and not accept_eula)
 
-- name: set secure vault password
+- name: Set secure vault password
   block:
-    - name: set default value for vault_password
+    - name: Set default value for vault_password
       set_fact:
         vault_password: ''
       when: vault_password is undefined
       no_log: true
-    - name: set default value for secure_vault_password
+
+    - name: Set default value for secure_vault_password
       set_fact:
         secure_vault_password: ''
       when: secure_vault_password is undefined
       no_log: true
-    - name: check if the user use 2 passwords
+
+    - name: Check if the user use 2 passwords
       fail:
         msg: "You must provide either vault_password or secure_vault_password parameter"
       when:
         - (vault_password != '')
         - (secure_vault_password != '')
       no_log: true
-    - name: convert to securestring
+
+    - name: Convert to securestring
       win_shell: |
         $secure_vault_password_object = ConvertTo-SecureString "{{ vault_password }}" -AsPlainText -Force
         $secure_vault_password_string = ConvertFrom-SecureString $secure_vault_password_object
@@ -32,7 +35,8 @@
       register: secure_vault_password_string
       when: vault_password != ''
       no_log: true
-    - name: set varible for secured vault password
+
+    - name: Set varible for secured vault password
       set_fact:
         secure_vault_password: "{{ secure_vault_password_string.stdout_lines[0] }}"
         vault_password: ''
@@ -41,12 +45,12 @@
   when:
     - cpm_registration
 
-- name: check if CPM was already installed
+- name: Check if CPM was already installed
   win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
 
-- name: check if CPM scanner was already installed
+- name: Check if CPM scanner was already installed
   win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
@@ -54,17 +58,15 @@
 - set_fact:
     cpm_exists: "{{ cpm_service_info.exists }}"
     cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
-    vault_ip_str: "{{ vault_ip }}"
 
-- name: check if CPM is hardened
+- name: Check if CPM is hardened
   set_fact:
     cpm_hardened: true
   when:
     - cpm_exists and cpm_scanner_exists
     - cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"
 
-
-- name: check if CPM is registered
+- name: Check if CPM is registered
   set_fact:
     cpm_registered: true
   when:
