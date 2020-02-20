@@ -54,6 +54,7 @@
 - set_fact:
     cpm_exists: "{{ cpm_service_info.exists }}"
     cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
+    vault_ip_str: "{{ vault_ip }}"
 
 - name: check if CPM is hardened
   set_fact:

@@ -4,53 +4,42 @@
 - name: Registration Block
   block:
 
-    - name: Set up CPM registration configuration file
-      win_shell: |
-        try
-        {
-            $filePath = "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
-            $xml = [xml](Get-Content $filePath)
-            $step1 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultip']")
-            $step1.Value = "{{ vault_ip }}"
-            $step2 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultPort']")
-            $step2.Value = "{{ vault_port }}"
-            $step3 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultUser']")
-            $step3.Value = "{{ vault_username }}"
-            $step4 = $xml.SelectSingleNode("//Parameter[@Name = 'installDirectory']")
-            $step4.Value = "{{ cpm_installation_path }}"
-            $xml.Save($filePath)
-            exit 0
-        }
-        catch
-        {
-            Write-Output "Error occured While updating registration configuration file"
-            exit 1
-        }
-      when: dr_vault_ip is not defined
-
-    - name: Set up CPM registration configuration file
-      win_shell: |
-        try
-        {
-            $filePath = "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
-            $xml = [xml](Get-Content $filePath)
-            $step1 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultip']")
-            $step1.Value = "{{ vault_ip }},{{ dr_vault_ip }}"
-            $step2 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultPort']")
-            $step2.Value = "{{ vault_port }}"
-            $step3 = $xml.SelectSingleNode("//Parameter[@Name = 'vaultUser']")
-            $step3.Value = "{{ vault_username }}"
-            $step4 = $xml.SelectSingleNode("//Parameter[@Name = 'installDirectory']")
-            $step4.Value = "{{ cpm_installation_path }}"
-            $xml.Save($filePath)
-            exit 0
-        }
-        catch
-        {
-            Write-Output "Error occured While updating registration configuration file"
-            exit 1
-        }
+    - name: Concat DR vault ip to vault_ip_str
+      set_fact:
+        vault_ip_str: "{{ vault_ip_str }}, {{ dr_vault_ip }}"
       when: dr_vault_ip is defined
+
+    - name: Change Vault ip in CPMRegisterComponentConfig.xml
+      win_xml:
+       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+       fragment: "{{ vault_ip_str }}"
+       xpath: "//Parameter[@Name = 'vaultip']"
+       attribute: "Value"
+       type: attribute
+
+    - name: Change Vault Port in CPMRegisterComponentConfig.xml
+      win_xml:
+       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+       fragment: "{{ vault_port }}"
+       xpath: "//Parameter[@Name = 'vaultPort']"
+       attribute: "Value"
+       type: attribute
+
+    - name: Change Vault User in CPMRegisterComponentConfig.xml
+      win_xml:
+       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+       fragment: "{{ vault_username }}"
+       xpath: "//Parameter[@Name = 'vaultUser']"
+       attribute: "Value"
+       type: attribute
+   
+    - name: Change CPM Install Directory in CPMRegisterComponentConfig.xml
+      win_xml:
+       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+       fragment: "{{ cpm_installation_path }}"
+       xpath: "//Parameter[@Name = 'installDirectory']"
+       attribute: "Value"
+       type: attribute
 
     - name: Run CPM registration
       win_shell: |
