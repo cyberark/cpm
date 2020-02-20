@@ -11,35 +11,35 @@
 
     - name: Change Vault ip in CPMRegisterComponentConfig.xml
       win_xml:
-       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
-       fragment: "{{ vault_ip_str }}"
-       xpath: "//Parameter[@Name = 'vaultip']"
-       attribute: "Value"
-       type: attribute
+        path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+        fragment: "{{ vault_ip_str }}"
+        xpath: "//Parameter[@Name = 'vaultip']"
+        attribute: "Value"
+        type: attribute
 
     - name: Change Vault Port in CPMRegisterComponentConfig.xml
       win_xml:
-       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
-       fragment: "{{ vault_port }}"
-       xpath: "//Parameter[@Name = 'vaultPort']"
-       attribute: "Value"
-       type: attribute
+        path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+        fragment: "{{ vault_port }}"
+        xpath: "//Parameter[@Name = 'vaultPort']"
+        attribute: "Value"
+        type: attribute
 
     - name: Change Vault User in CPMRegisterComponentConfig.xml
       win_xml:
-       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
-       fragment: "{{ vault_username }}"
-       xpath: "//Parameter[@Name = 'vaultUser']"
-       attribute: "Value"
-       type: attribute
+        path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+        fragment: "{{ vault_username }}"
+        xpath: "//Parameter[@Name = 'vaultUser']"
+        attribute: "Value"
+        type: attribute
    
     - name: Change CPM Install Directory in CPMRegisterComponentConfig.xml
       win_xml:
-       path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
-       fragment: "{{ cpm_installation_path }}"
-       xpath: "//Parameter[@Name = 'installDirectory']"
-       attribute: "Value"
-       type: attribute
+        path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
+        fragment: "{{ cpm_installation_path }}"
+        xpath: "//Parameter[@Name = 'installDirectory']"
+        attribute: "Value"
+        type: attribute
 
     - name: Run CPM registration
       win_shell: |
