@@ -32,7 +32,7 @@
         xpath: "//Parameter[@Name = 'vaultUser']"
         attribute: "Value"
         type: attribute
-   
+
     - name: Change CPM Install Directory in CPMRegisterComponentConfig.xml
       win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
