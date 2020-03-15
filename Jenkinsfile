@@ -5,23 +5,10 @@ pipeline {
     }
   }
   environment {
-    AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python -c "import json,sys;obj=json.load(sys.stdin);print obj[\'region\']"', returnStdout: true).trim()
+    AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python3 -c "import json,sys;obj=json.load(sys.stdin);print (obj[\'region\'])"', returnStdout: true).trim()
     shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
   }
   stages {
-    stage('Get role') {
-      steps {
-        sh '''
-            cd tests
-            rm -rf roles
-            mkdir roles
-            cd roles
-            git clone https://github.com/cyberark/cpm
-            cd cpm
-            git checkout ${shortCommit}
-        '''
-      }
-    }
     stage('Install virtual environment') {
       steps {
         sh '''
@@ -32,11 +19,6 @@ pipeline {
         '''
       }
     }
-    // stage('ansible-lint validation') {
-    //   steps {
-    //     sh '.testenv/bin/ansible-lint tasks/* defaults/* meta/*'
-    //   }
-    // }
     stage('yamllint validation') {
       steps {
         sh '''
