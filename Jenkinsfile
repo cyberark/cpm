@@ -12,8 +12,8 @@ pipeline {
     stage('Install virtual environment') {
       steps {
         sh '''
-            python -m pip install --user virtualenv
-            python -m virtualenv .testenv
+            python3 -m pip install --user virtualenv
+            python3 -m virtualenv .testenv
             source .testenv/bin/activate
             pip install -r tests/requirements.txt
         '''
