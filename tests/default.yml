@@ -4,6 +4,10 @@
   gather_facts: no
   tasks:
 
+    - name: Get roles directory dirname
+      set_fact:
+        roles_dirname: "{{ playbook_dir | dirname | basename }}"
+
     - name: download package from s3
       aws_s3:
         bucket: cloud-initiatives-pipeline-bucket
@@ -14,7 +18,7 @@
 
     - name: CPM Deployment
       include_role:
-        name: cpm
+        name: "{{ roles_dirname }}"
       vars:
         - cpm_extract: true
         - cpm_official: false
