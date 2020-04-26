@@ -42,6 +42,7 @@ dr_vault_ip                      | no           | None                          
 accept_eula                      | yes          | **"No"**                                             | Accepting EULA condition 
 cpm_zip_file_path                | yes          | None                                                 | CyberArk CPM installation Zip file package path
 cpm_installation_drive           | no           | **C:**                                               | Destination installation drive
+cpm_username                     | no           | **PasswordManager**                                  | Vault Component's username
 
 ## Dependencies
 None
