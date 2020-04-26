@@ -11,13 +11,11 @@
       set_fact:
         vault_password: ''
       when: vault_password is undefined
-      no_log: true
 
     - name: Set default value for secure_vault_password
       set_fact:
         secure_vault_password: ''
       when: secure_vault_password is undefined
-      no_log: true
 
     - name: Check if the user use 2 passwords
       fail:
@@ -25,7 +23,6 @@
       when:
         - (vault_password != '')
         - (secure_vault_password != '')
-      no_log: true
 
     - name: Convert to securestring
       win_shell: |
@@ -34,16 +31,15 @@
         write-output $secure_vault_password_string
       register: secure_vault_password_string
       when: vault_password != ''
-      no_log: true
 
     - name: Set varible for secured vault password
       set_fact:
         secure_vault_password: "{{ secure_vault_password_string.stdout_lines[0] }}"
         vault_password: ''
       when: secure_vault_password == ''
-      no_log: true
   when:
     - cpm_registration
+  no_log: true
 
 - name: Check if CPM was already installed
   win_service:

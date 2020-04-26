@@ -64,14 +64,14 @@
         } else {
           exit 0
         }
-#      no_log: true
+      no_log: true
 
     - name: Get log path for registration
       win_shell: |
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result
-#      no_log: true
+      no_log: true
 
     - name: Fetch registration log from path
       fetch:
@@ -114,7 +114,7 @@
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result
- #     no_log: true
+      no_log: true
 
     - name: Rescue - Fetch registration log from path
       fetch:
@@ -124,6 +124,6 @@
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
-    - name: Rescue - Fail
+    - name: Rescue - Fail registration stage
       fail:
         msg: 'ERROR: Registration failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'

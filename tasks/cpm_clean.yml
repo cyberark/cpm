@@ -32,7 +32,6 @@
     remote_src: True
   ignore_errors: yes
 
-
 - name: Delete extract folder
   win_file:
     path: "{{ cpm_extract_folder }}"
@@ -59,7 +58,7 @@
     }
     exit 0
 
-- name: clean event logs
+- name: Clean event logs
   win_shell: |
     try {
       wevtutil el | ForEach-Object { wevtutil cl "$_" }
@@ -68,7 +67,7 @@
       exit 1
     }
 
-- name: clean recycle bin
+- name: Clean recycle bin
   win_shell: |
     try {
       $Recycler = (New-Object -ComObject Shell.Application).Namespace(0xa)
