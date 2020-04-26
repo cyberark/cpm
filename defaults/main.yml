@@ -37,5 +37,3 @@ cpm_registration_log: "{{ cpm_installationautomation_folder }}\\cpm_registration
 vault_username: "administrator"
 accept_eula: "No"
 vault_port: 1858
-
-cpm_username: "PasswordManager"

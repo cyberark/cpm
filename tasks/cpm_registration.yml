@@ -50,6 +50,7 @@
         xpath: "//Parameter[@Name = 'username']"
         attribute: "Value"
         type: attribute
+      when: cpm_username is defined
 
     - name: Run CPM registration
       win_shell: |
