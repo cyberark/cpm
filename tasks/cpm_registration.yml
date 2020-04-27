@@ -65,7 +65,7 @@
         } else {
           exit 0
         }
-      no_log: false
+      no_log: true
 
     - name: Get log path for registration
       win_shell: |
