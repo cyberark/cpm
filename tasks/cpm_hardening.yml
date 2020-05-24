@@ -22,6 +22,7 @@
         }
       args:
         chdir: "{{ cpm_installationautomation_folder }}"
+      when: not windows_domain_member
 
     - name: Get log path for hardening
       win_shell: |

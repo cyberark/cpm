@@ -4,15 +4,6 @@
   gather_facts: no
   tasks:
 
-    - name: Gather subset
-      setup:
-        gather_subset:
-          - 'network'
-
-    - name: Display all variables/facts known for a host
-      debug:
-        var: hostvars[inventory_hostname]
-
     - name: Get roles directory dirname
       set_fact:
         roles_dirname: "{{ playbook_dir | dirname | basename }}"
