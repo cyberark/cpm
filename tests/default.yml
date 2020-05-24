@@ -1,8 +1,13 @@
 ---
 
 - hosts: cpm
-  gather_facts: no
+  gather_facts: yes
   tasks:
+
+    - name: Display all variables/facts known for a host
+      debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 4
 
     - name: Get roles directory dirname
       set_fact:
