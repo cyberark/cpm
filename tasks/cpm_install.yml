@@ -53,13 +53,13 @@
 
   rescue:
 
-    - name: Recurse - Get log path for installation
+    - name: Rescue - Get log path for installation
       win_shell: |
         $Result = Get-Content "{{ cpm_install_log }}"
         Write-Output $Result
       register: log_result
 
-    - name: Recurse - Fetch installation log from path
+    - name: Rescue - Fetch installation log from path
       fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
@@ -67,7 +67,7 @@
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
-    - name: Recurse - Fail installation stage
+    - name: Rescue - Fail installation stage
       fail:
         msg: 'ERROR: Installation failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
 
