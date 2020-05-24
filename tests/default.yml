@@ -1,8 +1,13 @@
 ---
 
 - hosts: cpm
-  gather_facts: yes
+  gather_facts: no
   tasks:
+
+    - name: Gather subset
+      setup:
+        gather_subset:
+          - 'network'
 
     - name: Display all variables/facts known for a host
       debug:
