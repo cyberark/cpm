@@ -9,6 +9,10 @@
 - name: Hardening Block
   block:
 
+    - name: Set ansible_windows_domain_member
+      set_fact:
+        ansible_windows_domain_member: true
+
     - name: Set cpm_hardening_script in domain
       set_fact:
         cpm_hardening_script: "CPM_In_Domain_Hardening.ps1"
