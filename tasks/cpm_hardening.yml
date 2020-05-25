@@ -9,10 +9,15 @@
 - name: Hardening Block
   block:
 
+    - name: Set cpm_hardening_script in domain
+      set_fact:
+        cpm_hardening_script: "CPM_In_Domain_Hardening.ps1"
+      when: ansible_windows_domain_member
+    
     - name: Run CPM hardening
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
-        $Action = .\CPM_Hardening.ps1
+        $Action = .\{{ cpm_hardening_script }}
         $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
         $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -eq 2) {
@@ -22,7 +27,6 @@
         }
       args:
         chdir: "{{ cpm_installationautomation_folder }}"
-      when: not ansible_windows_domain_member
 
     - name: Get log path for hardening
       win_shell: |
