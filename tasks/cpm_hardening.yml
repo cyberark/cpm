@@ -12,13 +12,7 @@
     - name: Run CPM hardening
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
-        if ({{ ansible_windows_domain_member }}) {
-          echo "In Domain"
-          $Action = .\CPM_In_Domain_Hardening.ps1
-        } else {
-          echo "Out of Domain"
-          $Action = .\CPM_Hardening.ps1
-        }
+        $Action = .\CPM_Hardening.ps1
         $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
         $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -eq 2) {
@@ -28,7 +22,7 @@
         }
       args:
         chdir: "{{ cpm_installationautomation_folder }}"
-      # when: not ansible_windows_domain_member
+      when: not ansible_windows_domain_member
 
     - name: Get log path for hardening
       win_shell: |
