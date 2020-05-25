@@ -13,7 +13,7 @@
       set_fact:
         cpm_hardening_script: "CPM_In_Domain_Hardening.ps1"
       when: ansible_windows_domain_member
-    
+
     - name: Run CPM hardening
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
