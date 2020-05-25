@@ -36,6 +36,10 @@
         Write-Output $Result
       register: log_result
 
+    - debug: var="{{log_result.stdout}}"
+
+    - debug: var="{{log_result.stdout | from_json }}"
+
     - name: Fetch hardening log from original folder
       fetch:
         src: '{{ item.logPath }}'
