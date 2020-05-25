@@ -28,4 +28,3 @@
         - cpm_registration: false
         - cpm_zip_file_path: "/tmp/cpm.zip"
         - accept_eula: yes
-        - cpm_ignore_checksum: true
