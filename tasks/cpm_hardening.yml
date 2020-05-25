@@ -13,8 +13,10 @@
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
         if ({{ ansible_windows_domain_member }}) {
+          echo "In Domain"
           $Action = .\CPM_In_Domain_Hardening.ps1
         } else {
+          echo "Out of Domain"
           $Action = .\CPM_Hardening.ps1
         }
         $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
