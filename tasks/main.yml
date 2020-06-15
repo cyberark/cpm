@@ -1,6 +1,11 @@
 ---
 # tasks file for cpm
 
+- name: Gather subset network facts
+  setup:
+    gather_subset:
+      - 'network'
+
 # Validate Parameters
 - name: Validate input parameters
   include_tasks: cpm_validateparameters.yml

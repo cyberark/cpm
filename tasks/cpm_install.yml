@@ -1,7 +1,7 @@
 ---
 # tasks file for cpm installation
 
-- name: set installation folder on xml config file
+- name: Set installation folder on xml config file
   win_shell: |
     try
     {
@@ -53,13 +53,13 @@
 
   rescue:
 
-    - name: Get log path for installation
+    - name: Rescue - Get log path for installation
       win_shell: |
         $Result = Get-Content "{{ cpm_install_log }}"
         Write-Output $Result
       register: log_result
 
-    - name: Fetch installation log from path
+    - name: Rescue - Fetch installation log from path
       fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
@@ -67,7 +67,8 @@
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
-    - fail:
+    - name: Rescue - Fail installation stage
+      fail:
         msg: 'ERROR: Installation failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
 
 - name: Get log path for installation
@@ -85,12 +86,12 @@
   with_items:
     - "{{ log_result.stdout | from_json }}"
 
-- name: check if CPM service created successfully
+- name: Check if CPM service created successfully
   win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
 
-- name: check if CPM scanner created successfully
+- name: Check if CPM scanner created successfully
   win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info

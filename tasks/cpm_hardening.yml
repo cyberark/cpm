@@ -9,16 +9,21 @@
 - name: Hardening Block
   block:
 
+    - name: Set cpm_hardening_script in domain
+      set_fact:
+        cpm_hardening_script: "CPM_In_Domain_Hardening.ps1"
+      when: ansible_windows_domain_member
+
     - name: Run CPM hardening
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
-        $Action = .\CPM_Hardening.ps1
+        $Action = .\{{ cpm_hardening_script }}
         $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
         $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
         if ($Result.isSucceeded -eq 2) {
-            exit 1
+          exit 1
         } else {
-            exit 0
+          exit 0
         }
       args:
         chdir: "{{ cpm_installationautomation_folder }}"
@@ -39,13 +44,13 @@
 
   rescue:
 
-    - name: Get log path for hardening
+    - name: Rescue - Get log path for hardening
       win_shell: |
         $Result = Get-Content "{{ cpm_hardening_log }}"
         Write-Output $Result
       register: log_result
 
-    - name: Fetch hardening log from original folder
+    - name: Rescue - Fetch hardening log from original folder
       fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_hardening.log'
@@ -53,16 +58,17 @@
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
-    - fail:
+    - name: Rescue - Fail hardening stage
+      fail:
         msg: 'ERROR: Hardening failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_hardening.log'
 
-- name: validate CPM hardening and stop service
+- name: Validate CPM hardening and stop service
   win_service:
     name: "{{ cpm_service_name }}"
     state: stopped
   register: cpm_service_info
 
-- name: validate CPM scanner hardening and stop service
+- name: Validate CPM scanner hardening and stop service
   win_service:
     name: "{{ cpm_scanner_service_name }}"
     state: stopped

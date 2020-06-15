@@ -39,6 +39,7 @@ platforms:
       security_group_filter:
         name: 'ansible-sg'
       tags:
+        Name: CPM Role Test
         created-by: test-kitchen
         component-type: cpm
         kitchen-type: cpm

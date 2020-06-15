@@ -16,7 +16,7 @@
     msg: "{{ cpm_zip_file_path }} not exists, failing..."
   when: not st.checksum
 
-- name: check if package is valid using checksum
+- name: Check if package is valid using checksum
   fail:
     msg: "Checksum does not match, please validate your package."
   when:

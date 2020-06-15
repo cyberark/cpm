@@ -7,6 +7,7 @@ galaxy_info:
     - Avishay Bar
     - Ziv Lifshits
     - Maish Saidel-Keesing
+    - Erez Samimi
   description: Installs CyberArk CPM software
   company: CyberArk
   license: Apache2
