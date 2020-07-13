@@ -23,12 +23,9 @@ Variable                         | Required     | Default                       
 :--------------------------------|:-------------|:------------------------------------------|:---------
 cpm_prerequisites                | no           | false                                     | Install CPM pre requisites
 cpm_install                      | no           | false                                     | Install CPM
-cpm_postinstall                  | no           | false                                     | CPM post install role
 cpm_hardening                    | no           | false                                     | Apply CPM hardening 
 cpm_registration                 | no           | false                                     | Connect CPM to the Vault
-cpm_upgrade                      | no           | false                                     | N/A
 cpm_clean                        | no           | false                                     | N/A
-cpm_uninstall                    | no           | false                                     | N/A
 
 ### Deployment Variables
 Variable                         | Required     | Default                                              | Comments
@@ -83,7 +80,6 @@ to call the CPM role with several parameters:
   vars:
     - cpm_prerequisites: true
     - cpm_install: true
-    - cpm_postinstall: true
     - cpm_hardening: true
     - cpm_registration: true
 ```

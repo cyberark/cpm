@@ -22,23 +22,11 @@
     - cpm_prerequisites
   tags: [print_action]
 
-- name: Running CPM uninstall
-  include_tasks: cpm_uninstall.yml
-  when:
-    - cpm_uninstall
-  tags: [print_action]
-
 - name: Running CPM install
   include_tasks: cpm_install.yml
   when:
     - cpm_install
     - not cpm_exists
-  tags: [print_action]
-
-- name: Running CPM postinstall
-  include_tasks: cpm_postinstall.yml
-  when:
-    - cpm_postinstall
   tags: [print_action]
 
 - name: Running CPM hardening
@@ -57,12 +45,6 @@
     - cpm_exists
     - cpm_scanner_exists
     - not cpm_registered
-  tags: [print_action]
-
-- name: Running CPM upgrade
-  include_tasks: cpm_upgrade.yml
-  when:
-    - cpm_upgrade
   tags: [print_action]
 
 - name: Running CPM clean
