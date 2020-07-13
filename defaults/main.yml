@@ -1,12 +1,9 @@
 ---
 # defaults file for cpm
-cpm_uninstall: false
 cpm_prerequisites: false
 cpm_install: false
-cpm_postinstall: false
 cpm_hardening: false
 cpm_registration: false
-cpm_upgrade: false
 cpm_clean: false
 cpm_extract: false
 cpm_ignore_checksum: false
