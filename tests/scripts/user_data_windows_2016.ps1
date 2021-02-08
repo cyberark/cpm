@@ -9,4 +9,6 @@ $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts
 $file = "$env:temp\ConfigureRemotingForAnsible.ps1"
 Invoke-WebRequest -Uri $url -OutFile $file
 powershell.exe -ExecutionPolicy ByPass -File $file -EnableCredSSP
+
+Set-ItemProperty -Name LocalAccountTokenFilterPolicy -Path HKLM:\software\Microsoft\Windows\CurrentVersion\Policies\system -Value 1
 </powershell>
