@@ -60,14 +60,14 @@ pipeline {
     //   }
     // }
   }
-  // post {
-  //   always {
-  //     sh '''
-  //       export PATH="$HOME/.rbenv/bin:$PATH"
-  //       eval "$(rbenv init -)"
-  //       rbenv global 2.5.1
-  //       kitchen destroy
-  //     '''
-  //   }
-  // }
+  post {
+    always {
+      sh '''
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"
+        rbenv global 2.5.1
+        kitchen destroy
+      '''
+    }
+  }
 }
