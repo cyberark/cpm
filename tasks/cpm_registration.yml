@@ -9,7 +9,9 @@
     - name: Concat DR vault ip to vault_ip_str
       set_fact:
         vault_ip_str: "{{ vault_ip_str }},{{ dr_vault_ip }}"
-      when: dr_vault_ip is defined and dr_vault_ip != ''
+      when:
+        - dr_vault_ip is defined
+        - dr_vault_ip != ''
       
     - name: Change Vault ip in CPMRegisterComponentConfig.xml
       win_xml:
