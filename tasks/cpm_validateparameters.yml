@@ -10,7 +10,7 @@
     - name: Set default value for vault_password
       set_fact:
         vault_password: ''
-      when: vault_password is undefined
+      when: vault_password is undefined or secure_vault_password is defined
 
     - name: Set default value for secure_vault_password
       set_fact:
