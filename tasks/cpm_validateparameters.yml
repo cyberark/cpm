@@ -21,8 +21,9 @@
       fail:
         msg: "You must provide either vault_password or secure_vault_password parameter"
       when:
-        - (vault_password != '')
-        - (secure_vault_password != '')
+        - vault_password != ''
+        - secure_vault_password != ''
+        - secure_vault_password_string is undefined
 
     - name: Convert to securestring
       win_shell: |
