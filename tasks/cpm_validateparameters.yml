@@ -20,8 +20,8 @@
      - name: Print vault_password and secure_vault_password
        ansible.builtin.debug:
          msg:
-          - "{{ vault_password }}"
-          - "{{ secure_vault_password }}"
+           - {{ vault_password }}
+           - {{ secure_vault_password }}
 
     - name: Check if the user use 2 passwords
       fail:
