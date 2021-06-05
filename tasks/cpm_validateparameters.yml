@@ -40,6 +40,7 @@
       when: secure_vault_password == '' or secure_vault_password_string is defined
   when:
     - cpm_registration
+  no_log: true
 
 - name: Check if CPM was already installed
   win_service:
