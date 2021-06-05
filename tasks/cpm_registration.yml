@@ -5,6 +5,7 @@
   block:
     - set_fact:
         vault_ip_str: "{{ vault_ip }}"
+      when: dr_vault_ip is undefined or dr_vault_ip == ''
 
     - name: Concat DR vault ip to vault_ip_str
       set_fact:
