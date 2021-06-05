@@ -37,7 +37,7 @@
       set_fact:
         secure_vault_password: "{{ secure_vault_password_string.stdout_lines[0] }}"
         vault_password: ''
-      when: secure_vault_password == ''
+      when: secure_vault_password == '' or secure_vault_password_string is defined
   when:
     - cpm_registration
 
