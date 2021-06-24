@@ -96,6 +96,9 @@
         name: "{{ cpm_scanner_service_name }}"
         start_mode: auto
         state: started
+        
+    - name: Reboot the machine
+      win_reboot:
 
     - name: Check if CPM service is running
       win_service:
