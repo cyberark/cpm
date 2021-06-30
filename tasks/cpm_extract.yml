@@ -10,7 +10,7 @@
   win_copy:
     src: "{{ cpm_zip_file_path }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
-    renite_src: "{{cpm_zip_file_remote}}"
+    remote_src: "{{cpm_zip_file_unc}}" 
   register: st
 
 - fail:
