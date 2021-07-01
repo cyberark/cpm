@@ -20,6 +20,7 @@
         try {
           $Action = .\{{ cpm_hardening_script }}
         } catch {
+          Write-Output "tagtig"
           Write-Output $Error
         } finally {
           $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
