@@ -18,7 +18,7 @@
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
         try {
-          $ScriptPath = {{ cpm_hardening_script }}
+          $ScriptPath = \"{{ cpm_hardening_script }}\"
           $Action = &$ScriptPath
         } catch {
           Write-Output "tagtig1"
