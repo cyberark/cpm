@@ -20,15 +20,21 @@
         try {
           $Action = .\{{ cpm_hardening_script }}
         } catch {
-          Write-Output "tagtig"
+          Write-Output "tagtig1"
           Write-Output $Error
+          Write-Output "tagtig2"
         } finally {
+          Write-Output "tagtig3"
           $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
+          Write-Output "tagtig4"
           $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
+          Write-Output "tagtig5"
         }
         if ($Result.isSucceeded -eq 2) {
+          Write-Output "tagtig6"
           exit 1
         } else {
+          Write-Output "tagtig7"
           exit 0
         }
       args:
