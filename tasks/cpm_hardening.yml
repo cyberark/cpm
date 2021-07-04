@@ -25,6 +25,8 @@
           Write-Output "tagtig2"
         } finally {
           Write-Output "tagtig3"
+          Write-Output $Action
+
           $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
           Write-Output "tagtig4"
           $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
