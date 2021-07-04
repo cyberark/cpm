@@ -19,7 +19,7 @@
         $ErrorActionPreference = "SilentlyContinue"
         try {
           $ScriptPath = "{{ cpm_hardening_script }}"
-          $Action = &$ScriptPath
+          $Action = &.\$ScriptPath
         } catch {
           Write-Output "tagtig1"
           Write-Output $Error
