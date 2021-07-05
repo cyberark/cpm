@@ -25,9 +25,12 @@
           $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
           $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
         }
+        Write-Output $Result.isSucceeded
         if ($Result.isSucceeded -eq 2) {
+          Write-Output "tok1"
           exit 1
         } else {
+          Write-Output "tok2"
           exit 0
         }
       args:
