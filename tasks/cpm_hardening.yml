@@ -17,9 +17,15 @@
     - name: Run CPM hardening
       win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
-        $Action = .\{{ cpm_hardening_script }}
-        $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
-        $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
+        try {
+          $Action = .\{{ cpm_hardening_script }}
+        } catch {
+          Write-Output $Error
+        } finally {
+          $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
+          $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
+        }
+        Write-Output $Result.isSucceeded
         if ($Result.isSucceeded -eq 2) {
           exit 1
         } else {
@@ -27,40 +33,6 @@
         }
       args:
         chdir: "{{ cpm_installationautomation_folder }}"
-
-    - name: Get log path for hardening
-      win_shell: |
-        $Result = Get-Content "{{ cpm_hardening_log }}"
-        Write-Output $Result
-      register: log_result
-
-    - name: Fetch hardening log from original folder
-      fetch:
-        src: '{{ item.logPath }}'
-        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_hardening.log'
-        flat: yes
-      with_items:
-        - "{{ log_result.stdout | from_json }}"
-
-  rescue:
-
-    - name: Rescue - Get log path for hardening
-      win_shell: |
-        $Result = Get-Content "{{ cpm_hardening_log }}"
-        Write-Output $Result
-      register: log_result
-
-    - name: Rescue - Fetch hardening log from original folder
-      fetch:
-        src: '{{ item.logPath }}'
-        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_hardening.log'
-        flat: yes
-      with_items:
-        - "{{ log_result.stdout | from_json }}"
-
-    - name: Rescue - Fail hardening stage
-      fail:
-        msg: 'ERROR: Hardening failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_hardening.log'
 
 - name: Validate CPM hardening and stop service
   win_service:
