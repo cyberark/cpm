@@ -19,8 +19,8 @@
         $ErrorActionPreference = "SilentlyContinue"
         try {
           $Action = .\{{ cpm_hardening_script }}
-        # } catch {
-        #   Write-Output $Error
+        } catch {
+          Write-Output $Error
         } finally {
           $Action | Out-File -FilePath "{{ cpm_hardening_log }}"
           $Result = Get-Content "{{ cpm_hardening_log }}" -Raw | ConvertFrom-Json
