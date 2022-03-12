@@ -15,7 +15,7 @@
         - dr_vault_ip != ''
       
     - name: Change Vault ip in CPMRegisterComponentConfig.xml
-      win_xml:
+      ansible.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ vault_ip_str }}"
         xpath: "//Parameter[@Name = 'vaultip']"
@@ -23,7 +23,7 @@
         type: attribute
 
     - name: Change Vault Port in CPMRegisterComponentConfig.xml
-      win_xml:
+      ansible.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ vault_port }}"
         xpath: "//Parameter[@Name = 'vaultPort']"
@@ -31,7 +31,7 @@
         type: attribute
 
     - name: Change Vault User in CPMRegisterComponentConfig.xml
-      win_xml:
+      ansible.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ vault_username }}"
         xpath: "//Parameter[@Name = 'vaultUser']"
@@ -39,7 +39,7 @@
         type: attribute
 
     - name: Change CPM Install Directory in CPMRegisterComponentConfig.xml
-      win_xml:
+      ansible.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ cpm_installation_path }}"
         xpath: "//Parameter[@Name = 'installDirectory']"
@@ -47,7 +47,7 @@
         type: attribute
 
     - name: Change CPM username in CPMRegisterComponentConfig.xml
-      win_xml:
+      ansible.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ cpm_username }}"
         xpath: "//Parameter[@Name = 'username']"
@@ -56,7 +56,7 @@
       when: cpm_username is defined
 
     - name: Run CPM registration
-      win_shell: |
+      ansible.windows.win_shell: |
         Set-Location "{{ cpm_registrationtool_folder }}"
         #$ErrorActionPreference = "SilentlyContinue"
         $secStrObj = ConvertTo-SecureString -String "{{ secure_vault_password }}" -Force
@@ -71,7 +71,7 @@
       no_log: true
 
     - name: Get log path for registration
-      win_shell: |
+      ansible.windows.win_shell: |
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result
@@ -86,27 +86,27 @@
         - "{{ log_result.stdout | from_json }}"
 
     - name: Start CPM service & set to auto
-      win_service:
+      ansible.windows.win_service:
         name: "{{ cpm_service_name }}"
         start_mode: auto
         state: started
 
     - name: Start CPM scanner service & set to auto
-      win_service:
+      ansible.windows.win_service:
         name: "{{ cpm_scanner_service_name }}"
         start_mode: auto
         state: started
         
     - name: Reboot the machine
-      win_reboot:
+      ansible.windows.win_reboot:
 
     - name: Check if CPM service is running
-      win_service:
+      ansible.windows.win_service:
         name: "{{ cpm_service_name }}"
       register: cpm_service_info
 
     - name: Check if CPM scanner service is running
-      win_service:
+      ansible.windows.win_service:
         name: "{{ cpm_scanner_service_name }}"
       register: cpm_scanner_service_info
 
@@ -117,7 +117,7 @@
   rescue:
 
     - name: Rescue - Get log path for registration
-      win_shell: |
+      ansible.windows.win_shell: |
         $Result = Get-Content "{{ cpm_registration_log }}"
         Write-Output $Result
       register: log_result

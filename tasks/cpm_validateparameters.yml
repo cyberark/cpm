@@ -31,7 +31,7 @@
         - secure_vault_password_string is undefined
 
     - name: Convert to securestring
-      win_shell: |
+      ansible.windows.win_shell: |
         $secure_vault_password_object = ConvertTo-SecureString "{{ vault_password }}" -AsPlainText -Force
         $secure_vault_password_string = ConvertFrom-SecureString $secure_vault_password_object
         write-output $secure_vault_password_string
@@ -48,12 +48,12 @@
   no_log: true
 
 - name: Check if CPM was already installed
-  win_service:
+  ansible.windows.win_service:
     name: "{{ cpm_service_name }}"
   register: cpm_service_info
 
 - name: Check if CPM scanner was already installed
-  win_service:
+  ansible.windows.win_service:
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
 
