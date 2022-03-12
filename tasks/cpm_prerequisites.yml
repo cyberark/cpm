@@ -25,7 +25,7 @@
       register: log_result
 
     - name: Fetch prerequisites log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_prerequisites.log'
         flat: yes
@@ -41,7 +41,7 @@
       register: log_result
 
     - name: Rescue - Fetch prerequisites log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_prerequisites.log'
         flat: yes
@@ -49,5 +49,5 @@
         - "{{ log_result.stdout | from_json }}"
 
     - name: Rescue - Fail prerequisites stage
-      fail:
+      ansible.builtin.fail:
         msg: 'ERROR: Pre Prerequisites failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_prerequisites.log'

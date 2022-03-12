@@ -10,7 +10,7 @@
   block:
 
     - name: Set cpm_hardening_script in domain
-      set_fact:
+      ansible.builtin.set_fact:
         cpm_hardening_script: "CPM_In_Domain_Hardening.ps1"
       when: ansible_windows_domain_member
 
@@ -46,6 +46,6 @@
     state: stopped
   register: cpm_scanner_service_info
 
-- set_fact:
+- ansible.builtin.set_fact:
     cpm_hardened: true
   when: cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"

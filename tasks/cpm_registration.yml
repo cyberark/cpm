@@ -3,12 +3,12 @@
 
 - name: Registration Block
   block:
-    - set_fact:
+    - ansible.builtin.set_fact:
         vault_ip_str: "{{ vault_ip }}"
       when: dr_vault_ip is undefined or dr_vault_ip == ''
 
     - name: Concat DR vault ip to vault_ip_str
-      set_fact:
+      ansible.builtin.set_fact:
         vault_ip_str: "{{ vault_ip_str }},{{ dr_vault_ip }}"
       when:
         - dr_vault_ip is defined
@@ -78,7 +78,7 @@
       no_log: true
 
     - name: Fetch registration log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
         flat: yes
@@ -110,7 +110,7 @@
         name: "{{ cpm_scanner_service_name }}"
       register: cpm_scanner_service_info
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         cpm_registered: true
       when: cpm_service_info.state == "running" and cpm_scanner_service_info.state == "running"
 
@@ -124,7 +124,7 @@
       no_log: true
 
     - name: Rescue - Fetch registration log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'
         flat: yes
@@ -132,5 +132,5 @@
         - "{{ log_result.stdout | from_json }}"
 
     - name: Rescue - Fail registration stage
-      fail:
+      ansible.builtin.fail:
         msg: 'ERROR: Registration failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_registration.log'

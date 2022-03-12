@@ -44,7 +44,7 @@
       register: log_result
 
     - name: Fetch installation log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
         flat: yes
@@ -60,7 +60,7 @@
       register: log_result
 
     - name: Rescue - Fetch installation log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
         dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
         flat: yes
@@ -68,7 +68,7 @@
         - "{{ log_result.stdout | from_json }}"
 
     - name: Rescue - Fail installation stage
-      fail:
+      ansible.builtin.fail:
         msg: 'ERROR: Installation failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_install.log'
 
 - name: Get log path for installation
@@ -96,6 +96,6 @@
     name: "{{ cpm_scanner_service_name }}"
   register: cpm_scanner_service_info
 
-- set_fact:
+- ansible.builtin.set_fact:
     cpm_exists: "{{ cpm_service_info.exists }}"
     cpm_scanner_exists: "{{ cpm_scanner_service_info.exists }}"
