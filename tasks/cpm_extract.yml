@@ -25,7 +25,7 @@
     - not cpm_ignore_checksum
 
 - name: Unzip the CPM package
-  ansible.windows.win_unzip:
+  community.windows.win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
   when: cpm_official
@@ -37,7 +37,7 @@
   when: not cpm_official
 
 - name: Unzip the CPM package
-  ansible.windows.win_unzip:
+  community.windows.win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
   when: not cpm_official
