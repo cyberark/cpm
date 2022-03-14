@@ -15,7 +15,7 @@
         - dr_vault_ip != ''
       
     - name: Change Vault ip in CPMRegisterComponentConfig.xml
-      ansible.windows.win_xml:
+      community.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ vault_ip_str }}"
         xpath: "//Parameter[@Name = 'vaultip']"
@@ -23,7 +23,7 @@
         type: attribute
 
     - name: Change Vault Port in CPMRegisterComponentConfig.xml
-      ansible.windows.win_xml:
+      community.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ vault_port }}"
         xpath: "//Parameter[@Name = 'vaultPort']"
@@ -31,7 +31,7 @@
         type: attribute
 
     - name: Change Vault User in CPMRegisterComponentConfig.xml
-      ansible.windows.win_xml:
+      community.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ vault_username }}"
         xpath: "//Parameter[@Name = 'vaultUser']"
@@ -39,7 +39,7 @@
         type: attribute
 
     - name: Change CPM Install Directory in CPMRegisterComponentConfig.xml
-      ansible.windows.win_xml:
+      community.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ cpm_installation_path }}"
         xpath: "//Parameter[@Name = 'installDirectory']"
@@ -47,7 +47,7 @@
         type: attribute
 
     - name: Change CPM username in CPMRegisterComponentConfig.xml
-      ansible.windows.win_xml:
+      community.windows.win_xml:
         path: "{{ cpm_installationautomation_folder }}\\Registration\\CPMRegisterComponentConfig.xml"
         fragment: "{{ cpm_username }}"
         xpath: "//Parameter[@Name = 'username']"
