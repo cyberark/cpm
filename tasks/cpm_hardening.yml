@@ -2,7 +2,7 @@
 # tasks file for cpm_hardening
 
 - name: Create user.ini file
-  win_file:
+  ansible.windows.win_file:
     path: "{{ cpm_installation_path }}\\Password Manager\\Vault\\user.ini"
     state: touch
 
@@ -10,12 +10,12 @@
   block:
 
     - name: Set cpm_hardening_script in domain
-      set_fact:
+      ansible.builtin.set_fact:
         cpm_hardening_script: "CPM_In_Domain_Hardening.ps1"
       when: ansible_windows_domain_member
 
     - name: Run CPM hardening
-      win_shell: |
+      ansible.windows.win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
         try {
           $Action = .\{{ cpm_hardening_script }}
@@ -35,17 +35,17 @@
         chdir: "{{ cpm_installationautomation_folder }}"
 
 - name: Validate CPM hardening and stop service
-  win_service:
+  ansible.windows.win_service:
     name: "{{ cpm_service_name }}"
     state: stopped
   register: cpm_service_info
 
 - name: Validate CPM scanner hardening and stop service
-  win_service:
+  ansible.windows.win_service:
     name: "{{ cpm_scanner_service_name }}"
     state: stopped
   register: cpm_scanner_service_info
 
-- set_fact:
+- ansible.builtin.set_fact:
     cpm_hardened: true
   when: cpm_service_info.username != "LocalSystem" and cpm_scanner_service_info.username != "LocalSystem"

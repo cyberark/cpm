@@ -2,41 +2,42 @@
 # tasks file for cpm_extract
 
 - name: Create folder
-  win_file:
+  ansible.windows.win_file:
     path: "{{ cpm_extract_folder }}"
     state: directory
 
 - name: Copy CPM package from local source
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ cpm_zip_file_path }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
+    remote_src: "{{cpm_zip_file_unc}}" 
   register: st
 
-- fail:
+- ansible.builtin.fail:
     msg: "{{ cpm_zip_file_path }} not exists, failing..."
   when: not st.checksum
 
 - name: Check if package is valid using checksum
-  fail:
+  ansible.builtin.fail:
     msg: "Checksum does not match, please validate your package."
   when:
     - st.checksum != cpm_sha1_checksum
     - not cpm_ignore_checksum
 
 - name: Unzip the CPM package
-  win_unzip:
+  community.windows.win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}"
   when: cpm_official
 
 - name: Create component folder
-  win_file:
+  ansible.windows.win_file:
     path: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
     state: directory
   when: not cpm_official
 
 - name: Unzip the CPM package
-  win_unzip:
+  community.windows.win_unzip:
     src: "{{ cpm_extract_folder }}\\{{ cpm_artifact_name }}"
     dest: "{{ cpm_extract_folder }}\\{{ cpm_component_folder }}"
   when: not cpm_official

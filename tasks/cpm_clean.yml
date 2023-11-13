@@ -2,43 +2,43 @@
 # tasks file for cpm_extract
 
 - name: Find all inf files
-  win_find:
+  ansible.windows.win_find:
     paths: "{{ cpm_installation_path }}\\Password Manager\\Logs"
     patterns: ['*.*']
   register: files_to_delete
 
 - name: Delete all inf files
-  win_file:
+  ansible.windows.win_file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
 - name: Clean Windows\\Temp folder
-  win_find:
+  ansible.windows.win_find:
     paths: "C:\\Windows\\Temp"
     patterns: ['CPM*.*', 'InstallationAutomation*.*']
   register: files_to_delete
 
 - name: Delete temp folder
-  win_file:
+  ansible.windows.win_file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
 - name: Keep installation automation folder
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ cpm_installationautomation_folder }}"
     dest: "{{ cpm_base_bin_drive }}\\Cyberark\\CPM"
     remote_src: True
   ignore_errors: yes
 
 - name: Delete extract folder
-  win_file:
+  ansible.windows.win_file:
     path: "{{ cpm_extract_folder }}"
     state: absent
 
 - name: Clean run History
-  win_shell: |
+  ansible.windows.win_shell: |
     try {
       $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
 
@@ -59,7 +59,7 @@
     exit 0
 
 - name: Clean event logs
-  win_shell: |
+  ansible.windows.win_shell: |
     try {
       wevtutil el | ForEach-Object { wevtutil cl "$_" }
     } catch {
@@ -68,7 +68,7 @@
     }
 
 - name: Clean recycle bin
-  win_shell: |
+  ansible.windows.win_shell: |
     try {
       $Recycler = (New-Object -ComObject Shell.Application).Namespace(0xa)
       $Recycler.items() | ForEach-Object { rm $_.path -Force -Recurse }

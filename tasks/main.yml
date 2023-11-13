@@ -2,35 +2,35 @@
 # tasks file for cpm
 
 - name: Gather subset network facts
-  setup:
+  ansible.windows.setup:
     gather_subset:
       - 'network'
 
 # Validate Parameters
 - name: Validate input parameters
-  include_tasks: cpm_validateparameters.yml
+  ansible.builtin.include_tasks: cpm_validateparameters.yml
 
 - name: Extract CPM package
-  include_tasks: cpm_extract.yml
+  ansible.builtin.include_tasks: cpm_extract.yml
   when:
     - cpm_extract
   tags: [print_action]
 
 - name: Running CPM prerequisities
-  include_tasks: cpm_prerequisites.yml
+  ansible.builtin.include_tasks: cpm_prerequisites.yml
   when:
     - cpm_prerequisites
   tags: [print_action]
 
 - name: Running CPM install
-  include_tasks: cpm_install.yml
+  ansible.builtin.include_tasks: cpm_install.yml
   when:
     - cpm_install
     - not cpm_exists
   tags: [print_action]
 
 - name: Running CPM hardening
-  include_tasks: cpm_hardening.yml
+  ansible.builtin.include_tasks: cpm_hardening.yml
   when:
     - not cpm_hardened
     - cpm_exists
@@ -39,7 +39,7 @@
   tags: [print_action]
 
 - name: Running CPM registration
-  include_tasks: cpm_registration.yml
+  ansible.builtin.include_tasks: cpm_registration.yml
   when:
     - cpm_registration
     - cpm_exists
@@ -48,7 +48,7 @@
   tags: [print_action]
 
 - name: Running CPM clean
-  include_tasks: cpm_clean.yml
+  ansible.builtin.include_tasks: cpm_clean.yml
   when:
     - cpm_clean
   tags: [print_action]
