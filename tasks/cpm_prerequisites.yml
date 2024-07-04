@@ -1,11 +1,38 @@
 ---
+
 # tasks file for cpm prerequisities
+
+- name: Get roles directory dirname
+  ansible.builtin.set_fact:
+    dotnet_installer_path: "C:\\ndp48-x86-x64-allos-enu.exe"
+
+- name: Download .NET Framework 4.8
+  ansible.windows.win_get_url:
+    url: >
+      https://download.visualstudio.microsoft.com/download/pr/014120d7-d689-4305-befd-3cb711108212/0fd66638cde16859462a6243a4629a50/ndp48-x86-x64-allos-enu.exe
+    dest: "{{ dotnet_installer_path }}"
+
+- name: Install Microsoft .NET Framework 4.8
+  ansible.windows.win_package:
+    path: "{{ dotnet_installer_path }}"
+    product_id: '{50e73eb2-10f7-4457-954a-6b06fccc7d04}'
+    arguments: /q /norestart
+  register: dotnet_install
+
+- name: Delete .NET Framework Installer
+  ansible.windows.win_file:
+    path: "{{ dotnet_installer_path }}"
+    state: absent
+
+- name: Reboot host if required
+  ansible.windows.win_reboot:
+  when: dotnet_install.reboot_required
 
 - name: Pre Install Block
   block:
 
     - name: Run CPM prerequisites
-      win_shell: |
+      ansible.windows.win_shell: |
         $ErrorActionPreference = "SilentlyContinue"
         $Action = .\CPM_PreInstallation.ps1
         $Action | Out-File -FilePath "{{ cpm_prerequisites_log }}"
@@ -19,35 +46,35 @@
         chdir: "{{ cpm_installationautomation_folder }}"
 
     - name: Get log path for prerequisites
-      win_shell: |
+      ansible.windows.win_shell: |
         $Result = Get-Content "{{ cpm_prerequisites_log }}"
         Write-Output $Result
       register: log_result
 
     - name: Fetch prerequisites log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
-        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_prerequisites.log'
-        flat: yes
+        dest: '{{ log_path_dest }}/cpm_prerequisites.log'
+        flat: true
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
   rescue:
 
     - name: Rescue - Get log path for prerequisites
-      win_shell: |
+      ansible.windows.win_shell: |
         $Result = Get-Content "{{ cpm_prerequisites_log }}"
         Write-Output $Result
       register: log_result
 
     - name: Rescue - Fetch prerequisites log from path
-      fetch:
+      ansible.builtin.fetch:
         src: '{{ item.logPath }}'
-        dest: '{{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_prerequisites.log'
-        flat: yes
+        dest: '{{ log_path_dest }}/cpm_prerequisites.log'
+        flat: true
       with_items:
         - "{{ log_result.stdout | from_json }}"
 
     - name: Rescue - Fail prerequisites stage
-      fail:
-        msg: 'ERROR: Pre Prerequisites failed. For more info check {{ lookup("config", "DEFAULT_LOG_PATH") | dirname }}/cpm/{{ inventory_hostname }}_prerequisites.log'
+      ansible.builtin.fail:
+        msg: 'ERROR: Prerequisites failed. For more info check {{ log_path_dest }}/cpm_prerequisites.log'

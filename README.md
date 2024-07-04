@@ -26,6 +26,8 @@ cpm_install                      | no           | false                         
 cpm_hardening                    | no           | false                                     | Apply CPM hardening 
 cpm_registration                 | no           | false                                     | Connect CPM to the Vault
 cpm_clean                        | no           | false                                     | N/A
+platform                         | no           | aws                                       | Deployed platform (aws/azure)
+
 
 ### Deployment Variables
 Variable                         | Required     | Default                                              | Comments
