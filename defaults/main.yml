@@ -6,12 +6,12 @@ cpm_hardening: false
 cpm_registration: false
 cpm_clean: false
 cpm_extract: false
-cpm_ignore_checksum: false
 cpm_exists: false
 cpm_scanner_exists: false
 cpm_hardened: false
 cpm_registered: false
 cpm_official: true
+platform: "aws"
 
 cpm_service_name: "CyberArk Password Manager"
 cpm_scanner_service_name: "CyberArk Central Policy Manager Scanner"
@@ -35,3 +35,4 @@ cpm_registration_log: "{{ cpm_installationautomation_folder }}\\cpm_registration
 vault_username: "administrator"
 accept_eula: "No"
 vault_port: 1858
+log_path_dest: "{{ playbook_dir | dirname }}/logs/cpm"
