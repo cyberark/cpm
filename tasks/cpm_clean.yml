@@ -2,77 +2,80 @@
 # tasks file for cpm_extract
 
 - name: Find all inf files
-  win_find:
+  ansible.windows.win_find:
     paths: "{{ cpm_installation_path }}\\Password Manager\\Logs"
     patterns: ['*.*']
   register: files_to_delete
 
 - name: Delete all inf files
-  win_file:
+  ansible.windows.win_file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
 - name: Clean Windows\\Temp folder
-  win_find:
+  ansible.windows.win_find:
     paths: "C:\\Windows\\Temp"
     patterns: ['CPM*.*', 'InstallationAutomation*.*']
   register: files_to_delete
 
 - name: Delete temp folder
-  win_file:
+  ansible.windows.win_file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
 
 - name: Keep installation automation folder
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ cpm_installationautomation_folder }}"
     dest: "{{ cpm_base_bin_drive }}\\Cyberark\\CPM"
-    remote_src: True
-  ignore_errors: yes
+    remote_src: true
 
 - name: Delete extract folder
-  win_file:
+  ansible.windows.win_file:
     path: "{{ cpm_extract_folder }}"
     state: absent
 
-- name: Clean run History
-  win_shell: |
-    try {
-      $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
+- name: Set CPM Services Startup Mode to Manual
+  ansible.windows.win_service:
+    name: "{{ item }}"
+    start_mode: manual
+    state: stopped
+  with_items:
+    - CyberArk Password Manager
+    - CyberArk Central Policy Manager Scanner
 
-      if (& { Test-Path $path } 2>&1) {
-        $arr = (Get-Item -Path $path).Property
-        foreach ($item in $arr)
-        {
-          if ($item -ne "(Default)")
-          {
-            Remove-ItemProperty -Path $path -Name $item -ErrorAction SilentlyContinue
-          }
-        }
-      }
-    } catch {
-      Write-Output "Error occured: $error"
-      exit 1
-    }
-    exit 0
+- name: Create Deployment Folders
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "C:\\CyberArk"
+    - "C:\\CyberArk\\Deployment"
+    - "C:\\CyberArk\\Deployment\\Logs"
 
-- name: Clean event logs
-  win_shell: |
-    try {
-      wevtutil el | ForEach-Object { wevtutil cl "$_" }
-    } catch {
-      Write-Output "Error occured: $error"
-      exit 1
-    }
+- name: Copy PS1 scripts
+  ansible.windows.win_copy:
+    src: "files/aws/{{ item }}"
+    dest: C:\CyberArk\Deployment\
+  with_items:
+    - CPMRegistration.ps1
+    - CPMConfiguration.ps1
+    - Set-LocalService.ps1
+    - CloudWatch.ps1
+    - Common.ps1
+  when: platform == 'aws'
 
-- name: Clean recycle bin
-  win_shell: |
-    try {
-      $Recycler = (New-Object -ComObject Shell.Application).Namespace(0xa)
-      $Recycler.items() | ForEach-Object { rm $_.path -Force -Recurse }
-    } catch {
-      Write-Output "Error occured: $error"
-      exit 1
-    }
+- name: Copy PS1 scripts - Azure
+  ansible.windows.win_copy:
+    src: "files/azure/{{ item }}"
+    dest: C:\CyberArk\
+  with_items:
+    - Set-LocalAccountPassword.ps1
+    - Set-ServiceLogon.ps1
+  when: platform == 'azure'
+
+- name: Copy CloudWatch Json
+  ansible.windows.win_copy:
+    src: "files/aws/AWS.EC2.Windows.CloudWatch.json"
+    dest: "C:\\Program Files\\Amazon\\SSM\\Plugins\\awsCloudWatch\\"
