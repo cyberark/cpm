@@ -59,6 +59,7 @@
     src: "files/aws/{{ item }}"
     dest: C:\CyberArk\Deployment\
   with_items:
+    - UserDataScript.ps1
     - CPMRegistration.ps1
     - CPMConfiguration.ps1
     - Set-LocalService.ps1
