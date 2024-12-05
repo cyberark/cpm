@@ -1,40 +1,158 @@
-function WriteLog{
-    [CmdletBinding()]
-    param(
-        $LogFile,
-        $LogLevel,
-        $Log
-    )
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true)]  [string]$Region,
+    [Parameter(Mandatory = $true)]  [string]$LogGroup,
+    [Parameter(Mandatory = $true)]  [string]$UserDataLogStream,
+    [Parameter(Mandatory = $true)]  [string]$CPMConfigurationLogStream,
+    [Parameter(Mandatory = $true)]  [string]$CPMRegistrationLogStream,
+    [Parameter(Mandatory = $true)]  [string]$CPMSetLocalServiceLogStream,
+    [Parameter(Mandatory = $true)]  [string]$VaultAdminUser,
+    [Parameter(Mandatory = $false)] [string]$SSMAdminPassParameterID,
+    [Parameter(Mandatory = $false)] [string]$VaultPrivateIP,
+    [Parameter(Mandatory = $true)]  [string]$ComponentHostname,
+    [Parameter(Mandatory = $false)] [string]$StackName
+)
 
-    if (!(Test-Path $LogFile)) {
-        $NewLogFile = New-Item $LogFile -Force -ItemType File
-    }
+# Configure logging
+. "$PSScriptRoot\Common.ps1"
+$LogFile = "C:\CyberArk\Deployment\Logs\UserData.log"
 
-    $FormattedDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "$($FormattedDate) [$($LogLevel)] $($Log)" | Out-File -FilePath $LogFile -Append -Encoding ASCII
-
-    if ($LogLevel.StartsWith("USER")) {
-        Write-Host "$Log"
-    }
+# Ensure userdata is running first time
+if (Test-Path -Path $LogFile) {
+    Write-Output "Userdata already ran, exiting."
+    exit 0
 }
 
-function ChildScriptErrorHandler {
-    [CmdletBinding()]
-    param(
-      $LogFile,
-      $ScriptName
-    )
-    if ($? -ne $true) {
-        throw "$ScriptName script returned a non-zero exit code"
-        WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to execute $ScriptName configuration: $_"
-        exit 1
+# Ensure AmazonSSMAgent is enabled and running
+try {
+    Set-Service AmazonSSMAgent -StartupType Automatic
+    Start-Service AmazonSSMAgent
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "AmazonSSMAgent state verified successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to start AmazonSSMAgent: $_"
+    exit 1
+}
+
+# Execute configCW commands
+try {
+    & $PSScriptRoot\CloudWatch.ps1 -LogGroup $LogGroup `
+        -UserDataLogStream $UserDataLogStream `
+        -CPMConfigurationLogStream $CPMConfigurationLogStream `
+        -CPMRegistrationLogStream $CPMRegistrationLogStream `
+        -CPMSetLocalServiceLogStream $CPMSetLocalServiceLogStream `
+        -Region $Region
+    ChildScriptErrorHandler -ScriptName "CloudWatch"
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "CloudWatch configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to configure CloudWatch: $_"
+    exit 1
+}
+
+# Execute CPMConfiguration commands
+try {
+    & $PSScriptRoot\CPMConfiguration.ps1 -VaultIpAddress $VaultPrivateIP `
+                                        -VaultAdminUser $VaultAdminUser `
+                                        -VaultPort 1858
+    ChildScriptErrorHandler -ScriptName "CPMConfiguration"
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "CPMConfiguration configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to execute CPMConfiguration configuration: $_"
+    exit 1
+}
+
+# Execute CPMRegistration commands
+try {
+    & $PSScriptRoot\CPMRegistration.ps1 -VaultAdminUser $VaultAdminUser -SSMAdminPassParameterID $SSMAdminPassParameterID
+    ChildScriptErrorHandler -ScriptName "CPMRegistration"
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "CPMRegistration configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to execute CPMRegistration configuration: $_"
+    exit 1
+}
+
+# Execute LocalServiceConfig commands for CPM Scanner
+try {
+    & $PSScriptRoot\Set-LocalService.ps1 -Username "PasswordManagerUser" -Services "CyberArk Central Policy Manager Scanner"
+    ChildScriptErrorHandler -ScriptName "Set-LocalService"
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "LocalService (CPM Scanner) configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to execute LocalService (CPM Scanner) configuration: $_"
+    exit 1
+}
+
+# Execute LocalServiceConfig commands for Password Manager
+try {
+    & $PSScriptRoot\Set-LocalService.ps1 -Username "PasswordManagerUser" -Services "CyberArk Password Manager"
+    ChildScriptErrorHandler -ScriptName "Set-LocalService"
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "LocalService (Password Manager) configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to execute LocalService (Password Manager) configuration: $_"
+    exit 1
+}
+
+# Execute LocalServiceAutoStart commands
+try {
+    & sc.exe config "CyberArk Password Manager" start=auto
+    & sc.exe config "CyberArk Central Policy Manager Scanner" start=auto
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "LocalServiceAutoStart configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to execute LocalServiceAutoStart configuration: $_"
+    exit 1
+}
+
+# Execute configHostname commands
+try {
+    Rename-Computer -NewName $ComponentHostname -Force
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "Hostname configuration completed successfully"
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to configure hostname: $_"
+    exit 1
+}
+
+# Configure a completion signal scheduled task
+$ResourceName = "CPMMachine"
+$scriptBlock = @"
+    # Configure logging
+    . "$PSScriptRoot\Common.ps1"
+    # Signal completion to CloudFormation
+    if ("$StackName" -ne "") {
+        `$cfn_signal_output = cfn-signal.exe --stack $StackName --success true --resource $ResourceName --region $Region 2>&1
+        if (`$LastExitCode -ne 0) {
+            WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to signal CloudFormation: `$cfn_signal_output"
+            Unregister-ScheduledTask -TaskName "SignalSuccess" -Confirm:`$false
+            exit 1
+        }
+        WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "Signaled CloudFormation completion successfully"
     }
-  }
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "$ResourceName deployment process completed successfully"
+    Unregister-ScheduledTask -TaskName "SignalSuccess" -Confirm:`$false
+"@
+# Convert script block to a Base64 encoded string to pass it to the scheduled task
+$encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptBlock))
+# Creating the scheduled task
+$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-EncodedCommand $encodedCommand"
+$trigger = New-ScheduledTaskTrigger -AtStartup
+Register-ScheduledTask `
+    -Action $action `
+    -Trigger $trigger `
+    -User "NT AUTHORITY\SYSTEM" `
+    -RunLevel "Highest" `
+    -TaskName "SignalSuccess" `
+    -Description "Signal completion after reboot"
+
+# Reboot to apply hostname change
+try {
+    WriteLog -LogFile $LogFile -LogLevel "INFO" -Log "Host will now be restarted to apply hostname change"
+    Restart-Computer -Force
+} catch {
+    WriteLog -LogFile $LogFile -LogLevel "ERROR" -Log "Failed to restart computer: $_"
+    exit 1
+}
 # SIG # Begin signature block
 # MIIpJQYJKoZIhvcNAQcCoIIpFjCCKRICAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCk33pyhGlgecKZ
-# tgND9e5graPn+C1tB9i8/szvppxYrqCCDpUwggboMIIE0KADAgECAhB3vQ4Ft1kL
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCA4WKlbD+Lk3CJd
+# tOBDv17JfYIxyEDZXkeRwuvNY6YEOqCCDpUwggboMIIE0KADAgECAhB3vQ4Ft1kL
 # th1HYVMeP3XtMA0GCSqGSIb3DQEBCwUAMFMxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
 # ExBHbG9iYWxTaWduIG52LXNhMSkwJwYDVQQDEyBHbG9iYWxTaWduIENvZGUgU2ln
 # bmluZyBSb290IFI0NTAeFw0yMDA3MjgwMDAwMDBaFw0zMDA3MjgwMDAwMDBaMFwx
@@ -117,22 +235,22 @@ function ChildScriptErrorHandler {
 # UjQ1IEVWIENvZGVTaWduaW5nIENBIDIwMjACDAJZP4AHVQPEmDE5fjANBglghkgB
 # ZQMEAgEFAKB8MBAGCisGAQQBgjcCAQwxAjAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJ
-# BDEiBCD1n6ujDXE26bdaIz/ukgWRdfKW4jwka7hwZG8MQ8dhFzANBgkqhkiG9w0B
-# AQEFAASCAgAehAmPOJq8fegFWQRxF6TUgxTLv5NZgM8qr5hkIvra7ff06C9vqPdr
-# zPStREflQHy4/4hI4crknEailZLpReiudfska6MN/R79xQbSimNCd4qxK/vi/ICj
-# k/1EVr9dWwFZcyxs9v2Ys8bV590K2GU7MNF97+4VQvT0gjLiLi4CNanwbAZsg9ie
-# BNvi2hoziSNDJrWMaUZTOJP2l9L6HiZu9QT19GgXyrC7gcW8I40kEYAkDe4ZLK1L
-# kjBEQ3Dqa4S2CZUTHY57nmSfdvFvjfWzkbsXu37Wls58+9Hxt/+/FCnGNasQppoL
-# Cz5i98yi/PpsgJeAI0jfyAGQbfD0juDaIb0kwHLtFBnGrjND6JFH/ZIkpKs8iQSY
-# WvHiMA0LrqRkv41Ib2wLMm1yH1iEYTSTwxA+7AB1gAcoHiB68gcbpclSyu11KIsH
-# TpckV1pEPt+k+iLGwrZZAbW9wPnbkMDHbMpdyJh0ta0Rg92+Y1OkxMVWcTPACOVb
-# JxC12ZcfdOd6SvoJfjjlTZq3BAFGtnb+GavcPRM1UZhcsuMFHS5Rqly+fQThprd7
-# C8uJLgGZp8Yyd1qsjh8I/u1R9jLdV2bpsAIavdHP8DvFMlJbNnsQ3A93veyEUGUi
-# dpbKNLsDxF1Tdee7UjOaNUW4rDv1aApGjSjL5kSFORXxXAF0Fz+/2qGCFs0wghbJ
+# BDEiBCDF5I6y/vabZcWnUllrVhwaTZ/VTUKus5xfxSythzbdcDANBgkqhkiG9w0B
+# AQEFAASCAgAQK6hszFYGJr5zwkRN+jJiYRgrU9t/QC0LtOqJsvJnXb/yTmtScKs4
+# vfC9/f6XpLF3Z91RqlCpJwAnQh3NXtLbjfQZ+YvSFtnPOyo9WZz60faJ0MSabCyK
+# h0reJmT2aoJn/0PmrbNZtyI1kpXe1FJaKzxWYrAN85+Q0/N4hv4VjnmdMYYfPu2A
+# J6jPngyZNARCSpqUbwrNi1khPFMZF+ic0uQ0d+5pqZp8tJf6g+u3QflJSSPNeEdb
+# OdEq2W2yYIazdpg3SOpXBSbTsf12h9tmliwg/nhiKwnnA9/PlNDHGKBt6vbt6ZLY
+# YnozV/qg+og3ZhAaAZhC+gc/6uOM1O2+o6lJoeIfTCQpdMaG6jpijV9tOPDzvDao
+# Vhxdhe/L0D28L9Cu/xW05M6pzxZKMPPeVlXnNIZc5vEIldfZa+mP1iBh9t2UNKr8
+# jdQpTjPBarQLrmfEDal3W5jvhsP8pEHplTLLyESeB7m7oED4z3xAlhYWdJ/cjVS0
+# bQvnVbRGLXrDT+1SMaxzXDn8/vIWAvUMg182HBCrggO02iLPjD3GjMVL4Bl+etbR
+# jYPNRAUBZa7Cy1BonU+Uw5adedCu74L+SCT6Qsh034Mzv279va3R8Ju/bqun5SNs
+# 0F9E5YBqUkBSmPMArUoRAghgk2QqXBemceEs1VYx63Xl5AcIxSbeAaGCFs0wghbJ
 # BgorBgEEAYI3AwMBMYIWuTCCFrUGCSqGSIb3DQEHAqCCFqYwghaiAgEDMQ0wCwYJ
 # YIZIAWUDBAIBMIHoBgsqhkiG9w0BCRABBKCB2ASB1TCB0gIBAQYLKwYBBAGgMgID
-# AQIwMTANBglghkgBZQMEAgEFAAQg9h1as/ezwXutMXjNcBPhJAe4Pv2IoImtkEp+
-# ZIbKBEoCFGzamzT/Cj7HrmcLgYwzcqYK0KzEGA8yMDI0MTIwNTEwMjUxNVowAwIB
+# AQIwMTANBglghkgBZQMEAgEFAAQgndaHAOUkDt//mRo0WCVPsa/2oF9JETDKxUUm
+# rT9H3hACFGtwiff76dGbzt4xPzPGpkjb0hT/GA8yMDI0MTIwNTEwMjUzMlowAwIB
 # AaBhpF8wXTELMAkGA1UEBhMCQkUxGTAXBgNVBAoMEEdsb2JhbFNpZ24gbnYtc2Ex
 # MzAxBgNVBAMMKkdsb2JhbHNpZ24gVFNBIGZvciBDb2RlU2lnbjEgLSBSNiAtIDIw
 # MjMxMaCCElQwggZsMIIEVKADAgECAhABm+reyE1rj/dsOp8uASQWMA0GCSqGSIb3
@@ -237,18 +355,18 @@ function ChildScriptErrorHandler {
 # LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIFRpbWVzdGFtcGluZyBDQSAtIFNIQTM4
 # NCAtIEc0AhABm+reyE1rj/dsOp8uASQWMAsGCWCGSAFlAwQCAaCCAS0wGgYJKoZI
 # hvcNAQkDMQ0GCyqGSIb3DQEJEAEEMCsGCSqGSIb3DQEJNDEeMBwwCwYJYIZIAWUD
-# BAIBoQ0GCSqGSIb3DQEBCwUAMC8GCSqGSIb3DQEJBDEiBCBpmmODE3FfgzJnNpLs
-# cLxeuDERR9wCJam7uzzSEeOYjTCBsAYLKoZIhvcNAQkQAi8xgaAwgZ0wgZowgZcE
+# BAIBoQ0GCSqGSIb3DQEBCwUAMC8GCSqGSIb3DQEJBDEiBCAasNMF+mXDDltuMtwu
+# pWwVWa0jFS6HxQLEazEE25Bx1TCBsAYLKoZIhvcNAQkQAi8xgaAwgZ0wgZowgZcE
 # IDqIepUbXrkqXuFPbLt2gjelRdAQW/BFEb3iX4KpFtHoMHMwX6RdMFsxCzAJBgNV
 # BAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9i
 # YWxTaWduIFRpbWVzdGFtcGluZyBDQSAtIFNIQTM4NCAtIEc0AhABm+reyE1rj/ds
-# Op8uASQWMA0GCSqGSIb3DQEBCwUABIIBgGtWbCIXqO3eUeqPnTaph2Ii9TdDedap
-# xUCuSJc0bUYByg9sMKUNxktYbYMDfYn7IlFsoaYaq2+inXovzPbudue8+9amO3Wo
-# 6G3r2VEWWfymVmFO1zzc8MC0+k8jq4L+fsoV6aAQbpEPEwxvEAeq7mWw7eNmz/TD
-# 8Ls/2YjvEj8WtMTfe8i3QP30NadMhoJydR1sMWqny5MR2JpIlv26hAbSsGTzVkHR
-# aWDKLXT45E6g9o/roDxKleYPIGUwM0N5CDTZf2ouGpt6wEeilzddu1O/OELjoMXf
-# WHo2P0RU6lV+Ocz7DjhilDw+0+SO9YE2pEt9OHiX+oxRjTJQH665iZjEMr+QuM2K
-# iHKRoLYHS71WnNpUwo0s1C5CBcGq3P38JmqfTBcWq0hT4DAijElJXTZfS6RUJG5K
-# fZ6Bw0l+ij3KLuiW1fq5uVw/pvHFQSZX6OpUtt/WzJoI3V0zw5izcan/9DI7yfee
-# cn6e4QBEiG+DQKRGuHMLMlm4bOJUDTxN7g==
+# Op8uASQWMA0GCSqGSIb3DQEBCwUABIIBgA63T32LuIoszQ3u143pJ/sM2GIig9Ve
+# nR6j3N5yNXJzUz83V+5ut5G7xHO49LabRyTPnADFNB7ZCXJda5UfwsSF258Vc/yW
+# 5z5gaVGdkffp3ff/6ezSoOEa+AkIN+WmrBV95D1YOO1C86PvPakazPzeZWNN90KT
+# So5aEXMkfvv1o/7XyNSYjONIQ4eOi9p4aqHHDDn/tYRj+Mf26urElWJ/HtWZiBea
+# 12Ehf0n9aBTKUfHzU7YzcrzicY3XGS9IxF6jv6cWYJPcpOoMvImFKjfRCOKwxPar
+# I3Zk6h9cMsFQgkdc6HhNZyn1ZIXd7H2utZXwQyM795OKdY3ctR1df3HPpZEWXlni
+# kYjAVWngSeUSrYizC+mZRTAOilcFhTj+02PJUj/40EwemmMvkjm9xbDcYXpiGzSO
+# NFiNrf6nP+S0CixPmEyZfmwD8eBf6EGtgeF5GhNga8rfULPahrTN1JxNGn6Tj7LH
+# xtXi4fQPzZw2OkoQeg+hFtvr7tpgyHAO6w==
 # SIG # End signature block
